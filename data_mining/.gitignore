@@ -4,3 +4,8 @@ crawler/ufcstats
 crawler/data_scrubber/clean_dataset.txt
 crawler/data_scrubber/dirty_dataset.txt
 crawler/data_scrubber/scrubber.log
+
+scraper/fighters.json
+scraper/bouts.json
+scraper/events.json
+scraper/scraper.log
