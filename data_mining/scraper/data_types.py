@@ -152,12 +152,13 @@ def event_page(hyperlink):
 
     table_stats = doc.find_all('li', class_='b-list__box-list-item')
     date = table_stats[0].get_text(strip=True).split(':')[1].strip()
+    formatted_date = convert_date_format_event(date)
     location = table_stats[1].get_text(strip=True).split(':')[1].strip()
 
     event_data = {
         'event_id': event_id,  # Primary Key
         'name': name,
-        'date': date,
+        'date': formatted_date,
         'location': location,
     }
 
