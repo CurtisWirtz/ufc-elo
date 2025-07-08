@@ -87,27 +87,11 @@ def fighter_page(hyperlink):
     return fighter_data
 
 def bout_page(hyperlink):
-    # with open("index.html", "r") as f: # r for read mode
-    # doc = BeautifulSoup(f, "html.parser")
-
-    # bout_data = {
-    #     'bout_id': '12345',  # Primary Key
-    #     'event_id': '67890',  # Foreign Key to events table
-    #     'date': '2023-01-01',
-    #     'location': 'Las Vegas, NV'
-    # }
-    pass
-
-def event_page(hyperlink):
-    pass
-    # with open("event.html", "r") as f: # r for read mode
-    #     doc = BeautifulSoup(f, "html.parser")
+    with open("bout.html", "r") as f: # r for read mode
+        doc = BeautifulSoup(f, "html.parser")
 
     # result = requests.get(hyperlink)
     # doc = BeautifulSoup(result.text, "html.parser")
-
-    # fighter_id = urlparse(hyperlink).path.split('/')[-1]  # Extract the last part of the URL
-    # name = search_by_class('b-content__title-highlight', doc)
 
     # if doc.find('p', class_='b-content__Nickname').get_text(strip=True) == "":
     #     nickname = None
@@ -146,19 +130,35 @@ def event_page(hyperlink):
     # else:
     #     date_of_birth = table_stats[4].get_text(strip=True).split(':')[1].strip()
 
-
-    # fighter_data = {
-    #     'fighter_id': fighter_id,  # Primary Key
-    #     'name': name,
-    #     'nickname': nickname,
-    #     'wins': wins,
-    #     'losses': losses,
-    #     'draws': draws,
-    #     'height': height,
-    #     'weight': weight,
-    #     'reach': reach,
-    #     'stance': stance,
-    #     'date_of_birth': date_of_birth,
+    # bout_data = {
+    #     'bout_id': '12345',  # Primary Key
+    #     'event_id': '67890',  # Foreign Key to events table
+    #     'date': '2023-01-01',
+    #     'location': 'Las Vegas, NV'
     # }
 
     # return fighter_data
+    pass
+
+def event_page(hyperlink):
+    with open("event.html", "r") as f: # r for read mode
+        doc = BeautifulSoup(f, "html.parser")
+
+    # result = requests.get(hyperlink)
+    # doc = BeautifulSoup(result.text, "html.parser")
+
+    event_id = urlparse(hyperlink).path.split('/')[-1]  # Extract the last part of the URL
+    name = search_by_class('b-content__title-highlight', doc)
+
+    table_stats = doc.find_all('li', class_='b-list__box-list-item')
+    date = table_stats[0].get_text(strip=True).split(':')[1].strip()
+    location = table_stats[1].get_text(strip=True).split(':')[1].strip()
+
+    event_data = {
+        'event_id': event_id,  # Primary Key
+        'name': name,
+        'date': date,
+        'location': location,
+    }
+
+    return event_data

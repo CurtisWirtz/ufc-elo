@@ -15,13 +15,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# TODO:
-# - scrape the data accordingly
-# - save data into CSV format
 
 # links_list = 'links_list.txt'
 links_list = 'test.txt'
-fighters_list = []  # list of dictionaries, each dictionary is a separate fighter
+# lists of dictionaries, each dictionary is a separate fighter, bout, or event
+fighters_list = []  
 bouts_list = []
 events_list = []
 
@@ -38,7 +36,7 @@ with open(links_list, 'rt') as f:  # 'rt' for read text mode
             bouts_list.append(bout)
         elif 'event-details' in link: # event page
             event = event_page(link)
-            # logger.info(f"Scraped EVENT data: {event['name']} ({event['event_id']})")
+            logger.info(f"Scraped EVENT data: {event['name']} ({event['event_id']})")
             events_list.append(event)
 
 def save_to_json(output_file, ufc_data):
@@ -55,3 +53,7 @@ def create_json_file(file_path):
 fighters_output_file = "fighters.json"
 create_json_file(fighters_output_file)
 save_to_json(fighters_output_file, fighters_list)
+
+events_output_file = "events.json"
+create_json_file(events_output_file)
+save_to_json(events_output_file, events_list)
