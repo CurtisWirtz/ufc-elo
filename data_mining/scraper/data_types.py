@@ -77,9 +77,9 @@ def fighter_page(hyperlink):
         'wins': wins,
         'losses': losses,
         'draws': draws,
-        'height': height,
-        'weight': weight,
-        'reach': reach,
+        'height_in': height,
+        'weight_lb': weight,
+        'reach_in': reach,
         'stance': stance,
         'date_of_birth': date_of_birth,
     }
