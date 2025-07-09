@@ -85,12 +85,15 @@ def bout_page(hyperlink):
     category = search_by_class('b-fight-details__fight-title', doc)
 
     result_character = search_by_class('b-fight-details__person-status', doc)
-    if result_character == "D":
-        result = "Draw"
-    elif result_character == "NC":
-        result = "No Contest"
+    if result_character:
+        if result_character == "D":
+            result = "Draw"
+        elif result_character == "NC":
+            result = "No Contest"
+        else:
+            result = "Win/Loss"
     else:
-        result = "Win/Loss"
+        result = None
 
     info_table = doc.find_all('p', 'b-fight-details__text')
 
