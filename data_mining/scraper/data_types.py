@@ -3,17 +3,15 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from general import *
 
+
 # search document for matching css class name
 def search_by_class(class_name, bs4_document):
     field = bs4_document.find(class_=class_name).get_text(strip=True)
     return field
 
 def fighter_page(hyperlink):
-    with open("fighter.html", "r") as f: # r for read mode
-        doc = BeautifulSoup(f, "html.parser")
-
-    # result = requests.get(hyperlink)
-    # doc = BeautifulSoup(result.text, "html.parser")
+    result = requests.get(hyperlink)
+    doc = BeautifulSoup(result.text, "html.parser")
 
     fighter_id = urlparse(hyperlink).path.split('/')[-1]  # Extract the last part of the URL
     name = search_by_class('b-content__title-highlight', doc)
@@ -26,7 +24,7 @@ def fighter_page(hyperlink):
     record = search_by_class('b-content__title-record', doc)
     wins = int(record.split('-')[0].strip()[8:])
     losses = int(record.split('-')[1].strip())
-    draws = int(record.split('-')[2].strip())
+    draws = record.split('-')[2].strip()
 
     table_stats = doc.find_all('li', class_='b-list__box-list-item b-list__box-list-item_type_block')
 
@@ -74,11 +72,8 @@ def fighter_page(hyperlink):
     return fighter_data
 
 def bout_page(hyperlink):
-    with open("left.html", "r") as f: # r for read mode
-        doc = BeautifulSoup(f, "html.parser")
-
-    # result = requests.get(hyperlink)
-    # doc = BeautifulSoup(result.text, "html.parser")
+    result = requests.get(hyperlink)
+    doc = BeautifulSoup(result.text, "html.parser")
 
     bout_id = urlparse(hyperlink).path.split('/')[-1]  # Extract the last part of the URL
 
@@ -152,11 +147,8 @@ def bout_page(hyperlink):
     return bout_data
 
 def event_page(hyperlink):
-    with open("event.html", "r") as f: # r for read mode
-        doc = BeautifulSoup(f, "html.parser")
-
-    # result = requests.get(hyperlink)
-    # doc = BeautifulSoup(result.text, "html.parser")
+    result = requests.get(hyperlink)
+    doc = BeautifulSoup(result.text, "html.parser")
 
     event_id = urlparse(hyperlink).path.split('/')[-1]  # Extract the last part of the URL
     name = search_by_class('b-content__title-highlight', doc)
@@ -174,12 +166,3 @@ def event_page(hyperlink):
     }
 
     return event_data
-
-
-
-
-
-# TODO:
-# 1 finish bout fighter data
-# 2 include data for bout order
-# 3 set scrapers to real URLs
