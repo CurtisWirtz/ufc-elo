@@ -71,6 +71,7 @@ def fighter_page(hyperlink):
 
     return fighter_data
 
+
 def bout_page(hyperlink):
     result = requests.get(hyperlink)
     doc = BeautifulSoup(result.text, "html.parser")
@@ -119,7 +120,6 @@ def bout_page(hyperlink):
 
     # if there's a clear winner/loser, assign the winning fighter id
     # (this is not always the case..like in a draw or no contest
-    print("result:", result)
     if result == "Win/Loss":
         if result_character == "W":
             winning_fighter_id = fighter_1_id
@@ -146,6 +146,7 @@ def bout_page(hyperlink):
 
     return bout_data
 
+
 def event_page(hyperlink):
     result = requests.get(hyperlink)
     doc = BeautifulSoup(result.text, "html.parser")
@@ -158,11 +159,23 @@ def event_page(hyperlink):
     formatted_date = convert_date_format_event(date)
     location = table_stats[1].get_text(strip=True).split(':')[1].strip()
 
+    bout_order = []
+
+    bouts_table = doc.find('tbody', class_='b-fight-details__table-body')
+    bout_links = bouts_table.find_all('tr', class_='b-fight-details__table-row')
+
+    # Find all bout ids in the event page, then add to the list
+    for link in bout_links:
+        bout_id = urlparse(link.get('data-link')).path.split('/')[-1]
+        #push to bout_order list
+        bout_order.append(bout_id)
+
     event_data = {
         'event_id': event_id,  # Primary Key
         'name': name,
         'date': formatted_date,
         'location': location,
+        'bout_order': bout_order  # This will be filled later with bout IDs
     }
 
     return event_data
