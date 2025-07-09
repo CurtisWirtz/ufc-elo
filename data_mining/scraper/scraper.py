@@ -16,8 +16,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# links_list = 'links_list.txt'
-links_list = 'test.txt'
+links_list = 'links_list.txt'
+
 # lists of dictionaries, each dictionary is a separate fighter, bout, or event
 fighters_list = []  
 bouts_list = []
