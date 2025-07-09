@@ -1,7 +1,10 @@
 import logging
-from data_types import *
+from data_types import fighter_page, bout_page, event_page
 import json
 import os
+import time
+
+start_time = time.time()
 
 # Setup for logger
 log_file = "scraper.log"
@@ -16,7 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-links_list = 'links_list.txt'
+links_list = 'crawled_links.txt'
 
 # lists of dictionaries, each dictionary is a separate fighter, bout, or event
 fighters_list = []  
@@ -39,8 +42,10 @@ with open(links_list, 'rt') as f:  # 'rt' for read text mode
             logger.info(f"Scraped EVENT data: {event['name']} ({event['event_id']})")
             events_list.append(event)
 
+
 def save_to_json(output_file, ufc_data):
     with open(output_file, 'w') as f:
+        logger.info(f"Writing to JSON file: ({output_file})")
         json.dump(ufc_data, f, indent=4)  # indent=4 for pretty printing
 
 def create_json_file(file_path):
@@ -50,14 +55,21 @@ def create_json_file(file_path):
             json.dump([], f)  # Initialize with an empty list
 
 # Save data to JSON files
-fighters_output_file = "fighters.json"
+fighters_output_file = "data/fighters.json"
 create_json_file(fighters_output_file)
 save_to_json(fighters_output_file, fighters_list)
 
-events_output_file = "events.json"
+events_output_file = "data/events.json"
 create_json_file(events_output_file)
 save_to_json(events_output_file, events_list)
 
-bouts_output_file = "bouts.json"
+bouts_output_file = "data/bouts.json"
 create_json_file(bouts_output_file)
 save_to_json(bouts_output_file, bouts_list)
+
+end_time = time.time()
+elapsed_seconds = end_time - start_time
+minutes = int(elapsed_seconds // 60)
+seconds = int(elapsed_seconds % 60)
+
+logger.info(f"Scraping completed in {minutes} minutes and {seconds} seconds.")
