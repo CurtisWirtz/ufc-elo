@@ -5,7 +5,7 @@ crawler/data_scrubber/clean_dataset.txt
 crawler/data_scrubber/dirty_dataset.txt
 crawler/data_scrubber/scrubber.log
 
-scraper/fighters.json
-scraper/bouts.json
-scraper/events.json
+scraper/crawled_links.txt
+scraper/data/*
 scraper/scraper.log
+scraper/test.txt
