@@ -1,20 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import logging
 from urllib.parse import urlparse
 from general import *
-
-# Setup for logger
-log_file = "scraper.log"
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(log_file),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
 
 # search document for matching css class name
 def search_by_class(class_name, bs4_document):
@@ -87,58 +74,82 @@ def fighter_page(hyperlink):
     return fighter_data
 
 def bout_page(hyperlink):
-    with open("bout.html", "r") as f: # r for read mode
+    with open("left.html", "r") as f: # r for read mode
         doc = BeautifulSoup(f, "html.parser")
 
     # result = requests.get(hyperlink)
     # doc = BeautifulSoup(result.text, "html.parser")
 
-    # if doc.find('p', class_='b-content__Nickname').get_text(strip=True) == "":
-    #     nickname = None
-    # else:
-    #     nickname = search_by_class('b-content__Nickname', doc)
+    bout_id = urlparse(hyperlink).path.split('/')[-1]  # Extract the last part of the URL
+
+    event_title_container = doc.find('h2', class_='b-content__title')
+    event_href = event_title_container.find('a', class_='b-link').get('href')
+    event_id = urlparse(event_href).path.split('/')[-1]
+
+    category = search_by_class('b-fight-details__fight-title', doc)
+
+    result_character = search_by_class('b-fight-details__person-status', doc)
+    if result_character == "D":
+        result = "Draw"
+    elif result_character == "NC":
+        result = "No Contest"
+    else:
+        result = "Win/Loss"
+
+    info_table = doc.find_all('p', 'b-fight-details__text')
+
+    if result == "Draw":
+        method = "Draw"
+    else:
+        method = info_table[0].find('i', class_='b-fight-details__text-item_first').get_text(strip=True)
+
+    bout_info = info_table[0].find_all('i', class_='b-fight-details__text-item')
+
+    ending_round = bout_info[0].get_text(strip=True)[6:]
+    ending_time = bout_info[1].get_text(strip=True)[5:]
+    time_format = bout_info[2].get_text(strip=True)[12:]
+    referee = bout_info[3].get_text(strip=True)[8:]
+
+    details = add_space_after_period(info_table[1].get_text(strip=True)[8:])
     
-    # record = search_by_class('b-content__title-record', doc)
-    # wins = int(record.split('-')[0].strip()[8:])
-    # losses = int(record.split('-')[1].strip())
-    # draws = int(record.split('-')[2].strip())
+    # we need to connect fighters to bouts, so we need to find the fighter id's
+    # fighter_1_id = doc.find('i', ).get(data-color='red'
+    fighters = doc.find_all('div', class_='b-fight-details__person')
 
-    # table_stats = doc.find_all('li', class_='b-list__box-list-item b-list__box-list-item_type_block')
+    #get the ID of both fighters
+    fighter_1_id_href = fighters[0].find('a', class_='b-link b-fight-details__person-link').get('href')
+    fighter_1_id = urlparse(fighter_1_id_href).path.split('/')[-1]
+    fighter_2_href = fighters[1].find('a', class_='b-link b-fight-details__person-link').get('href')
+    fighter_2_id = urlparse(fighter_2_href).path.split('/')[-1]
 
-    # if (table_stats[0].get_text(strip=True).split(':')[1] == "--" or ""):
-    #     height = None
-    # else:
-    #     height = table_stats[0].get_text(strip=True).split(':')[1]
+    # if there's a clear winner/loser, assign the winning fighter id
+    # (this is not always the case..like in a draw or no contest
+    print("result:", result)
+    if result == "Win/Loss":
+        if result_character == "W":
+            winning_fighter_id = fighter_1_id
+        else:
+            winning_fighter_id = fighter_2_id
+    else:
+        winning_fighter_id = None
 
-    # if (table_stats[1].get_text(strip=True).split(':')[1] == "--" or ""):
-    #     weight = None
-    # else:
-    #     weight = int(table_stats[1].get_text(strip=True).split(':')[1][:-5])  # Remove 'lbs' from the end
-    
-    # if (table_stats[2].get_text(strip=True).split(':')[1].strip() == "--" or ""):
-    #     reach = None
-    # else:
-    #     reach = table_stats[2].get_text(strip=True).split(':')[1].strip()
+    bout_data = {
+        'bout_id': bout_id,  # Primary Key
+        'event_id': event_id,  # Foreign Key to events table
+        'category': category,  # e.g., 'Lightweight Bout' or 'Welterweight Title Bout'
+        'fighter_1_id': fighter_1_id,
+        'fighter_2_id': fighter_2_id,
+        'winning_fighter_id': winning_fighter_id,
+        'result': result, # (could be 'Win/Loss', 'draw' or 'no contest', which is why this feild is necessary)
+        'method': method,
+        'ending_round': ending_round,
+        'ending_time': ending_time,
+        'time_format': time_format,
+        'referee': referee,
+        'details': details # 'Rear Naked Choke', Or... 'Derek Cleary 26 - 30. Junichiro Kamijo 26 - 30. Tony Weeks 26 - 30.', 
+    }
 
-    # if (table_stats[3].get_text(strip=True).split(':')[1].strip() == ""):
-    #     stance = None
-    # else:
-    #     stance = table_stats[3].get_text(strip=True).split(':')[1].strip()
-
-    # if (table_stats[4].get_text(strip=True).split(':')[1].strip() == "--" or ""):
-    #     date_of_birth = None
-    # else:
-    #     date_of_birth = table_stats[4].get_text(strip=True).split(':')[1].strip()
-
-    # bout_data = {
-    #     'bout_id': '12345',  # Primary Key
-    #     'event_id': '67890',  # Foreign Key to events table
-    #     'date': '2023-01-01',
-    #     'location': 'Las Vegas, NV'
-    # }
-
-    # return fighter_data
-    pass
+    return bout_data
 
 def event_page(hyperlink):
     with open("event.html", "r") as f: # r for read mode
@@ -163,3 +174,12 @@ def event_page(hyperlink):
     }
 
     return event_data
+
+
+
+
+
+# TODO:
+# 1 finish bout fighter data
+# 2 include data for bout order
+# 3 set scrapers to real URLs

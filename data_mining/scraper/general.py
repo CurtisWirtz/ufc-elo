@@ -46,3 +46,11 @@ def convert_height_to_inches(height_string):
     feet, inches = map(int, height_string.replace('"', '').split("'"))
     total_inches = (feet * 12) + inches
     return total_inches
+
+def add_space_after_period(text):
+    """
+    Adds a space after each period in the text.
+    """
+    if not text:
+        return text
+    return text.replace('.', '. ')

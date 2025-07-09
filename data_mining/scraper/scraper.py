@@ -32,7 +32,7 @@ with open(links_list, 'rt') as f:  # 'rt' for read text mode
             fighters_list.append(fighter)
         elif 'fight-details' in link: # bout page
             bout = bout_page(link)
-            # logger.info(f"Scraped BOUT data: {bout['name']} ({bout['bout_id']})")
+            logger.info(f"Scraped BOUT data: ({bout['bout_id']})")
             bouts_list.append(bout)
         elif 'event-details' in link: # event page
             event = event_page(link)
@@ -57,3 +57,7 @@ save_to_json(fighters_output_file, fighters_list)
 events_output_file = "events.json"
 create_json_file(events_output_file)
 save_to_json(events_output_file, events_list)
+
+bouts_output_file = "bouts.json"
+create_json_file(bouts_output_file)
+save_to_json(bouts_output_file, bouts_list)
