@@ -97,16 +97,26 @@ def bout_page(hyperlink):
     if result == "Draw":
         method = "Draw"
     else:
-        method = info_table[0].find('i', class_='b-fight-details__text-item_first').get_text(strip=True)
+        if info_table:
+            print('info_table exists')
+            method = info_table[0].find('i', class_='b-fight-details__text-item_first').get_text(strip=True)
+            
+            bout_info = info_table[0].find_all('i', class_='b-fight-details__text-item')
 
-    bout_info = info_table[0].find_all('i', class_='b-fight-details__text-item')
+            ending_round = bout_info[0].get_text(strip=True)[6:]
+            ending_time = bout_info[1].get_text(strip=True)[5:]
+            time_format = bout_info[2].get_text(strip=True)[12:]
+            referee = bout_info[3].get_text(strip=True)[8:]
 
-    ending_round = bout_info[0].get_text(strip=True)[6:]
-    ending_time = bout_info[1].get_text(strip=True)[5:]
-    time_format = bout_info[2].get_text(strip=True)[12:]
-    referee = bout_info[3].get_text(strip=True)[8:]
-
-    details = add_space_after_period(info_table[1].get_text(strip=True)[8:])
+            details = add_space_after_period(info_table[1].get_text(strip=True)[8:])
+        else:
+            print('info_table does not exist')
+            method = None
+            ending_round = None
+            ending_time = None
+            time_format = None
+            referee = None
+            details = None
     
     # we need to connect fighters to bouts, so we need to find the fighter id's
     # fighter_1_id = doc.find('i', ).get(data-color='red'
