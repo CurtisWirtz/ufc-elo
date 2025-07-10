@@ -6,6 +6,8 @@ crawler/data_scrubber/dirty_dataset.txt
 crawler/data_scrubber/scrubber.log
 
 scraper/crawled_links.txt
+scraper/data_scrubber/bouts.json
+scraper/data_scrubber/dirty_data.json
 scraper/data/*
 scraper/scraper.log
 scraper/test.txt
