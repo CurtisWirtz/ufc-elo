@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-class Events(models.Model):
+class Event(models.Model):
     event_id = models.CharField(max_length=64, primary_key=True)
     name = models.CharField(max_length=255)
     date = models.DateField()
@@ -11,7 +11,7 @@ class Events(models.Model):
     def __str__(self):
         return self.name
     
-class Fighters(models.Model):
+class Fighter(models.Model):
     fighter_id = models.CharField(max_length=64, primary_key=True)
     name = models.CharField(max_length=255)
     nickname = models.CharField(max_length=255, null=True, blank=True)
@@ -28,7 +28,7 @@ class Fighters(models.Model):
         return self.name
     
  
-class Bouts(models.Model):
+class Bout(models.Model):
     bout_id = models.CharField(max_length=64, primary_key=True)
     event_id = models.ForeignKey()
 
@@ -51,7 +51,7 @@ class Bouts(models.Model):
         return f"{self.category} - {self.bout_id}"
     
 class BoutFighter(models.Model):
-    # This junction table is now implicitly handled by Bout's fighter_1_id, fighter_2_id and winning_fighter.
+    # This junction table is implicitly handled by Bout's fighter_1_id, fighter_2_id and winning_fighter.
     # I don't need a separate BoutFighter model with this JSON structure because
     # the bout itself contains the IDs of the two fighters as well as the winner.
 
