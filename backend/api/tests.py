@@ -1,4 +1,16 @@
 from django.test import TestCase
+from django.db import connections
+
+class DatabaseConnectionTest(TestCase):
+
+    # Make sure postgres connection is secured
+    def test_database_connection(self):
+        try:
+            # Attempt to connect to the database
+            connections['default'].ensure_connection()
+        except Exception as e:
+            self.fail(f"Database connection failed: {e}")
+
 
 # # Custom validation to ensure fighter_1_id and fighter_2_id refer to existing fighters.
 # # This is an alternative to having direct ForeignKey fields here, which can be complex
