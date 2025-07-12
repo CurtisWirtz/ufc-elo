@@ -11,6 +11,13 @@ class DatabaseConnectionTest(TestCase):
         except Exception as e:
             self.fail(f"Database connection failed: {e}")
 
+    # # verify if SSL is used: check if you I have the sslinfo extension installed and enabled
+    # def test_ssl_connection(self):
+    #     with connections['default'].cursor() as cursor:
+    #         cursor.execute('select ssl_is_used();')
+    #         result = cursor.fetchone()
+    #         self.assertTrue(result and result[0], "SSL connection is not active.")
+
 
 # # Custom validation to ensure fighter_1_id and fighter_2_id refer to existing fighters.
 # # This is an alternative to having direct ForeignKey fields here, which can be complex
