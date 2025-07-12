@@ -50,14 +50,14 @@ class Bout(models.Model):
     def __str__(self):
         return f"{self.category} - {self.bout_id}"
     
-class BoutFighter(models.Model):
+# class BoutFighter(models.Model):
     # This junction table is implicitly handled by Bout's fighter_1_id, fighter_2_id and winning_fighter.
     # I don't need a separate BoutFighter model with this JSON structure because
     # the bout itself contains the IDs of the two fighters as well as the winner.
 
     # If later I wanted to store fighter-specific stats for a particular bout
     # then I would re-introduce BoutFighter and connect it to Bout and Fighter.
-    pass
+    # pass
 
 # class BoutRoundStats(models.Model):)
 # (as I mentioned earlier... round stats/.. like takedown attempts, punches, kicks, etc.)
