@@ -119,7 +119,7 @@ class Command(BaseCommand):
             for event in events_data:
 
                 # Again, convert event_date to a date object for postgres, handling invalid formats
-                event_date = self.validate_date(event['event_date'])
+                event_date = self.validate_date(event['date'])
 
                 try:
                     event_obj, created = Event.objects.update_or_create(
@@ -136,10 +136,10 @@ class Command(BaseCommand):
                     else:
                         logger.debug(f"Updated Event: {event_obj.name} ({event_obj.event_id})")
                 except IntegrityError as e:
-                    logger.error(f"Database integrity error for event {event_id}: {e}")
+                    logger.error(f"Database integrity error for event {event['event_id']}: {e}")
                 except Exception as e:
-                    logger.error(f"Error processing event {event_id}: {e}", exc_info=True)
-            
+                    logger.error(f"Error processing event {event['event_id']}: {e}", exc_info=True)
+
             self.stdout.write(self.style.SUCCESS("Event loading complete."))
 
 
