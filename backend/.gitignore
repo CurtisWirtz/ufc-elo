@@ -4,3 +4,4 @@ __pycache__/
 json_data/
 .env
 
+database_ingestion.log
