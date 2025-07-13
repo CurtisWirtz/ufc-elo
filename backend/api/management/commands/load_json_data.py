@@ -111,4 +111,36 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Fighter loading complete."))
 
 
+            #----------------
+            #---- Events ----
+
+            self.stdout.write(self.style.NOTICE("Loading Events..."))
+
+            for event in events_data:
+
+                # Again, convert event_date to a date object for postgres, handling invalid formats
+                event_date = self.validate_date(event['event_date'])
+
+                try:
+                    event_obj, created = Event.objects.update_or_create(
+                        event_id=event["event_id"],
+                        defaults={
+                            "name": event["name"],
+                            "date": event_date,
+                            "location": event["location"],
+                            "bout_order": event["bout_order"]
+                        }
+                    )
+                    if created:
+                        logger.info(f"Created Event: {event_obj.name} ({event_obj.event_id})")
+                    else:
+                        logger.debug(f"Updated Event: {event_obj.name} ({event_obj.event_id})")
+                except IntegrityError as e:
+                    logger.error(f"Database integrity error for event {event_id}: {e}")
+                except Exception as e:
+                    logger.error(f"Error processing event {event_id}: {e}", exc_info=True)
+            
+            self.stdout.write(self.style.SUCCESS("Event loading complete."))
+
+
         self.stdout.write('Successfully loaded UFC data into the database.')
