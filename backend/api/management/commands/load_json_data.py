@@ -3,10 +3,10 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from datetime import date
 from django.db.utils import IntegrityError
+import logging
 
 from api.models import Fighter, Bout, Event
 
-import logging
 
 # Set up logging for more detailed output than just self.stdout.write
 logger = logging.getLogger(__name__)
@@ -16,6 +16,15 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG) # more verbose than info
+log_file = "database_ingestion.log"
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+)
 
 
 class Command(BaseCommand):
