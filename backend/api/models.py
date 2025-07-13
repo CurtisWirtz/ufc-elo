@@ -30,21 +30,20 @@ class Fighter(models.Model):
  
 class Bout(models.Model):
     bout_id = models.CharField(max_length=64, primary_key=True)
-    event_id = models.ForeignKey()
 
-    # Storing IDs as CharField, not FKs directly. Only the winning_fighter FK below handles the actual winner relation.
-    fighter_1_id = models.CharField(max_length=64)
-    fighter_2_id = models.CharField(max_length=64)
-    winning_fighter = models.ForeignKey(Fighter, on_delete=models.SET_NULL, null=True, blank=True, related_name='wins')
-    
-    
+    # Storing as FKs directly
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_bouts')
+    fighter_1 = models.ForeignKey(Fighter, on_delete=models.CASCADE, related_name='fighter_1_bouts')
+    fighter_2 = models.ForeignKey(Fighter, on_delete=models.CASCADE, related_name='fighter_2_bouts')
+    winning_fighter = models.ForeignKey(Fighter, on_delete=models.SET_NULL, null=True, blank=True, related_name='won_bouts')
+
     result = models.CharField(max_length=64, null=True, blank=True)
     method = models.CharField(max_length=64, null=True, blank=True)
     ending_round = models.CharField(max_length=64, null=True, blank=True)
     ending_time = models.CharField(max_length=64, null=True, blank=True)
     time_format = models.CharField(max_length=64, null=True, blank=True)
     referee = models.CharField(max_length=255, null=True, blank=True)
-    details = models.TextField(null=True, blank=True)
+    details = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"{self.category} - {self.bout_id}"
