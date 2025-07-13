@@ -158,10 +158,10 @@ class Command(BaseCommand):
     
                     # Let's choose a winner, if there is one.
                     winning_fighter = None
-                    if bout["winning_fighter"]: # if there is a winning fighter
-                        if fighter_1.fighter_id == bout["winning_fighter"]:
+                    if bout["winning_fighter_id"]: # if there is a winning fighter
+                        if fighter_1.fighter_id == bout["winning_fighter_id"]:
                             winning_fighter = fighter_1
-                        elif fighter_2.fighter_id == bout["winning_fighter"]:
+                        elif fighter_2.fighter_id == bout["winning_fighter_id"]:
                             winning_fighter = fighter_2
 
                     bout_obj, created = Bout.objects.update_or_create(
