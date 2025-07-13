@@ -143,4 +143,54 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Event loading complete."))
 
 
+            #----------------
+            #----- Bouts ----
+
+            self.stdout.write(self.style.NOTICE("Loading Bouts..."))
+
+            for bout in bouts_data:
+
+                try:
+                    event = Event.objects.get(event_id=bout["event_id"])
+                    # Ensure fighter IDs are valid
+                    fighter_1 = Fighter.objects.get(fighter_id=bout["fighter_1_id"])
+                    fighter_2 = Fighter.objects.get(fighter_id=bout["fighter_2_id"])
+    
+                    # Let's choose a winner, if there is one.
+                    winning_fighter = None
+                    if bout["winning_fighter"]: # if there is a winning fighter
+                        if fighter_1.fighter_id == bout["winning_fighter"]:
+                            winning_fighter = fighter_1
+                        elif fighter_2.fighter_id == bout["winning_fighter"]:
+                            winning_fighter = fighter_2
+
+                    bout_obj, created = Bout.objects.update_or_create(
+                        bout_id=bout["bout_id"],
+                        defaults={
+                            "event": event,
+                            "fighter_1": fighter_1,
+                            "fighter_2": fighter_2,
+                            "winning_fighter": winning_fighter,
+                            "result": bout["result"],
+                            "method": bout["method"],
+                            "ending_round": bout["ending_round"],
+                            "ending_time": bout["ending_time"],
+                            "time_format": bout["time_format"],
+                            "referee": bout["referee"],
+                            "details": bout["details"]
+                        }
+                    )
+                    if created:
+                        logger.info(f"Created Bout: {bout_obj.bout_id}")
+                    else:
+                        logger.debug(f"Updated Bout: {bout_obj.bout_id}")
+                except Fighter.DoesNotExist as e:
+                    logger.error(f"Fighter does not exist for Bout {bout['bout_id']}: {e}")
+                except Event.DoesNotExist as e:
+                    logger.error(f"Event does not exist for Bout {bout['bout_id']}: {e}")
+                except IntegrityError as e:
+                    logger.error(f"Database integrity error for Bout {bout['bout_id']}: {e}")
+                except Exception as e:
+                    logger.error(f"Error processing Bout {bout['bout_id']}: {e}", exc_info=True)
+        
         self.stdout.write('Successfully loaded UFC data into the database.')
