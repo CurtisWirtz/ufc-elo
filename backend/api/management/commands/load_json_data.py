@@ -57,3 +57,58 @@ class Command(BaseCommand):
         #    Only Bouts have foreign keys to Fighters and Events, so it needs to be loaded last. 
         #    Fighters have no FK references, so It'll go first.
         #    Events do have a list of Bouts, but they are not FK's, just a list of strings that reference Bout IDs.
+
+        self.stdout.write("Loading Fighters from JSON file.")
+
+        # JSON file paths 
+        fighters_json = options['fighters_json']
+        events_json = options['events_json']
+        bouts_json = options['bouts_json']
+        
+        # get the JSON data
+        fighters_data = self.load_json_file(fighters_json)
+        events_data = self.load_json_file(events_json)
+        bouts_data = self.load_json_file(bouts_json)
+
+        # Here, we add records to DB tables.
+        with transaction.atomic():
+
+            #----------------
+            #--- Fighters ---
+            
+            self.stdout.write(self.style.NOTICE("Loading Fighters..."))
+
+            for fighter in fighters_data:
+
+                # We should convert date_of_birth to a date object for postgres, handling invalid formats
+                date_of_birth = self.validate_date(fighter['date_of_birth'])
+
+                try:
+                    fighter_obj, created = Fighter.objects.update_or_create(
+                        fighter_id=fighter["fighter_id"],
+                        defaults={
+                            "name": fighter["name"],
+                            "nickname": fighter["nickname"],
+                            "wins": fighter["wins"],
+                            "losses": fighter["losses"],
+                            "draws": fighter["draws"],
+                            "height_in": fighter["height_in"],
+                            "weight_lb": fighter["weight_lb"],
+                            "reach_in": fighter["reach_in"],
+                            "stance": fighter["stance"],
+                            "date_of_birth": date_of_birth,
+                        }
+                    )
+                    if created:
+                        logger.info(f"Created Fighter: {fighter_obj.name} ({fighter_obj.fighter_id})")
+                    else:
+                        logger.debug(f"Updated Fighter: {fighter_obj.name} ({fighter_obj.fighter_id})")
+                except IntegrityError as e:
+                    logger.error(f"Database integrity error for fighter {fighter_id}: {e}")
+                except Exception as e:
+                    logger.error(f"Error processing fighter {fighter_id}: {e}", exc_info=True)
+            
+            self.stdout.write(self.style.SUCCESS("Fighter loading complete."))
+
+
+        self.stdout.write('Successfully loaded UFC data into the database.')
