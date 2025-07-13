@@ -6,7 +6,7 @@ class Event(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField()
     location = models.CharField(max_length=255)
-    bout_order = models.ArrayField(models.CharField(max_length=64), blank=True, default=list)
+    bout_order = ArrayField(models.CharField(max_length=64), blank=True, default=list)
 
     def __str__(self):
         return self.name
@@ -32,12 +32,11 @@ class Bout(models.Model):
     bout_id = models.CharField(max_length=64, primary_key=True)
     event_id = models.ForeignKey()
 
-    # Store fighter IDs as CharField, not FKs directly. 
-    # The BoutFighter junction table will handle the actual FK relationships
-    category = models.CharField(max_length=255)
+    # Storing IDs as CharField, not FKs directly. Only the winning_fighter FK below handles the actual winner relation.
     fighter_1_id = models.CharField(max_length=64)
     fighter_2_id = models.CharField(max_length=64)
-    winning_fighter_id = models.CharField(max_length=64, null=True, blank=True)
+    winning_fighter = models.ForeignKey(Fighter, on_delete=models.SET_NULL, null=True, blank=True, related_name='wins')
+    
     
     result = models.CharField(max_length=64, null=True, blank=True)
     method = models.CharField(max_length=64, null=True, blank=True)
