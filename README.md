@@ -11,7 +11,8 @@ I began to enjoy whetting my Django, PostgreSQL, DRF, and React skills, incremen
 
 ###### I began with data collection, then worked towards an interactive visual representation:
 
-### 1. Crawler: (Python)
+### 1. Crawler: 
+#### (Python)
 _**Locates web addresses where Fighter, Bout, and Event data exists on UFCStats.com.**_ 
 
 I wrote a Python script that utilizes 8 threads/workers to automatically navigate thru and find the URL to every page on UFCStats.com. Built similarly to [Bucky Robert's open source web crawler](https://github.com/buckyroberts/Spider), but made specific to my needs. 
@@ -19,7 +20,8 @@ I wrote a Python script that utilizes 8 threads/workers to automatically navigat
 It generates a `.txt` file that contains every navigable hyperlink on that website.
 
 
-### 2. Scraper: (Python, BeautifulSoup4)
+### 2. Scraper: 
+#### (Python, BeautifulSoup4)
 _**A means to collect a full dataset about every Fighter, Bout, and Event in UFC history.**_ 
 
 Using Python, I iterated thru the list of hyperlinks discovered by my the crawler in step 1. 
@@ -27,18 +29,21 @@ Using Python, I iterated thru the list of hyperlinks discovered by my the crawle
 Every link is visited using the Python `requests` package, where `BeautifulSoup4` locates the desired data fields from HTML elements matching specific CSS selectors. The data collected from each page is compiled inside its own Python list, converted to a JSON object, then appended to its respective JSON file ( `fighters`, `events`, and `bouts` each generate their own file).
 
 
-### 3. Data Ingestion: (Django, Python, PostgreSQL)
+### 3. Backend + Data Ingestion: 
+#### (Django, Python, PostgreSQL)
 _**Taking the raw JSON data and migrating it into a PostgreSQL database that's attached to a Django backend.**_
 
 I setup a Django backend and connected it to a PostgreSQL database. I prototyped and migrated the database models for `Fighter`, `Event`, and `Bout`, then wrote a loading script that runs a batch operation from the django CLI to create a table record for every object inside the JSON files created in step 2.
 
 `python manage.py load_json_data json_data/events.json json_data/fighters.json json_data/bouts.json`
 
-`load_json_data` is the Command file name, with three following *args, which are paths to the JSON files to ingest.
+This command from the terminal will load any json files that has its path fed as one of the *args, with three following *args, which are paths to the JSON files to ingest.
 
 
-### 4. REST API:
-TODO:
+### 4. Frontend + REST API 
+#### (Django RESTful Framework, Vite, React, React Router, Tanstack Query, Axios, ShadCN):
+_**Making our data retrievable from a frontend and creating an interactive visual representation.**_
+
 
 
 Build an interactive visual representation:
