@@ -37,15 +37,11 @@ I setup a Django backend and connected it to a PostgreSQL database. I prototyped
 
 `python manage.py load_json_data json_data/events.json json_data/fighters.json json_data/bouts.json`
 
-This command from the terminal will load any json files that has its path fed as one of the *args, with three following *args, which are paths to the JSON files to ingest.
+This command from the terminal will load any json files as *args, which are paths to JSON files we wish to ingest.
 
 
 ### 4. Frontend + REST API 
 #### (Django RESTful Framework, Vite, React, React Router, Tanstack Query, Axios, ShadCN):
 _**Making our data retrievable from a frontend and creating an interactive visual representation.**_
 
-
-
-Build an interactive visual representation:
-4. Django backend with REST API Building using Django RESTful Framework: nginx (webserver), gunicorn (pre-forker), whitenoise (static file server), Redis for caching
-5. Frontend representation: Tailwind, ShadCN, Typescript, React, react-router, Tanstack Query, Axios, react-hook-form
+Under construction.
