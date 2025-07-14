@@ -1,4 +1,11 @@
 Django==5.2
 psycopg[binary]
 python-decouple
+
 djangorestframework
+asgiref
+django-cors-headers
+djangorestframework-simplejwt
+PyJWT
+pytz
+sqlparse
