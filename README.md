@@ -36,7 +36,7 @@ I setup a Django backend and connected it to a PostgreSQL database. I prototyped
 
 
 ### 4. Frontend + REST API 
-###### (Django REST Framework | Frontend: Vite, React, React Router, Tanstack Query, Axios, ShadCN):
+###### (Django REST Framework | Frontend: Vite, React, React Router v7, `react-hook-form`, Tanstack Query, Axios, ShadCN):
 _**Making our data retrievable from a frontend and creating an interactive visual representation.**_
 
 Under construction.
