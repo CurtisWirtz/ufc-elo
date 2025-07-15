@@ -46,7 +46,7 @@ class Bout(models.Model):
     details = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.category} - {self.bout_id}"
+        return f"{self.fighter_1.name} vs {self.fighter_2.name} at {self.event.name}"
     
 # class BoutFighter(models.Model):
     # This junction table is implicitly handled by Bout's fighter_1_id, fighter_2_id and winning_fighter.

@@ -7,12 +7,11 @@ However, the scraped dataset grew to include all MMA promotions owned by Zuffa L
 
 I began to enjoy whetting my Django, PostgreSQL, DRF, and React skills, incrementally mounting a frontend interface to serve as a fight encyclopedia. Mostly, I use it to look up a fighters, bouts, or events for outcome prediction, avoiding sluggish MMA stats sites that are bogged down by the number of ads and popups that fill up my screen.
 
-## What's all here?
 
 ###### I began with data collection, then worked towards an interactive visual representation:
 
 ### 1. Crawler: 
-#### (Python)
+###### (Python)
 _**Locates web addresses where Fighter, Bout, and Event data exists on UFCStats.com.**_ 
 
 I wrote a Python script that utilizes 8 threads/workers to automatically navigate thru and find the URL to every page on UFCStats.com. Built similarly to [Bucky Robert's open source web crawler](https://github.com/buckyroberts/Spider), but made specific to my needs. 
@@ -21,7 +20,7 @@ It generates a `.txt` file that contains every navigable hyperlink on that websi
 
 
 ### 2. Scraper: 
-#### (Python, BeautifulSoup4)
+###### (Python, BeautifulSoup4)
 _**A means to collect a full dataset about every Fighter, Bout, and Event in UFC history.**_ 
 
 Using Python, I iterated thru the list of hyperlinks discovered by my the crawler in step 1. 
@@ -30,18 +29,14 @@ Every link is visited using the Python `requests` package, where `BeautifulSoup4
 
 
 ### 3. Backend + Data Ingestion: 
-#### (Django, Python, PostgreSQL)
+###### (Django, Python, PostgreSQL)
 _**Taking the raw JSON data and migrating it into a PostgreSQL database that's attached to a Django backend.**_
 
 I setup a Django backend and connected it to a PostgreSQL database. I prototyped and migrated the database models for `Fighter`, `Event`, and `Bout`, then wrote a loading script that runs a batch operation from the django CLI to create a table record for every object inside the JSON files created in step 2.
 
-`python manage.py load_json_data json_data/events.json json_data/fighters.json json_data/bouts.json`
-
-This command from the terminal will load any json files as *args, which are paths to JSON files we wish to ingest.
-
 
 ### 4. Frontend + REST API 
-#### (Django RESTful Framework, Vite, React, React Router, Tanstack Query, Axios, ShadCN):
+###### (Django REST Framework | Frontend: Vite, React, React Router v7, `react-hook-form`, Tanstack Query, Axios, ShadCN):
 _**Making our data retrievable from a frontend and creating an interactive visual representation.**_
 
 Under construction.
