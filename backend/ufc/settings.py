@@ -21,21 +21,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret! PRODUCTION_XXX
 SECRET_KEY = 'django-insecure-3z7lvzyp(ev=7q5ue176exp#$#-ba !=o$dhvm6-cfzb-#o00sd'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production! PRODUCTION_XXX
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"] # Change this to domain/IP address in production
+ALLOWED_HOSTS = [ # Change this to domain/IP address in production PRODUCTION_XXX
+    "http://localhost:5173/",
+    "http://127.0.0.1:5173/"
+] 
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    # https://www.django-rest-framework.org/api-guide/renderers/#installation-configuration_2
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', # so only authenticated users can gain access
+    ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 SIMPLE_JWT = {
