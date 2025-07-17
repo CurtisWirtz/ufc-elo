@@ -21,16 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret! PRODUCTION_XXX
+# keep the secret key used in production secret! PRODUCTION_XXX
 SECRET_KEY = 'django-insecure-3z7lvzyp(ev=7q5ue176exp#$#-ba !=o$dhvm6-cfzb-#o00sd'
 
-# SECURITY WARNING: don't run with debug turned on in production! PRODUCTION_XXX
+# don't run with debug turned on in production! PRODUCTION_XXX, setting to false will show 404 instead of the error chain
 DEBUG = True
 
-ALLOWED_HOSTS = [ # Change this to domain/IP address in production PRODUCTION_XXX
-    "http://localhost:5173/",
-    "http://127.0.0.1:5173/"
-] 
+# Change this to domain/IP address in production PRODUCTION_XXX
+ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
     # https://www.django-rest-framework.org/api-guide/renderers/#installation-configuration_2
