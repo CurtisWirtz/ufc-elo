@@ -21,26 +21,57 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# keep the secret key used in production secret! PRODUCTION_XXX
 SECRET_KEY = 'django-insecure-3z7lvzyp(ev=7q5ue176exp#$#-ba !=o$dhvm6-cfzb-#o00sd'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# don't run with debug turned on in production! PRODUCTION_XXX, setting to false will show 404 instead of the error chain
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"] # Change this to domain/IP address in production
+# Change this to domain/IP address in production PRODUCTION_XXX
+ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    # https://www.django-rest-framework.org/api-guide/renderers/#installation-configuration_2
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', # so only authenticated users can gain access
+    ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 SIMPLE_JWT = {
+    # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False, # If True, new refresh token issued with each refresh
+    "BLACKLIST_AFTER_ROTATION": False, # If ROTATE_REFRESH_TOKENS is True, blacklist old one, we don't really want all this. security on this level isn't 100% needed.
+
+    # Token obtaining and refreshing endpoints (will be used in urls.py)
+    "AUTH_HEADER_TYPES": ("Bearer",), # What prefix goes with the token in the Authorization header
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    # We're using Cookies (http-only) for storing tokens: configuration here!
+    "JWT_AUTH_COOKIE": "access_token",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+    "JWT_AUTH_SAMESITE": "Lax", # PRODUCTION_XXX Or 'Strict' or 'None' (requires secure=True). 'Lax' is often good default.
+    "JWT_AUTH_SECURE": False, # PRODUCTION_XXX Set to True in production (requires HTTPS)
+    "JWT_AUTH_HTTPONLY": True, # so js can't read the cookie, ofc
+    "JWT_AUTH_EXPIRE_COOKIE": True, # Make cookies expire when token expires
+    "JWT_AUTH_COOKIE_PATH": "/", # Path to cookie
 }
 
 # Application definition
@@ -54,18 +85,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
+    'rest_framework_simplejwt', # in case we want to add translations/localization later on
     'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # CORS middleware must be before CommonMiddleware (https://stackoverflow.com/questions/67327660/cors-not-working-in-django-but-settings-seem-correct)
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'ufc.urls'
@@ -147,3 +179,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins for CORS, adjust as needed for production
 CORS_ALLOWS_CREDENTIALS = True  # Allow cookies to be included in CORS requests
+
+# use https/SSL in production PRODUCTION_XXX
+
