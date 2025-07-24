@@ -51,7 +51,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False, # If True, new refresh token issued with each refresh
-    "BLACKLIST_AFTER_ROTATION": False, # If ROTATE_REFRESH_TOKENS is True, blacklist old one, we don't really want all this. security on this level isn't 100% needed.
+    "BLACKLIST_AFTER_ROTATION": True,
 
     # Token obtaining and refreshing endpoints (will be used in urls.py)
     "AUTH_HEADER_TYPES": ("Bearer",), # What prefix goes with the token in the Authorization header
@@ -85,7 +85,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    'rest_framework_simplejwt', # in case we want to add translations/localization later on
+    'rest_framework_simplejwt', # mostly in case we want to add translations/localization later on
     'corsheaders',
 ]
 
