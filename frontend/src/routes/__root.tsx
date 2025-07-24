@@ -11,12 +11,15 @@ export const Route = createRootRoute({
         <Link to="/events" className="[&.active]:font-bold">
           Events
         </Link>
-        <Link to="/fighters" className="[&.active]:font-bold">
+        {/* <Link to="/fighters" className="[&.active]:font-bold">
           Fighters
         </Link>
         <Link to="/search" className="[&.active]:font-bold">
           Search
         </Link>
+        <Link to="/tests" className="[&.active]:font-bold">
+          Testing
+        </Link> */}
       </div>
       <hr />
       

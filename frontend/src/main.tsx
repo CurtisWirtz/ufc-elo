@@ -1,5 +1,5 @@
-import React, { StrictMode } from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode } from 'react'
+import * as ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -32,7 +32,7 @@ if (!rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
         
-        {/* Don't use in production */}
+        {/* Don't use in production PRODUCTION_XXX */}
         <ReactQueryDevtools initialIsOpen={false} />
 
       </QueryClientProvider>
