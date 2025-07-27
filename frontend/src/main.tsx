@@ -13,6 +13,9 @@ import { routeTree } from './routeTree.gen'
 // Create a new router instance
 const router = createRouter({ 
   routeTree,
+  defaultNotFoundComponent: () => {
+    return <div><h1 className="text-4xl">404 error: Page not found.</h1></div>
+  },
   context: { queryClient } // Pass the query client to the router context
 })
 
