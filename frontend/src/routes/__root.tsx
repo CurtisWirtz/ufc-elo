@@ -1,32 +1,78 @@
 import { Outlet, Link, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { useAuth } from '../AuthProvider'
+import { useNavigate } from '@tanstack/react-router'
+
+// function Logout() {
+//   localStorage.clear()
+//   return redirect({ to: '/login' })
+// }
+
+// function RegisterAndLogout() {
+//   // when registering, you want to first clear the local storage 
+//   // you dont want to accidentally send access tokens to the register route
+//   // this can result in error
+//   localStorage.clear()
+//   return redirect({ to: '/register' })
+// }
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <div className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{' '}
-        <Link to="/events" className="[&.active]:font-bold">
-          Events
-        </Link>
-        {/* <Link to="/fighters" className="[&.active]:font-bold">
-          Fighters
-        </Link>
-        <Link to="/search" className="[&.active]:font-bold">
-          Search
-        </Link>
-        <Link to="/tests" className="[&.active]:font-bold">
-          Testing
-        </Link> */}
-      </div>
-      <hr />
-      
-      <Outlet />
+  component: RootLayoutComponent,
+});
+
+function RootLayoutComponent() {
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from AuthProvider
+    navigate({ to: '/login', replace: true }); // Redirect to login page after logout
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* GLOBAL HEADER - Visible on ALL pages */}
+      <header className="bg-gray-800 text-white p-4 shadow-lg">
+        <nav className="container mx-auto flex justify-between items-center">
+          <Link to="/" className="text-xl font-bold hover:text-gray-300">My Awesome App</Link>
+          <ul className="flex space-x-4">
+            <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
+
+            {/* CONDITIONAL RENDERING FOR AUTHENTICATION */}
+            {isAuthenticated ? (
+              <>
+                {/* Links visible only when authenticated */}
+                <li><Link to="/events" className="hover:text-gray-300">Events</Link></li>
+                {/* Display username and Logout button */}
+                {user && <span className="mr-2 text-sm text-gray-300">Welcome, {user.username}</span>}
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm transition duration-200 ease-in-out"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              // Link visible only when NOT authenticated
+              <li><Link to="/login" className="hover:text-gray-300">Login</Link></li>
+            )}
+          </ul>
+        </nav>
+      </header>
+
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+
+      {/* GLOBAL FOOTER - Visible on ALL pages */}
+      <footer className="bg-gray-900 text-white text-center p-4 text-sm shadow-inner">
+        &copy; {new Date().getFullYear()} My Awesome App. All rights reserved.
+      </footer>
 
       {/* Don't use in production */}
       <TanStackRouterDevtools />
-    </>
-  ),
-})
+    </div>
+  )
+}
