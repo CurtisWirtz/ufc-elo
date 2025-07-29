@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './queryClient'; 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { AuthProvider, checkAuthForRouter } from './AuthProvider'; 
 import './styles.css'
 
 // Import the generated route tree
@@ -16,13 +17,25 @@ const router = createRouter({
     return <div><h1 className="text-4xl">404 error: Page not found.</h1></div>
   },
   // Pass the query client to the router context (Tanstack Router)
-  context: { queryClient } 
+  // also, checkAuthForRouter to check auth validity
+  context: { 
+    queryClient,
+    auth: {
+      checkAuthValidity: checkAuthForRouter,
+    }
+  },
 })
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof router;
+    context: {
+      queryClient: typeof queryClient;
+      auth: {
+        checkAuthValidity: () => Promise<boolean>; // it's async, so a Promise
+      };
+    };
   }
 }
 
@@ -33,7 +46,11 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+        
         
         {/* Don't use in production PRODUCTION_XXX */}
         <ReactQueryDevtools initialIsOpen={false} />
