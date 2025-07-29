@@ -1,11 +1,10 @@
 import { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './queryClient'; 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './styles.css'
-
-const queryClient = new QueryClient()
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -16,7 +15,8 @@ const router = createRouter({
   defaultNotFoundComponent: () => {
     return <div><h1 className="text-4xl">404 error: Page not found.</h1></div>
   },
-  context: { queryClient } // Pass the query client to the router context
+  // Pass the query client to the router context (Tanstack Router)
+  context: { queryClient } 
 })
 
 // Register the router instance for type safety
