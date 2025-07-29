@@ -9,58 +9,113 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EventsIndexRouteImport } from './routes/events/index'
-import { Route as EventsEventIdRouteImport } from './routes/events/$eventId'
+import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
+import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events/$eventId'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EventsIndexRoute = EventsIndexRouteImport.update({
-  id: '/events/',
-  path: '/events/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EventsEventIdRoute = EventsEventIdRouteImport.update({
-  id: '/events/$eventId',
-  path: '/events/$eventId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedEventsIndexRoute =
+  AuthenticatedEventsIndexRouteImport.update({
+    id: '/events/',
+    path: '/events/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEventsEventIdRoute =
+  AuthenticatedEventsEventIdRouteImport.update({
+    id: '/events/$eventId',
+    path: '/events/$eventId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/events/$eventId': typeof EventsEventIdRoute
-  '/events': typeof EventsIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/events': typeof AuthenticatedEventsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/events/$eventId': typeof EventsEventIdRoute
-  '/events': typeof EventsIndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/events': typeof AuthenticatedEventsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/events/$eventId': typeof EventsEventIdRoute
-  '/events/': typeof EventsIndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/events/$eventId' | '/events'
+  fullPaths: '/' | '/login' | '/register' | '/events/$eventId' | '/events'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/events/$eventId' | '/events'
-  id: '__root__' | '/' | '/events/$eventId' | '/events/'
+  to: '/' | '/login' | '/register' | '/events/$eventId' | '/events'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/login'
+    | '/register'
+    | '/_authenticated/events/$eventId'
+    | '/_authenticated/events/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  EventsEventIdRoute: typeof EventsEventIdRoute
-  EventsIndexRoute: typeof EventsIndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -68,27 +123,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/events/': {
-      id: '/events/'
+    '/_authenticated/events/': {
+      id: '/_authenticated/events/'
       path: '/events'
       fullPath: '/events'
-      preLoaderRoute: typeof EventsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/events/$eventId': {
-      id: '/events/$eventId'
+    '/_authenticated/events/$eventId': {
+      id: '/_authenticated/events/$eventId'
       path: '/events/$eventId'
       fullPath: '/events/$eventId'
-      preLoaderRoute: typeof EventsEventIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEventsEventIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRoute
+  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRoute,
+  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  EventsEventIdRoute: EventsEventIdRoute,
-  EventsIndexRoute: EventsIndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
