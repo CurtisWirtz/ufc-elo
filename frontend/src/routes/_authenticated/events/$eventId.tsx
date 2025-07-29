@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { getEventById } from '../../api/queries.ts'
+import { getEventById } from '../../../api/queries.ts'
 
-export const Route = createFileRoute('/events/$eventId')({
+export const Route = createFileRoute('/_authenticated/events/$eventId')({
   component: EventPage,
 })
 
