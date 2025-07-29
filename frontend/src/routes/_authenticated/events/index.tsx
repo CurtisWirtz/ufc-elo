@@ -47,7 +47,11 @@ function EventsIndex() {
       <ul>
         {events.data?.map(event => (
           <li key={event.event_id} className="mb-2">
-            <Link to={`./${event.event_id}`} className="text-blue-500 hover:underline">
+            <Link
+              to="/events/$eventId"
+              params={{ eventId: event.event_id }}
+              className="text-blue-500 hover:underline"
+            >
               {event.name}
             </Link>
           </li>

@@ -4,7 +4,7 @@ import { REFRESH_TOKEN, ACCESS_TOKEN } from '@/constants';
 import { redirect } from '@tanstack/react-router';
 
 
-const Form = ({ route, method }) => {
+const Form: React.FC<{ route: string; method: "login" | "register" }> = ({ route, method }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ const Form = ({ route, method }) => {
 
     const name = method === "login" ? "Login" : "Register";
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true);
 
