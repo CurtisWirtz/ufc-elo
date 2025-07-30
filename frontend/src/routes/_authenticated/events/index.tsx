@@ -52,10 +52,10 @@ function EventsIndex() {
   const { data: axiosResponse } = useSuspenseQuery<PaginatedEventsResponse, Error, PaginatedEventsResponse, ['events', string]>({
     queryKey: ['events', currentApiUrl],
     queryFn: () => getEvents(currentApiUrl),
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 
-  const eventsData = axiosResponse.data; // PaginatedEventsResponse object
+  const eventsData = axiosResponse.data; // PaginatedEventsResponse object //remove a .data ...other wise it's events.data.data
   // console.log('DEBUG: EventsData in component (after axiosResponse.data):', eventsData);
 
   const events = eventsData.results || []; // 'events' is finally the array of Event objects
@@ -82,7 +82,7 @@ function EventsIndex() {
         <thead>
           <tr>
             <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-600">Event Name</th>
-            <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-600">Date</th>
+            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Date</th>
             <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Location</th>
           </tr>
         </thead>
@@ -90,7 +90,7 @@ function EventsIndex() {
           {events.length > 0 ? (
             events.map((event: Event) => {
               return (
-                <tr key={event.event_id} className="hover:bg-gray-50">
+                <tr key={event.event_id} className="hover:bg-gray-50 border-b border-gray-200">
                   <td className='p-3'>
                     <Link
                       to="/events/$eventId"

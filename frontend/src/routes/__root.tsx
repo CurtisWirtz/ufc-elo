@@ -23,7 +23,7 @@ function RootLayoutComponent() {
         <nav className="container mx-auto flex justify-between items-center">
           <Link to="/" className="text-xl font-bold hover:text-gray-300">MMA-Elo Explorer</Link>
           <ul className="flex space-x-4">
-            <li><Link to="/" className="hover:text-gray-300">Home</Link></li>
+            {/* <li><Link to="/" className="hover:text-gray-300">Home</Link></li> */}
 
             {isAuthenticated ? (
               <>
