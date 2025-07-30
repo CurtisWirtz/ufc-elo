@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import type { PaginatedEventsResponse } from '../../../api/queries.ts';
 import { getEvents } from '../../../api/queries.ts';
 import type { Event } from '../../../types/event.types.ts';
-import { formatEventDate, isFutureDate } from '../../../utils/dateUtils.ts';
+import { formatDate, isFutureDate } from '../../../utils/dateUtils.ts';
 import { getPageParamFromUrl, constructEventsApiUrl } from '../../../utils/urlUtils.ts';
 
 export const Route = createFileRoute('/_authenticated/events/')({
@@ -55,10 +55,10 @@ function EventsIndex() {
     staleTime: 1000 * 60 * 5,
   });
 
-  const eventsData = axiosResponse.data; // This is the PaginatedEventsResponse object
+  const eventsData = axiosResponse.data; // PaginatedEventsResponse object
   // console.log('DEBUG: EventsData in component (after axiosResponse.data):', eventsData);
 
-  const events = eventsData.results || []; // 'events' is now the array of Event objects
+  const events = eventsData.results || []; // 'events' is finally the array of Event objects
   // console.log('DEBUG: Filtered events array (should contain results if API sent them):', events);
 
   // Calculate next and previous page numbers using the utility function
@@ -103,7 +103,7 @@ function EventsIndex() {
                   <td className="whitespace-pre p-3 flex flex-col items-center">
                     {/* Keep the upcoming indicator, but let all events render */}
                     {isFutureDate(event.date) && <span className="text-red-500 font-semibold text-xs mb-1">Upcoming: </span>}
-                    <span>{formatEventDate(event.date)}</span>
+                    <span>{formatDate(event.date)}</span>
                   </td>
                   <td className="whitespace-pre p-3 text-center">
                     {event.location}
