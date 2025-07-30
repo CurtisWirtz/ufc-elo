@@ -1,10 +1,10 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import type { PaginatedEventsResponse } from '../../../api/queries.ts';
-import { getEvents } from '../../../api/queries.ts';
+import type { PaginatedResponse } from '../../../api/queries.ts';
+import { getItems } from '../../../api/queries.ts';
 import type { Event } from '../../../types/event.types.ts';
 import { formatDate, isFutureDate } from '../../../utils/dateUtils.ts';
-import { getPageParamFromUrl, constructEventsApiUrl } from '../../../utils/urlUtils.ts';
+import { getPageParamFromUrl, constructItemsApiUrl } from '../../../utils/urlUtils.ts';
 
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsIndex,
@@ -31,12 +31,12 @@ export const Route = createFileRoute('/_authenticated/events/')({
     const currentPage = (search?.page ?? 1);
 
     // construct the API URL based on the current page
-    const apiUrl = constructEventsApiUrl(currentPage);
+    const apiUrl = constructItemsApiUrl(currentPage, "events");
     
     // The queryKey MUST include the specific URL to ensure unique caching per page
     return queryClient.ensureQueryData({
       queryKey: ['events', apiUrl], // Dynamic query key: ['events', '/api/events/?page=X']
-      queryFn: () => getEvents(apiUrl), // pass the constructed URL to fetch specific page
+      queryFn: () => getItems(apiUrl), // pass the constructed URL to fetch specific page
       staleTime: 1000 * 60 * 5, // add cache stale time... refresh after 5 mins
     });
   },
@@ -47,15 +47,15 @@ export const Route = createFileRoute('/_authenticated/events/')({
 
 function EventsIndex() {
   const { page: currentPage } = Route.useSearch();
-  const currentApiUrl = constructEventsApiUrl(currentPage);
+  const currentApiUrl = constructItemsApiUrl(currentPage, "events");
 
-  const { data: axiosResponse } = useSuspenseQuery<PaginatedEventsResponse, Error, PaginatedEventsResponse, ['events', string]>({
+  const { data: axiosResponse } = useSuspenseQuery<PaginatedResponse, Error, PaginatedResponse, ['events', string]>({
     queryKey: ['events', currentApiUrl],
-    queryFn: () => getEvents(currentApiUrl),
+    queryFn: () => getItems(currentApiUrl),
     // staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 
-  const eventsData = axiosResponse.data; // PaginatedEventsResponse object //remove a .data ...other wise it's events.data.data
+  const eventsData = axiosResponse.data; // PaginatedResponse object //removes a .data nested layer ...other wise it's events.data.data
   // console.log('DEBUG: EventsData in component (after axiosResponse.data):', eventsData);
 
   const events = eventsData.results || []; // 'events' is finally the array of Event objects
