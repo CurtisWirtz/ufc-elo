@@ -1,14 +1,9 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { getEvents } from '../../../api/queries.ts'
-// import { useSuspenseQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import type { Event } from '../../../types/event.types.ts'
+import { formatDate, isFutureDate } from '../../../utils/dateUtils.ts'
 
-type Event = {
-    event_id: string;
-    name: string;
-    date: string;
-    location: string;
-}
-// import { useAuth } from '../../AuthProvider';
 
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsIndex,
@@ -23,40 +18,44 @@ export const Route = createFileRoute('/_authenticated/events/')({
 })
 
 function EventsIndex() {
-  // const { user } = useAuth(); // Access user data if needed
 
-  // const {data: events} = useSuspenseQuery({
-  //   queryKey: ['events'],
-  //   queryFn: () => getEvents(),
-  // });
+  const {data: events} = useSuspenseQuery({
+    queryKey: ['events'],
+    queryFn: () => getEvents(),
+  });
 
-  // Dummy event data
-  const events: { data: Event[] } = { data: [] };
-  events.data = [
-    { event_id: '1', name: "Annual Tech Conference", date: "August 15, 2025", location: "Seattle, WA" },
-    { event_id: '2', name: "Community Meetup", date: "September 5, 2025", location: "Online" },
-    { event_id: '3', name: "Dev Hackathon", date: "October 20-22, 2025", location: "San Francisco, CA" },
-    { event_id: '4', name: "Winter Gala", date: "December 10, 2025", location: "New York, NY" },
-  ];
-  
-  console.log(events);
+  console.log('events:', events.data);
 
   return (
     <div className="w-full mt-2 items-center bg-gray-100 min-h-screen">
       <h1 className="text-4xl font-bold mb-4">Events List</h1>
-      <ul>
-        {events.data?.map(event => (
-          <li key={event.event_id} className="mb-2">
-            <Link
-              to="/events/$eventId"
-              params={{ eventId: event.event_id }}
-              className="text-blue-500 hover:underline"
-            >
-              {event.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <table className="w-full">
+        <thead>
+          <tr>
+            <th className="">Event Name</th>
+            <th>Date</th>
+            <th><span className="mx-auto">Location</span></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {events && events.data?.results?.map((event: Event) => (
+            <tr key={event.event_id}>
+              <td className='p-3'>
+                <Link
+                  to="/events/$eventId"
+                  params={{ eventId: event.event_id }}
+                  className="text-blue-500 hover:underline flex w-full justify-center"
+                >
+                  {event.name}
+                </Link>
+              </td>
+              <td className="whitespace-pre p-3 flex flex-col items-center">{isFutureDate(event.date) && <span className="text-red-500">Upcoming: </span>}<span>{formatDate(event.date)}</span></td>
+              <td className="whitespace-pre p-3 "><span className="flex w-full justify-center">{event.location}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
