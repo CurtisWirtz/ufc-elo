@@ -4,6 +4,7 @@ from rest_framework import generics
 from .serializers import UserSerializer, NoteSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
+from .pagination import TwentyEventsPagination 
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -41,10 +42,10 @@ from .serializers import EventSerializer
 # from .pagination import TenEventsPagination # Import your custom pagination
 
 class EventListView(generics.ListAPIView):
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('-date') # order by 'date' in descending order (-date)
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
-    # pagination_class = TenEventsPagination
+    pagination_class = TwentyEventsPagination
 
 class EventDetailView(generics.RetrieveAPIView):
     queryset = Event.objects.all()
