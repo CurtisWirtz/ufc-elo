@@ -5,18 +5,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
 from api.views import CreateUserView
-# from api.views import FighterViewSet, EventViewSet, BoutViewSet
-
-# router = DefaultRouter()
-# router.register(r'fighters', FighterViewSet)
-# router.register(r'events', EventViewSet)
-# router.register(r'bouts', BoutViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/', include('api.urls')),
-    # path('api/', include(router.urls)),
 
     path("api/user/register/", CreateUserView.as_view(), name="register"),
 

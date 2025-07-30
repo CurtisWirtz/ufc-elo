@@ -4,6 +4,7 @@ from rest_framework import generics
 from .serializers import UserSerializer, NoteSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
+from .pagination import TwentyEventsPagination 
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -33,3 +34,21 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]  # Allow any user to create an account
 
+
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from .models import Event
+from .serializers import EventSerializer
+# from .pagination import TenEventsPagination # Import your custom pagination
+
+class EventListView(generics.ListAPIView):
+    queryset = Event.objects.all().order_by('-date') # order by 'date' in descending order (-date)
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = TwentyEventsPagination
+
+class EventDetailView(generics.RetrieveAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
