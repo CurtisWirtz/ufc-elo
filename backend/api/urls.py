@@ -9,5 +9,5 @@ urlpatterns = [
     path('events/<str:pk>/', views.EventDetailView.as_view(), name='event-detail'),
 
     path('fighters/', views.FighterListView.as_view(), name='fighter-list'),
-    # path('fighters/<str:pk>/', views.FighterDetailView.as_view(), name='fighter-detail'),
+    path('fighters/<str:fighter_id>/', views.FighterDetailView.as_view(), name='fighter-detail'),
 ]
