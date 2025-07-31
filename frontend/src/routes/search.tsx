@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createFileRoute, useLocation } from '@tanstack/react-router';
+import { createFileRoute, useLocation, Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client';
 
@@ -75,6 +75,8 @@ function SearchResultsPage() {
     staleTime: 5 * 60 * 1000,
   });
 
+  console.log('results: ', results);
+
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6 text-center">Search Results</h1>
@@ -106,15 +108,19 @@ function SearchResultsPage() {
                   className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                 {item.type === 'fighter' ? (
                   <>
-                    <p className="font-bold text-lg text-gray-900">{item.name} {item.nickname && `(${item.nickname})`}</p>
-                    <p className="text-sm text-gray-600">Type: Fighter</p>
-                    {/* Display more fighter details here if desired */}
+                    <Link to="/fighters/$fighterId" params={{ fighterId: item.fighter_id }} className="text-blue-500 hover:underline"><p className="font-bold text-lg">{item.name} {item.nickname && `"${item.nickname}"`}</p></Link>
+                    <p className="text-sm text-gray-600">
+                        Fighter
+                        {item?.weight_lb && ` | Weight: ${item.weight_lb} lbs`}
+                        {` | Record: ${item.wins}-${item.losses}${item.draws && `-${item.draws}`}`}
+                    </p>
                   </>
                 ) : (
                   <>
-                    <p className="font-bold text-lg text-gray-900">{item.name}</p>
-                    <p className="text-sm text-gray-600">Type: Event on {new Date(item.date).toLocaleDateString()} at {item.location}</p>
-                    {/* Display more event details here if desired */}
+                    <Link to="/events/$eventId" params={{ eventId: item.event_id }} className="text-blue-500 hover:underline"><p className="font-bold text-lg">{item.name}</p></Link>
+                    <p className="text-sm text-gray-600">
+                        Event on {new Date(item.date).toLocaleDateString()} at {item.location}
+                    </p>
                   </>
                 )}
               </li>
