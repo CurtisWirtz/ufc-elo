@@ -13,7 +13,9 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedFightersIndexRouteImport } from './routes/_authenticated/fighters/index'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
+import { Route as AuthenticatedFightersFighterIdRouteImport } from './routes/_authenticated/fighters/$fighterId'
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events/$eventId'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -35,10 +37,22 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFightersIndexRoute =
+  AuthenticatedFightersIndexRouteImport.update({
+    id: '/fighters/',
+    path: '/fighters/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedEventsIndexRoute =
   AuthenticatedEventsIndexRouteImport.update({
     id: '/events/',
     path: '/events/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedFightersFighterIdRoute =
+  AuthenticatedFightersFighterIdRouteImport.update({
+    id: '/fighters/$fighterId',
+    path: '/fighters/$fighterId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedEventsEventIdRoute =
@@ -53,14 +67,18 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/fighters/$fighterId': typeof AuthenticatedFightersFighterIdRoute
   '/events': typeof AuthenticatedEventsIndexRoute
+  '/fighters': typeof AuthenticatedFightersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/fighters/$fighterId': typeof AuthenticatedFightersFighterIdRoute
   '/events': typeof AuthenticatedEventsIndexRoute
+  '/fighters': typeof AuthenticatedFightersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,13 +87,29 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
+  '/_authenticated/fighters/$fighterId': typeof AuthenticatedFightersFighterIdRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
+  '/_authenticated/fighters/': typeof AuthenticatedFightersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/events/$eventId' | '/events'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/events/$eventId'
+    | '/fighters/$fighterId'
+    | '/events'
+    | '/fighters'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/events/$eventId' | '/events'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/events/$eventId'
+    | '/fighters/$fighterId'
+    | '/events'
+    | '/fighters'
   id:
     | '__root__'
     | '/'
@@ -83,7 +117,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_authenticated/events/$eventId'
+    | '/_authenticated/fighters/$fighterId'
     | '/_authenticated/events/'
+    | '/_authenticated/fighters/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -123,11 +159,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/fighters/': {
+      id: '/_authenticated/fighters/'
+      path: '/fighters'
+      fullPath: '/fighters'
+      preLoaderRoute: typeof AuthenticatedFightersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/events/': {
       id: '/_authenticated/events/'
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/fighters/$fighterId': {
+      id: '/_authenticated/fighters/$fighterId'
+      path: '/fighters/$fighterId'
+      fullPath: '/fighters/$fighterId'
+      preLoaderRoute: typeof AuthenticatedFightersFighterIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/events/$eventId': {
@@ -142,12 +192,16 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRoute
+  AuthenticatedFightersFighterIdRoute: typeof AuthenticatedFightersFighterIdRoute
   AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
+  AuthenticatedFightersIndexRoute: typeof AuthenticatedFightersIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRoute,
+  AuthenticatedFightersFighterIdRoute: AuthenticatedFightersFighterIdRoute,
   AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
+  AuthenticatedFightersIndexRoute: AuthenticatedFightersIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
