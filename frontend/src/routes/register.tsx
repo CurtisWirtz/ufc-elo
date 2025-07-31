@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import Form from '@/components/Form'
+import { RegisterForm } from '@/components/RegisterForm'
 import { checkAuthForRouter } from '../AuthProvider'
 
 export const Route = createFileRoute('/register')({
@@ -13,5 +13,5 @@ export const Route = createFileRoute('/register')({
       throw redirect({ to: '/events', replace: true })
     }
   },
-  component: () => <Form route="/api/user/register/" method="register" />,
+  component: () => <RegisterForm route="/api/user/register/" method="register" />,
 })
