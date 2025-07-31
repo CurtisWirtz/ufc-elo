@@ -132,7 +132,7 @@ function FighterPage() {
             <tbody>
               <tr>
                 <td colSpan={4} className="p-3 text-center text-gray-500">
-                  No upcoming events found.
+                  No bout history found.
                 </td>
               </tr>
             </tbody>
