@@ -214,21 +214,69 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 // It is explicitly for TanStack Router's context definition in main.tsx.
 // It ONLY checks localStorage and decodes token, does not touch React state
 export const checkAuthForRouter = async (): Promise<boolean> => {
-  const token = localStorage.getItem(ACCESS_TOKEN);
-  if (!token) {
-    console.log('Auth Router Check (External): No access token found.');
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+
+  // Case 1: No access token exists at all
+  if (!accessToken) {
+    console.log('Router Auth Check: No access token found. User is not authenticated.');
     return false;
   }
+
   try {
-    const decoded: DecodedToken = jwtDecode(token);
-    const tokenExpiration: number = decoded.exp;
-    const now: number = Date.now() / 1000;
-    const isValid = tokenExpiration > now;
-    console.log(`Auth Router Check (External): Exp: ${tokenExpiration}, Now: ${now}. Is valid: ${isValid}`);
-    return isValid;
+    const decoded: DecodedToken = jwtDecode(accessToken);
+    const tokenExpiration: number = decoded.exp; // Expiration time in seconds
+    const now: number = Date.now() / 1000; // Current time in seconds
+
+    // Case 2: Access token is still valid
+    if (tokenExpiration > now) {
+      console.log('Router Auth Check: Access token is valid (not expired). User is authenticated.');
+      return true;
+    }
+
+    // Case 3: Access token has expired, attempt to refresh
+    console.log('Router Auth Check: Access token expired. Attempting silent refresh...');
+
+    if (!refreshToken) {
+      console.warn('Router Auth Check: Access token expired, but no refresh token found. User needs to log in again.');
+      // Clear potentially stale access token if no refresh token exists
+      localStorage.removeItem(ACCESS_TOKEN);
+      return false; // Cannot refresh without a refresh token
+    }
+
+    try {
+      // Make API call to backend token refresh endpoint
+      const res = await api.post('/api/token/refresh/', { refresh: refreshToken });
+
+      if (res.status === 200 && res.data.access) {
+        // Refresh successful: store the new access token
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        // If your backend also returns a new refresh token, update it here too:
+        // if (res.data.refresh) {
+        //   localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        // }
+        console.log('Router Auth Check: Token refreshed successfully. User is now authenticated.');
+        return true; // Authenticated with the new token
+      } else {
+        // Refresh failed (e.g., refresh token is invalid or expired on backend)
+        console.warn('Router Auth Check: Refresh token failed or returned invalid response:', res.status, res.data);
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN); // Clear both as refresh failed
+        return false;
+      }
+    } catch (refreshError) {
+      // Network error or other issue during the refresh API call
+      console.error('Router Auth Check: Error during silent token refresh API call:', refreshError);
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN); // Clear both as refresh failed
+      return false;
+    }
+
   } catch (error) {
-    console.error('Auth Router Check (External): Error decoding token (malformed/invalid JWT):', error);
-    // If the token is un-decodable, it's not valid for authentication.
+    // Error decoding the access token (e.g., malformed JWT)
+    console.error("Router Auth Check: Error decoding access token (malformed/invalid JWT) or other issue:", error);
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN); // Clear both for safety
     return false;
   }
 };
