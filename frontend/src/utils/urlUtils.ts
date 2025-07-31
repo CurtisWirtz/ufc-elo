@@ -25,8 +25,8 @@ export function getPageParamFromUrl(url: string | null): number | undefined {
  * @param page The page number.
  * @returns The API URL string (e.g., "/api/events/?page=2").
  */
-export function constructEventsApiUrl(page: number | undefined): string {
+export function constructItemsApiUrl(page: number | undefined, collection: string | undefined): string {
     // If page is undefined or 1, fetch the base URL (first page).
     // Otherwise, construct the URL with the page query parameter.
-    return page && page > 1 ? `/api/events/?page=${page}` : '/api/events/';
+    return page && page > 1 ? `/api/${collection}/?page=${page}` : `/api/${collection}/`;
 }
