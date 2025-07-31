@@ -80,3 +80,39 @@ export function isFutureDate(dateString: string): boolean {
     return inputDate.getTime() > today.getTime();
 }
 
+/**
+ * Calculates the age of a person based on their date of birth.
+ *
+ * @param dateOfBirthStr The date of birth in 'YYYY-MM-DD' format.
+ * @returns The age of the person in years, or null if the dateOfBirthStr is invalid.
+ */
+export function calculateAge(dateOfBirthStr: string): number | null {
+    // 1. Parse the input date string into a Date object
+    // Using `new Date(dateString)` directly often works for 'YYYY-MM-DD'.
+    // To ensure consistency across timezones (as getMonth/getDate depend on it),
+    // it's safest to parse components manually or force UTC if time matters.
+    // For pure YYYY-MM-DD comparisons, standard parsing is usually fine.
+    const dob = new Date(dateOfBirthStr);
+
+    // Check if the parsed date is valid
+    // For example, "2000-02-30" would result in an "Invalid Date"
+    if (isNaN(dob.getTime())) {
+        console.error(`Error: Invalid date format or value for DOB: "${dateOfBirthStr}". Expected YYYY-MM-DD.`);
+        return null;
+    }
+
+    // 2. Get the current date
+    const today = new Date();
+
+    // 3. Calculate the initial age based on years
+    let age = today.getFullYear() - dob.getFullYear();
+
+    // 4. Adjust age if the birthday hasn't occurred yet this year
+    // Note: getMonth() returns 0 for January, 11 for December.
+    if (today.getMonth() < dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) {
+        age -= 1;
+    }
+
+    return age;
+}
