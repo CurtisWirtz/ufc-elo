@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from .serializers import UserSerializer, NoteSerializer, EventSerializer, FighterSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note
-from .pagination import TwentyEventsPagination 
+from .models import Note, Event, Fighter
+from .pagination import TwentyItemsPagination 
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -34,10 +34,6 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]  # Allow any user to create an account
 
-
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-from .models import Event
 from .serializers import EventSerializer
 # from .pagination import TenEventsPagination # Import your custom pagination
 
@@ -45,10 +41,22 @@ class EventListView(generics.ListAPIView):
     queryset = Event.objects.all().order_by('-date') # order by 'date' in descending order (-date)
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = TwentyEventsPagination
+    pagination_class = TwentyItemsPagination
 
 class EventDetailView(generics.RetrieveAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
+
+class FighterListView(generics.ListAPIView):
+    queryset = Fighter.objects.all()
+    serializer_class = FighterSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = TwentyItemsPagination
+
+# class FighterDetailView(generics.RetrieveAPIView):
+#     queryset = Fighter.objects.all()
+#     serializer_class = FighterSerializer
+#     permission_classes = [IsAuthenticated]
+#     lookup_field = 'pk'
