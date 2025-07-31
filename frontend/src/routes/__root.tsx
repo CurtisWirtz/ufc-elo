@@ -28,7 +28,7 @@ function RootLayoutComponent() {
             {isAuthenticated ? (
               <>
                 <li><Link to="/events" className="hover:text-gray-300">Events</Link></li>
-
+                <li><Link to="/fighters" className="hover:text-gray-300">Fighters</Link></li>
                 {user && <span className="mr-2 text-sm text-gray-300">Welcome, {user.username}</span>}
                 <li>
                   <button
