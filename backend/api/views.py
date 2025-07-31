@@ -1,10 +1,14 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
-from rest_framework import generics
+from django.contrib.auth import get_user_model
+from rest_framework import generics, status
+from rest_framework.response import Response
 from .serializers import UserSerializer, NoteSerializer, EventSerializer, FighterSerializer, FighterDetailSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note, Event, Fighter
 from .pagination import TwentyItemsPagination 
+
+User = get_user_model()
+
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -28,14 +32,28 @@ class NoteDelete(generics.DestroyAPIView):
         user = self.request.user
         return Note.objects.filter(author=user)
 
-# CreateUserView allows users to register an account
+# # CreateUserView allows users to register an account
+# class CreateUserView(generics.CreateAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [AllowAny]  # Allow any user to create an account
+
+
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]  # Allow any user to create an account
+    permission_classes = ()
 
-from .serializers import EventSerializer
-# from .pagination import TenEventsPagination # Import your custom pagination
+    # The `create` method here is implicit from generics.CreateAPIView.
+    # It calls serializer.save(), which in turn calls your UserSerializer's create() method.
+    # The response will then be constructed from serializer.data, which now includes tokens.
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save() # User is created, and tokens should be generated within the serializer
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class EventListView(generics.ListAPIView):
     queryset = Event.objects.all().order_by('-date') # order by 'date' in descending order (-date)
@@ -50,7 +68,7 @@ class EventDetailView(generics.RetrieveAPIView):
     lookup_field = 'pk'
 
 class FighterListView(generics.ListAPIView):
-    queryset = Fighter.objects.all()
+    queryset = Fighter.objects.all().order_by('fighter_id') # pulling all fighters with pagination... DB does not guarantee the order of records, so we want basically anything here. something, just not nothing
     serializer_class = FighterSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = TwentyItemsPagination

@@ -10,6 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.121.2",
@@ -19,7 +20,9 @@
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.6"
+    "react-hook-form": "^7.61.1",
+    "tailwindcss": "^4.0.6",
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.81.2",

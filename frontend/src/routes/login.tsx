@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import Form from '@/components/Form'
+import LoginForm from '@/components/LoginForm'
 import { checkAuthForRouter } from '../AuthProvider'
 
 export const Route = createFileRoute('/login')({
@@ -13,5 +13,5 @@ export const Route = createFileRoute('/login')({
       throw redirect({ to: '/events', replace: true })
     }
   },
-  component: () => <Form route="/api/token/" method="login" />,
+  component: () => <LoginForm />,
 })

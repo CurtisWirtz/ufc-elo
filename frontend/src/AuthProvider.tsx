@@ -20,6 +20,11 @@ interface DecodedToken {
   username: string;
 }
 
+type UserData = {
+  id: number;
+  username: string;
+}
+
 // Any component consuming the 'AuthContext.Provider' context
 // via `useAuth()` will receive an object conforming to this type
 export interface AuthContextType {
@@ -29,7 +34,7 @@ export interface AuthContextType {
       id: number; // from django/postgres user model id, which is a number
       username: string;
   } | null; // null if no user is logged in
-  login: (accessToken: string, refreshToken: string) => void;
+  login: (accessToken: string, refreshToken: string, userData?: UserData) => Promise<void>;
   logout: () => void;
 
   //This checkAuthValidity is for React Components that use useAuth(),
@@ -71,9 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Invalidate/clear React Query cache:
     // This is important because any data fetched while authenticated might now be stale or unauthorized.
     queryClient.invalidateQueries(); // Invalidates all active queries, triggering a refetch for components.
-    queryClient.clear(); // OPTIONAL: This clears ALL data from the cache.
-    //                      // Use with caution: if you have public data that shouldn't be cleared,
-    //                      // consider `invalidateQueries` with specific query keys instead.
+    queryClient.clear();
   }, []);
 
   const refreshToken = React.useCallback(async (): Promise<boolean> => {
@@ -86,17 +89,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       console.log('Auth: Attempting to refresh token...');
+
       // Make API call to Django backend's token refresh endpoint.
       const res = await api.post('/api/token/refresh/', { refresh: storedRefreshToken });
+
       if (res.status === 200 && res.data.access) {
         // If refresh is successful, store the new access token.
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
+
         // Decode the *new* access token to get updated user details.
         const decoded: DecodedToken = jwtDecode(res.data.access);
+
         // Update user state with details from the new token.
         setUser({ id: decoded.user_id, username: decoded.username });
         setIsAuthenticated(true); // Mark as authenticated.
+
         console.log('Auth: Token refreshed successfully.');
+        
         return true; // Indicate refresh succeeded.
       } else {
         // If refresh API returns non-200, it means the refresh token is likely invalid or expired.
@@ -148,15 +157,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshToken, logout]);
 
   // login (called by login form component AFTER successfully receiving access and refresh tokens
-  const login = React.useCallback((accessToken: string, newRefreshToken: string) => {
+  const login = React.useCallback((accessToken: string, newRefreshToken: string, userData?: UserData) => {
     console.log('Auth: Performing login (storing tokens from backend response)...');
     // Store the newly received tokens.
     localStorage.setItem(ACCESS_TOKEN, accessToken);
     localStorage.setItem(REFRESH_TOKEN, newRefreshToken);
+
+    
     try {
-      const decoded: DecodedToken = jwtDecode(accessToken);
-      setUser({ id: decoded.user_id, username: decoded.username });
       setIsAuthenticated(true);
+
+      const decoded: DecodedToken = jwtDecode(accessToken);
+      console.log('decoded: ', decoded);
+      setUser({ id: decoded.user_id, username: decoded.username });
+
+      if (userData) {
+        // If user data is provided (e.g., from registration response), use it directly
+        setUser(userData);
+        console.log("Auth: Logged in with provided user data:", userData.username);
+      }
+
       // Invalidate React Query cache: User data has likely changed, or new user-specific data is now accessible.
       queryClient.invalidateQueries();
     } catch (error) {

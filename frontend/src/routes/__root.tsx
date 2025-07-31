@@ -41,7 +41,10 @@ function RootLayoutComponent() {
               </>
             ) : (
               // Link visible only when NOT authenticated
-              <li><Link to="/login" className="hover:text-gray-300">Login</Link></li>
+              <>
+                <li><Link to="/login" className="hover:text-gray-300">Login</Link></li>
+                <li><Link to="/register" className="hover:text-gray-300">Register</Link></li>
+              </>
             )}
           </ul>
         </nav>
