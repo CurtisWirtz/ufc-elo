@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { getEventById } from '../../../api/queries.ts'
+import { getItemById } from '../../../api/queries.ts'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Bout } from '../../../types/bout.types.ts'
 import { formatDate } from '../../../utils/dateUtils.ts'
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_authenticated/events/$eventId')({
   loader: async ({ params: { eventId }, context: { queryClient } }) => {
     await queryClient.prefetchQuery({
       queryKey: ['events', eventId],
-      queryFn: () => getEventById(eventId)
+      queryFn: () => getItemById(eventId, "events")
     });
   },
   pendingComponent: () => <div>Loading...</div>,
@@ -22,7 +22,7 @@ function EventPage() {
  
   const {data: event} = useSuspenseQuery({
     queryKey: ['events', eventId],
-    queryFn: () => getEventById(eventId)
+    queryFn: () => getItemById(eventId, "events")
   });
 
   const ordered_bouts: Bout[] = event.data.ordered_bouts;
@@ -31,10 +31,10 @@ function EventPage() {
 
   return (
     <div className="w-full mt-2 items-center bg-gray-100 min-h-screen p-6 text-center">
-      {event?.data.name && (
+      {event.data?.name && (
         <>
           <h1 className="text-4xl font-bold text-gray-800">{event.data.name}</h1>
-          <p className="text-2xl text-gray-600 mb-6">{formatDate(event?.data.date)} | {event?.data.location}</p>
+          <p className="text-2xl text-gray-600 mb-6">{formatDate(event.data.date)} | {event.data.location}</p>
         </>
       )}
 
