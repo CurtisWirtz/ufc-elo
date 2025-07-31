@@ -24,7 +24,8 @@ function FighterPage() {
     queryFn: () => getItemById(fighterId, "fighters")
   });
 
-  console.log(fighter.data);
+  // console.log(fighter.data);
+  
   function convertInchestoFeetAndInches(heightIn: number): string {
     const feet = Math.floor(heightIn / 12);
     const inches = heightIn % 12;
@@ -90,9 +91,11 @@ function FighterPage() {
           <thead>
             <tr>
               <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Opponent</th>
+              <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Event</th>
               <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Method</th>
               <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Round</th>
               <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Time</th>
+
             </tr>
           </thead>
           {fighter.data?.participated_bouts && fighter.data?.participated_bouts.length > 0 ? (
@@ -112,6 +115,7 @@ function FighterPage() {
                         }
                         {(bout.fighter_1.fighter_id === fighter.data.fighter_id) ? <Link className="text-blue-500 hover:underline" to={`/fighters/${bout.fighter_2.fighter_id}`}>{bout.fighter_2.name}</Link> : <Link className="text-blue-500 hover:underline" to={`/fighters/${bout.fighter_1.fighter_id}`}>{bout.fighter_1.name}</Link>}
                       </td>
+                      <td className="col-span-1 text-center"><Link className="text-blue-500 hover:underline" to={`/events/${bout.event.event_id}`}>{bout.event.name}</Link></td>
                       <td className="col-span-1 text-center flex flex-col">
                         <span className="text-lg">{bout.method}</span>
                         {bout.details && <span>{bout.details}</span>}
