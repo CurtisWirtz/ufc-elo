@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.db.models import Q
 
 from .models import Note, Event, Fighter, Bout
 
@@ -32,6 +33,12 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = {"id", "title", "content", "created_at", "author"}
         extra_kwargs = {"author": {"read_only": True}}  # see the author field, but dont allow setting author.. its auto assigned.
 
+# Some lightweight serializers for Bout and Event, used on individual fighter pages
+class SimpleEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ['event_id', 'name', 'date']
+
 class FighterSerializer(serializers.ModelSerializer):
     """
     Serializer for the Fighter model.
@@ -50,6 +57,7 @@ class BoutSerializer(serializers.ModelSerializer):
     fighter_1 = FighterSerializer(read_only=True)
     fighter_2 = FighterSerializer(read_only=True)
     winning_fighter = FighterSerializer(read_only=True)
+    event = SimpleEventSerializer(read_only=True)
 
     class Meta:
         model = Bout
@@ -120,3 +128,25 @@ class EventSerializer(serializers.ModelSerializer):
         # Serialize the ordered list of Bout objects
         return BoutSerializer(ordered_bouts, many=True, read_only=True, context=self.context).data
 
+class FighterDetailSerializer(serializers.ModelSerializer):
+    participated_bouts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Fighter
+        fighter_fields = [field.name for field in Fighter._meta.get_fields() if field.concrete]
+        fields = tuple(fighter_fields) + ('participated_bouts',)
+
+    def get_participated_bouts(self, obj):
+        """
+        Retrieves all Bout objects where this fighter is either fighter_1 or fighter_2.
+        """
+        # Use Q objects to combine conditions for 'fighter_1' and 'fighter_2'
+        # .select_related() pre-fetches related objects (Event, Fighter_1, Fighter_2, Winner)
+        # to avoid N+1 query problems when serializing bouts.
+        bouts_queryset = Bout.objects.filter(
+            Q(fighter_1=obj) | Q(fighter_2=obj)
+        ).select_related('event', 'fighter_1', 'fighter_2', 'winning_fighter').order_by('-event__date') # Order by event date descending for most recent first
+
+        # Serialize the queryset using the (modified) BoutSerializer
+        # 'many=True' because it's a list of bouts
+        return BoutSerializer(bouts_queryset, many=True, context=self.context).data
