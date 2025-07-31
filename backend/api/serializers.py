@@ -1,21 +1,58 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Q
 
 from .models import Note, Event, Fighter, Bout
 
+
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    # Ensure password2 is included for registration validation
+    password2 = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    # These fields will hold the generated access and refresh tokens
+    access = serializers.SerializerMethodField()
+    refresh = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["id", "username", "password"]
-        extra_kwargs = {"password": {"write_only": True}} # write_only: accept a password, but dont return one when giving info about a user.
+        # Include all necessary fields for registration AND the new token fields
+        # Explicitly list all fields is safer than '__all__' + tuple for custom fields
+        fields = ["id", "username", "password", "password2", "access", "refresh"]
+        extra_kwargs = {
+            "password": {"write_only": True},
+            "password2": {"write_only": True},
+        }
 
-    # if the Meta fields are valid, this method will be called to create a new user.
-    def create(self, validated_data): 
+    # Validation method for the entire serializer data (e.g., password matching)
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        return attrs
+
+    # This method is called by serializer.save() after validation
+    def create(self, validated_data):
         print("Creating user with data:", validated_data)
+        # Pop password2 because it's only for validation and not a model field
+        validated_data.pop('password2')
+        # Create the user using Django's recommended create_user method
         user = User.objects.create_user(**validated_data)
-        return user 
+        return user
+
+    # Method to get the access token for the user instance being serialized
+    def get_access(self, user):
+        # RefreshToken.for_user(user) creates a token instance for the user
+        # .access_token gets the associated access token
+        return str(RefreshToken.for_user(user).access_token)
+
+    # Method to get the refresh token for the user instance being serialized
+    def get_refresh(self, user):
+        # RefreshToken.for_user(user) creates a token instance for the user
+        # Converting the refresh token object to a string gives its value
+        return str(RefreshToken.for_user(user))
+
     
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
