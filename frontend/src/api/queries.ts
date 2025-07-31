@@ -11,6 +11,8 @@ export interface PaginatedResponse {
     results: Event[] | Fighter[]; // Array of items for the current page
 }
 
+type IndividualItem = Event | Fighter;
+
 /**
  * Fetches a list of events from the API.
  * Accepts a full URL for the endpoint (including pagination params).
@@ -23,12 +25,7 @@ export const getItems = async (endpointUrl: string): Promise<AxiosResponse<Pagin
     return await api.get<PaginatedResponse>(endpointUrl);
 };
 
-// Function to fetch a single event by ID
-export const getEventById = async (id: string): Promise<AxiosResponse<Event, any>> => {
-    return await api.get<Event>(`/api/events/${id}`);
-};
-
-// Function to fetch a single fighter by ID
-export const getFighterById = async (id: string): Promise<AxiosResponse<Fighter, any>> => {
-    return await api.get<Fighter>(`/api/fighters/${id}`);
+// Function to fetch a single item by ID
+export const getItemById = async (id: string, collection: string): Promise<AxiosResponse<IndividualItem, any>> => {
+    return await api.get<IndividualItem>(`/api/${collection}/${id}`);
 };
