@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useAuth } from '../AuthProvider'
 import { useNavigate } from '@tanstack/react-router'
+import { HeaderSearchBar } from '../components/HeaderSearchBar'
 
 export const Route = createRootRoute({
   component: RootLayoutComponent,
@@ -38,6 +39,7 @@ function RootLayoutComponent() {
                     Logout
                   </button>
                 </li>
+                <li><HeaderSearchBar /></li>
               </>
             ) : (
               // Link visible only when NOT authenticated
