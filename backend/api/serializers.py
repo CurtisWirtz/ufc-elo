@@ -51,20 +51,6 @@ class BoutSerializer(serializers.ModelSerializer):
     fighter_2 = FighterSerializer(read_only=True)
     winning_fighter = FighterSerializer(read_only=True)
 
-    # To allow creating/updating Bouts by just providing fighter_id/event_id,
-    # you might need to override create/update or use PrimaryKeyRelatedField,
-    # but for display purposes, nested serializers are great.
-    
-    # If you need to write (create/update) bouts by fighter_id string, you'd use this:
-    # fighter_1_id = serializers.SlugRelatedField(
-    #     queryset=Fighter.objects.all(), slug_field='fighter_id', source='fighter_1'
-    # )
-    # fighter_2_id = serializers.SlugRelatedField(
-    #     queryset=Fighter.objects.all(), slug_field='fighter_id', source='fighter_2'
-    # )
-    # You would then remove fighter_1 and fighter_2 from the main fields list
-    # and handle the 'winning_fighter' similarly.
-
     class Meta:
         model = Bout
         fields = [
