@@ -75,8 +75,6 @@ function SearchResultsPage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  console.log('results: ', results);
-
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6 text-center">Search Results</h1>
