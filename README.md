@@ -36,7 +36,15 @@ I setup a Django backend and connected it to a PostgreSQL database. I prototyped
 
 
 ### 4. Frontend + REST API 
-###### (Django REST Framework | Frontend: Vite, React, React Router v7, `react-hook-form`, Tanstack Query, Axios, ShadCN):
-_**Making our data retrievable from a frontend and creating an interactive visual representation.**_
+###### (API: Django REST Framework | Frontend: Vite, React, Typescript, Tanstack Router, React Query, Axios, `react-hook-form`, Tailwind, and Zod):
+_**Making our data retrievable from a frontend and building a useful user interface.**_
 
-Under construction.
+In my django backend, I created REST API endpoints using the Django REST Framework to retrieve, serialize, order, paginate, and send data from the PostgreSQL database.
+
+#### The Frontend
+
+I started with a Vite/React install paired with Typescript, and Tailwind.
+
+Using `djangorestframework-simplejwt` and the file-based TanStack Router, I hid all paths that fetch data from our backend (`fighters`, `events`, and search) behind an authentication layer. Authorized (logged in) users are given a JWT 'access' token, which is passed to the React components via context and allows them to successfully send POST requests to the API.
+
+Axios replaces using the `fetch()` API (nice error reporting!), and I leveraged React Query to handle memoized caching and preloading requests for frontend performance. I also built a basic 'Full-Text Search' style search function to find fighters and events based on keywords. Zod is useful for form validation on the Register, Login and Search inputs.
