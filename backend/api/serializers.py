@@ -187,3 +187,44 @@ class FighterDetailSerializer(serializers.ModelSerializer):
         # Serialize the queryset using the (modified) BoutSerializer
         # 'many=True' because it's a list of bouts
         return BoutSerializer(bouts_queryset, many=True, context=self.context).data
+    
+
+# You might want to show which event a fighter fought at in the search results
+class BoutEventNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ['name'] # Just the name of the event
+
+class SearchSerializer(serializers.ModelSerializer):
+    # This will display the names of events associated with the fighter via bouts
+    # It requires adding Bout to models and linking them as described above.
+    events = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Fighter
+        fields = ['fighter_id', 'name', 'nickname', 'wins', 'losses', 'draws',
+                  'height_in', 'weight_lb', 'reach_in', 'stance', 'date_of_birth', 'events']
+        # Add any other fields you want to expose for a fighter in search results
+
+    def get_events(self, obj):
+        # This method fetches the unique event names a fighter has participated in
+        event_names = set()
+        for bout in obj.bouts_as_fighter1.all():
+            event_names.add(bout.event.name)
+        for bout in obj.bouts_as_fighter2.all():
+            event_names.add(bout.event.name)
+        return list(event_names)
+    
+
+class FighterSearchSerializer(serializers.ModelSerializer):
+    # This serializer will be used when a search query matches a Fighter.
+    # We only expose the minimum necessary fields for the search result display.
+    class Meta:
+        model = Fighter
+        fields = ['fighter_id', 'name', 'nickname', 'weight_lb', 'wins', 'losses', 'draws']
+
+class EventSearchSerializer(serializers.ModelSerializer):
+    # This serializer will be used when a search query matches an Event.
+    class Meta:
+        model = Event
+        fields = ['event_id', 'name', 'date', 'location']

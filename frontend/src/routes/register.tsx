@@ -13,5 +13,5 @@ export const Route = createFileRoute('/register')({
       throw redirect({ to: '/events', replace: true })
     }
   },
-  component: () => <RegisterForm route="/api/user/register/" method="register" />,
+  component: () => <RegisterForm />,
 })
