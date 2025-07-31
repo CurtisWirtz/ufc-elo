@@ -103,7 +103,7 @@ function FighterPage() {
                     <tr key={bout.bout_id} className="border-b border-gray-200">
                       <td className="col-span-1 text-center font-semibold">
                         {bout.winning_fighter ? 
-                            (bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id) ? (
+                            (fighter.data.fighter_id === bout.winning_fighter.fighter_id) ? (
                               <span className="inline-block bg-green-500 rounded-full text-white w-5 h-5 relative translate-y-1 mr-3"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">W</span></span>
                             ) : (
                               <span className="inline-block bg-red-500 rounded-full text-white w-5 h-5 relative translate-y-1 mr-3"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">L</span></span>
