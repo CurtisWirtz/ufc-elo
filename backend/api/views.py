@@ -50,7 +50,7 @@ class EventDetailView(generics.RetrieveAPIView):
     lookup_field = 'pk'
 
 class FighterListView(generics.ListAPIView):
-    queryset = Fighter.objects.all()
+    queryset = Fighter.objects.all().order_by('fighter_id') # pulling all fighters with pagination... DB does not guarantee the order of records, so we want basically anything here. something, just not nothing
     serializer_class = FighterSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = TwentyItemsPagination
