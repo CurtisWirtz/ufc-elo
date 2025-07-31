@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer, EventSerializer, FighterSerializer
+from .serializers import UserSerializer, NoteSerializer, EventSerializer, FighterSerializer, FighterDetailSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note, Event, Fighter
 from .pagination import TwentyItemsPagination 
@@ -55,8 +55,7 @@ class FighterListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     pagination_class = TwentyItemsPagination
 
-# class FighterDetailView(generics.RetrieveAPIView):
-#     queryset = Fighter.objects.all()
-#     serializer_class = FighterSerializer
-#     permission_classes = [IsAuthenticated]
-#     lookup_field = 'pk'
+class FighterDetailView(generics.RetrieveAPIView):
+    queryset = Fighter.objects.all()
+    serializer_class = FighterDetailSerializer
+    lookup_field = 'fighter_id'
