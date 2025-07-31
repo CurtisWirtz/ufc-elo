@@ -105,6 +105,7 @@ class CombinedSearchView(generics.ListAPIView):
                 rank=SearchRank(fighter_vector_definition, search_query_obj)
             ).filter(search_document=search_query_obj) # Filter against the annotated 'search_document'
 
+            # https://docs.djangoproject.com/en/5.2/ref/models/database-functions/#coalesce
             # Use Coalesce to treat null ranks as 0 for consistent ordering if no match
             # This ensures items that don't match exactly but might be ordered by other criteria don't mess up sorting.
             # However, since we're filtering (search_document=search_query_obj), all results will have a rank.
