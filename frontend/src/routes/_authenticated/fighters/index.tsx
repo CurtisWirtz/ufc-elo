@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import type { PaginatedResponse } from '../../../api/queries.ts';
 import { getItems } from '../../../api/queries.ts';
 import type { Fighter } from '../../../types/fighter.types.ts';
-import { formatDate, isFutureDate } from '../../../utils/dateUtils.ts';
+import { formatDate } from '../../../utils/dateUtils.ts';
 import { getPageParamFromUrl, constructItemsApiUrl } from '../../../utils/urlUtils.ts';
 
 export const Route = createFileRoute('/_authenticated/fighters/')({
@@ -82,6 +82,9 @@ function FightersIndex() {
         <thead>
           <tr>
             <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-600">Fighter Name</th>
+            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Weight</th>
+            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Record</th>
+            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">DOB</th>
           </tr>
         </thead>
         <tbody>
@@ -95,23 +98,24 @@ function FightersIndex() {
                       params={{ fighterId: fighter.fighter_id }}
                       className="text-blue-500 hover:underline flex w-full justify-start"
                     >
-                      {fighter.name}
+                      {fighter.name}{fighter.nickname && <span className="italic ml-2">"{fighter.nickname}"</span>}
                     </Link>
                   </td>
-                  <td className="whitespace-pre p-3 flex flex-col items-center">
-                    {/* Keep the upcoming indicator, but let all fighters render */}
-                    {isFutureDate(fighter.date) && <span className="text-red-500 font-semibold text-xs mb-1">Upcoming: </span>}
-                    <span>{formatDate(fighter.date)}</span>
+                  <td className="whitespace-pre p-3 text-center">
+                    {fighter.weight_lb && <span>{fighter.weight_lb} lbs</span>}
                   </td>
                   <td className="whitespace-pre p-3 text-center">
-                    {fighter.location}
+                    <span>{fighter.wins}-{fighter.losses}-{fighter.draws}</span>
+                  </td>
+                  <td className="whitespace-pre p-3 text-center">
+                    {fighter.date_of_birth && <span className="text-gray-700">{formatDate(fighter.date_of_birth)}</span>}
                   </td>
                 </tr>
               );
             })
           ) : (
             <tr>
-              <td colSpan={3} className="p-3 text-center text-gray-500">
+              <td colSpan={4} className="p-3 text-center text-gray-500">
                 No fighters found.
               </td>
             </tr>
