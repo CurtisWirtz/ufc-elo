@@ -3,9 +3,9 @@
 
 This started with the goal of assigning ELO ratings to every UFC fighter on the roster throughout the history of the company, exclusively based on their performances in the UFC. ELO is the rating system that was devised for chess ranking and match making. 
 
-However, the scraped dataset grew to include all MMA promotions owned by Zuffa LLC (and now TKO Group Holdings); including the WEC, PRIDE FC, DWCS, KOTC, and a few other defunct fight promotions. 
+However, the scraped dataset grew to include all MMA promotions owned by Zuffa LLC (and now TKO Group Holdings), including the WEC, PRIDE FC, DWCS, KOTC, and a few other defunct fight promotions. 
 
-I began to enjoy whetting my Python scripting, Django, PostgreSQL, and DRF skills, but went on to include a React ecosystem frontend interface to serve as a fight encyclopedia. Mostly, I use it to aggregate data on fighters, bouts, or events for outcome prediction, avoiding sluggish MMA stats sites that are bogged down by the number of ads and popups that fill up my screen.
+I began to enjoy whetting my Python scripting, Django, PostgreSQL, and DRF skills, but went on to include a React ecosystem frontend interface to serve as a fight explorer. Mostly, I use it to aggregate data on fighters, bouts, or events for outcome prediction, avoiding sluggish MMA stats sites that are bogged down by the number of ads and popups that fill up my screen.
 
 
 ###### I began with data collection, then worked towards an interactive visual representation:
