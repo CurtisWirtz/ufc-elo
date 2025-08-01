@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white text-center p-4 text-sm shadow-inner">
+    <footer className="flex justify-center w-full text-center">
         &copy; {new Date().getFullYear()} MMA-Elo Explorer. Curtis Wirtz - All rights reserved.
     </footer>
   )
