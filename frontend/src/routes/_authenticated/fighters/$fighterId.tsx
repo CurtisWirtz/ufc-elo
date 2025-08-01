@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { getItemById } from '../../../api/queries.ts'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { formatDate, calculateAge, isFutureDate } from '../../../utils/dateUtils.ts'
+import { formatDate, calculateAge, isFutureDate } from '../../../lib/dateUtils.ts'
 
 
 export const Route = createFileRoute('/_authenticated/fighters/$fighterId')({

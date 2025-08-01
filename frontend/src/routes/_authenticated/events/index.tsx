@@ -3,8 +3,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import type { PaginatedResponse } from '../../../api/queries.ts';
 import { getItems } from '../../../api/queries.ts';
 import type { Event } from '../../../types/event.types.ts';
-import { formatDate, isFutureDate } from '../../../utils/dateUtils.ts';
-import { getPageParamFromUrl, constructItemsApiUrl } from '../../../utils/urlUtils.ts';
+import { formatDate, isFutureDate } from '../../../lib/dateUtils.ts';
+import { getPageParamFromUrl, constructItemsApiUrl } from '../../../lib/urlUtils.ts';
 
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsIndex,

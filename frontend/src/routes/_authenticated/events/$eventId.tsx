@@ -2,7 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { getItemById } from '../../../api/queries.ts'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Bout } from '../../../types/bout.types.ts'
-import { formatDate } from '../../../utils/dateUtils.ts'
+import { formatDate } from '../../../lib/dateUtils.ts'
 
 
 export const Route = createFileRoute('/_authenticated/events/$eventId')({
