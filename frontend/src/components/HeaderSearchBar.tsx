@@ -51,10 +51,10 @@ export const HeaderSearchBar: React.FC = () => {
 
   return (
     <div className="relative">
-      <form onSubmit={handleSubmit(onSubmit, onError)} className="flex items-center space-x-2">
+      <form onSubmit={handleSubmit(onSubmit, onError)} className="flex items-center space-x-2 relative">
         <input
           type="text"
-          placeholder="Search fighters or events..."
+          placeholder="Search fighters/events"
           {...register("searchQuery")}
           className={`flex-grow p-2 text-sm border rounded-md focus:outline-none focus:ring-1 ${
             errors.searchQuery ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
@@ -63,7 +63,7 @@ export const HeaderSearchBar: React.FC = () => {
         />
         <button
           type="submit"
-          className="px-3 py-1.5 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="absolute right-3 px-2 py-1.5 bg-gray-800 text-white text-sm rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           // Button is disabled if input is empty or if it's currently submitting
           disabled={!currentInputSearchTerm.trim() || !isValid} // isValid from react-hook-form
         >

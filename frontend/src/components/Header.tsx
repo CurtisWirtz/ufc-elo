@@ -19,7 +19,7 @@ const Header = ({ isAuthenticated, user, handleLogout }) => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="ml-4">
           <NavigationMenuLink asChild>
             <Link to="/" className="text-xl font-bold">MMA-Elo</Link>
           </NavigationMenuLink>
@@ -27,24 +27,24 @@ const Header = ({ isAuthenticated, user, handleLogout }) => {
 
         {isAuthenticated ? (
           <>
-            <NavigationMenuItem>
-              <HeaderSearchBar />
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
+            <NavigationMenuItem className="ml-auto">
               <NavigationMenuLink asChild>
                 <Link to="/events" className="">Events</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
-            <NavigationMenuItem>
+            <NavigationMenuItem className="mr-auto">
               <NavigationMenuLink asChild>
                 <Link to="/fighters" className="">Fighters</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
+            <NavigationMenuItem>
+              <HeaderSearchBar />
+            </NavigationMenuItem>
+
             {user && (
-              <NavigationMenuItem className="mx-2 text-xs flex flex-col pt-1.5">
+              <NavigationMenuItem className="text-xs flex flex-col pt-1.5">
                 <Avatar>
                   <AvatarImage src={avatarSvg} />
                   <AvatarFallback>Elo</AvatarFallback>
