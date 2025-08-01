@@ -1,11 +1,11 @@
 # ufc-elo
-###### Collecting, aggregating, and displaying fight, bout, and event data from the Ultimate Fighting Championship (UFC).
+## Collecting, aggregating, and displaying fight, bout, and event data from the Ultimate Fighting Championship (UFC).
 
 This started with the goal of assigning ELO ratings to every UFC fighter on the roster throughout the history of the company, exclusively based on their performances in the UFC. ELO is the rating system that was devised for chess ranking and match making. 
 
 However, the scraped dataset grew to include all MMA promotions owned by Zuffa LLC (and now TKO Group Holdings); including the WEC, PRIDE FC, DWCS, KOTC, and a few other defunct fight promotions. 
 
-I began to enjoy whetting my Django, PostgreSQL, DRF, and React skills, incrementally mounting a frontend interface to serve as a fight encyclopedia. Mostly, I use it to look up a fighters, bouts, or events for outcome prediction, avoiding sluggish MMA stats sites that are bogged down by the number of ads and popups that fill up my screen.
+I began to enjoy whetting my Python scripting, Django, PostgreSQL, and DRF skills, but went on to include a React ecosystem frontend interface to serve as a fight encyclopedia. Mostly, I use it to aggregate data on fighters, bouts, or events for outcome prediction, avoiding sluggish MMA stats sites that are bogged down by the number of ads and popups that fill up my screen.
 
 
 ###### I began with data collection, then worked towards an interactive visual representation:
@@ -37,7 +37,7 @@ I setup a Django backend and connected it to a PostgreSQL database. I prototyped
 
 ### 4. Frontend + REST API 
 ###### (API: Django REST Framework | Frontend: Vite, React, Typescript, Tanstack Router, React Query, Axios, `react-hook-form`, Tailwind, and Zod):
-_**Making our data retrievable from a frontend and building a useful user interface.**_
+_**Making our data retrievable from a frontend / building a useful user interface.**_
 
 In my django backend, I created REST API endpoints using the Django REST Framework to retrieve, serialize, order, paginate, and send data from the PostgreSQL database.
 
@@ -47,4 +47,7 @@ I started with a Vite/React install paired with Typescript, and Tailwind.
 
 Using `djangorestframework-simplejwt` and the file-based TanStack Router, I hid all paths that fetch data from our backend (`fighters`, `events`, and search) behind an authentication layer. Authorized (logged in) users are given a JWT 'access' token, which is passed to the React components via context and allows them to successfully send POST requests to the API.
 
-Axios replaces using the `fetch()` API (nice error reporting!), and I leveraged React Query to handle memoized caching and preloading requests for frontend performance. I also built a basic 'Full-Text Search' style search function to find fighters and events based on keywords. Zod is useful for form validation on the Register, Login and Search inputs.
+Axios replaces using the `fetch()` API (nice error reporting!), and React Query handles memoized caching and preloading requests for frontend performance. I also built a basic 'Full-Text Search' style search function to find fighters and events based on keywords. Zod is useful for form validation on the Register, Login and Search inputs.
+
+### 5. Containerization + Deploy pipeline
+###### 
