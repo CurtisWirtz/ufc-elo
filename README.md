@@ -49,5 +49,5 @@ Using `djangorestframework-simplejwt` and the file-based TanStack Router, I hid 
 
 Axios replaces using the `fetch()` API (nice error reporting!), and React Query handles memoized caching and preloading requests for frontend performance. I also built a basic 'Full-Text Search' style search function to find fighters and events based on keywords. Zod is useful for form validation on the Register, Login and Search inputs.
 
-### 5. Containerization + Deploy pipeline
-###### 
+### 5. Containerization + Deploy Pipeline
+###### Under construction: fiding viable FREE hosts for a DB with ~20k records
