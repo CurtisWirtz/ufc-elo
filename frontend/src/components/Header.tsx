@@ -15,7 +15,7 @@ const Header = ({ isAuthenticated, user, handleLogout }) => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem className="ml-4">
+        <NavigationMenuItem className="mr-auto">
           <NavigationMenuLink asChild>
             <Link to="/" className="text-xl font-bold">MMA-Elo</Link>
           </NavigationMenuLink>
@@ -23,7 +23,7 @@ const Header = ({ isAuthenticated, user, handleLogout }) => {
 
         {isAuthenticated ? (
           <>
-            <NavigationMenuItem className="ml-auto">
+            <NavigationMenuItem className="">
               <NavigationMenuLink asChild>
                 <Link to="/events" className="">Events</Link>
               </NavigationMenuLink>
