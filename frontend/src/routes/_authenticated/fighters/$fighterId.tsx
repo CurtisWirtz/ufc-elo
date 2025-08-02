@@ -107,15 +107,25 @@ function FighterPage() {
                       <td className="col-span-1 text-center font-semibold">
                         {bout.winning_fighter ? 
                             (fighter.data.fighter_id === bout.winning_fighter.fighter_id) ? (
-                              <span className="inline-block bg-green-500 rounded-full text-white w-5 h-5 relative translate-y-1 mr-3"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">W</span></span>
+                              <span className="inline-block bg-green-500 rounded-full text-white w-5 h-5 relative translate-y-1 mr-3">
+                                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">W</span>
+                              </span>
                             ) : (
-                              <span className="inline-block bg-red-500 rounded-full text-white w-5 h-5 relative translate-y-1 mr-3"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">L</span></span>
+                              <span className="inline-block bg-red-500 rounded-full text-white w-5 h-5 relative translate-y-1 mr-3">
+                                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">L</span>
+                              </span>
                             )
                         : (<span className="block bg-blue-500 uppercase">{bout.method}</span>)
                         }
                         {(bout.fighter_1.fighter_id === fighter.data.fighter_id) ? <Link className="text-blue-500 hover:underline" to={`/fighters/${bout.fighter_2.fighter_id}`}>{bout.fighter_2.name}</Link> : <Link className="text-blue-500 hover:underline" to={`/fighters/${bout.fighter_1.fighter_id}`}>{bout.fighter_1.name}</Link>}
                       </td>
-                      <td className="col-span-1 text-center"><Link className="text-blue-500 hover:underline" to={`/events/${bout.event.event_id}`}>{bout.event.name}</Link></td>
+                      <td className="col-span-1 text-center">
+                        <Link className="text-blue-500 hover:underline" to={`/events/${bout.event.event_id}`}>
+                          <span className="font-semibold">{bout.event.name}</span>
+                        </Link><br/>
+                        <span>{formatDate(bout.event.date)}</span>
+
+                      </td>
                       <td className="col-span-1 text-center flex flex-col">
                         <span className="text-lg">{bout.method}</span>
                         {bout.details && <span>{bout.details}</span>}
