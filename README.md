@@ -45,18 +45,20 @@ In my django backend, I created REST API endpoints using the Django REST Framewo
 
 I started with a Vite/React install paired with Typescript.
 
-Using `djangorestframework-simplejwt` and the file-based TanStack Router, I hid all paths that fetch data from our backend (`fighters`, `events`, and search) behind an authentication layer. Authorized (logged in) users are given a JWT 'access' token, which is passed to the React components via context, allowing them to successfully send POST requests to the API.
+Using `djangorestframework-simplejwt` and the file-based TanStack Router, I hid all paths that fetch data from our backend (`fighters`, `events`, and search) behind an authentication layer. Authorized (logged in) users are given a JWT access token, which is passed to the React components via context, allowing them to successfully send POST requests to the API.
 
 Axios replaces using the `fetch()` API (nice error reporting!), and React Query handles memoized caching and preloading requests for frontend performance. I also built a basic 'Full-Text Search' style search function to find fighters and events based on keywords. Zod is useful for form validation on the Register, Login and Search inputs.
 
 ### 5. Style frontend UI
-###### (ShadCN) 
+###### (ShadCN, Motion, MagicUI) 
 
-## Under construction:
+Having spent years of my professional career building out custom UIs from scratch, I admire using UI component libraries immensely.
 
-Having spent years of my professional career building out custom UIs from scratch, I admire using these UI libraries immensely.
+ShadCN was my choice because it's built on top of the work done by RadixUI, an open-source UI library that weighs accessibility concerns heavily. There are many competing UI frameworks that tout similar WCAG complaince claims, but fall short of this when I inspect their components with a screen reader.
 
-ShadCN was choice because it's built on top of the work done by RadixUI, an open-source UI library that weighs accessibility concerns heavily. There are competing UI frameworks that tout similar WCAG complaince claims, but many fall short of this when I inspect their components with a screen reader.
+Note: I see [Mantine](https://ui.mantine.dev/) as the industry leader for **production-ready UI**. It has more utility components that are useful for more elaborate projects than this.
+
 
 ### 6. Containerization + Deploy Pipeline
-###### Under construction:  ...finding viable FREE RDS hosting for a DB with ~20k records, yikes...
+###### (Docker, Github Actions, ---) 
+Under construction:  ...finding a viable FREE RDS host for a DB with ~20k records, yikes...
