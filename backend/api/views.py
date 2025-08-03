@@ -78,6 +78,7 @@ class FighterListView(generics.ListAPIView):
 class FighterDetailView(generics.RetrieveAPIView):
     queryset = Fighter.objects.all()
     serializer_class = FighterDetailSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'fighter_id'
 
 
