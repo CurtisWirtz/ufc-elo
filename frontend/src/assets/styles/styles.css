@@ -20,10 +20,39 @@ code {
 }
 
 @theme inline {
+  /* Custom breakpoints */
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 768px;
+  --breakpoint-tablet: 900px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1220px;
+  --breakpoint-2xl: 1600px;
+  --breakpoint-3xl: 2000px;
+  
+  /* Custom font sizes with fluid typography */
+  --font-size-h1: clamp(2.25rem, 3.75vw, 3rem);
+  --font-size-h2: clamp(1.5rem, 2.8125vw, 2.25rem);
+  --font-size-h3: clamp(1.25rem, 2.5vw, 2rem);
+  --font-size-h4: clamp(1.125rem, 1.875vw, 1.5rem);
+  --font-size-body: clamp(1rem, 1.5625vw, 1.25rem);
+  --font-size-micro: clamp(0.875rem, 1.25vw, 1rem);
+  
+  /* Custom font family */
+  --font-family-carlito: "Carlito", sans-serif;
+  
+  /* Custom max widths */
+  --max-width-400: 100rem;
+  
+  /* Custom min heights */
+  --min-height-200: 50rem;
+  
+  /* Radius variables */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Color mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -135,23 +164,31 @@ code {
     @apply bg-background text-foreground;
   }
 
-  /* h1 {
-    @apply text-h1 font-medium leading-tight;
+  h1 {
+    font-size: var(--font-size-h1);
+    font-weight: 500;
+    line-height: 1.2;
   }
 
   h2 {
-    @apply text-h2 font-medium leading-snug;
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: 1.3;
   }
 
   h3 {
-    @apply text-h3 font-medium leading-normal;
+    font-size: var(--font-size-h3);
+    font-weight: 500;
+    line-height: 1.4;
   }
 
   h4 {
-    @apply text-h4 font-medium leading-normal;
+    font-size: var(--font-size-h4);
+    font-weight: 500;
+    line-height: 1.4;
   }
 
   p {
-    @apply text-body;
-  } */
+    font-size: var(--font-size-body);
+  }
 }
