@@ -3,11 +3,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Carlito";
+  src: url("./fonts/Carlito-Regular.ttf") format("truetype");
+}
+
 body {
-  @apply m-0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Carlito", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -128,7 +130,28 @@ code {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  /* h1 {
+    @apply text-h1 font-medium leading-tight;
+  }
+
+  h2 {
+    @apply text-h2 font-medium leading-snug;
+  }
+
+  h3 {
+    @apply text-h3 font-medium leading-normal;
+  }
+
+  h4 {
+    @apply text-h4 font-medium leading-normal;
+  }
+
+  p {
+    @apply text-body;
+  } */
 }
