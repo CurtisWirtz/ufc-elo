@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { HeaderSearchBar } from './HeaderSearchBar'
-import avatarSvg from '../svg/avatar.svg';
+import avatarSvg from '../assets/svg/avatar.svg';
 
 import {
   NavigationMenu,
