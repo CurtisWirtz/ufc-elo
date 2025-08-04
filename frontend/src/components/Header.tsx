@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 
 const Header = ({ isAuthenticated, user, handleLogout }) => {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <NavigationMenuList>
         <NavigationMenuItem className="mr-auto">
           <NavigationMenuLink asChild>
