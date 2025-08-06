@@ -50,14 +50,13 @@ Using `djangorestframework-simplejwt` and the file-based TanStack Router, I hid 
 Axios replaces using the `fetch()` API (nice error reporting!), and React Query handles memoized caching and preloading requests for frontend performance. I also built a basic 'Full-Text Search' style search function to find fighters and events based on keywords. Zod is useful for form validation on the Register, Login and Search inputs.
 
 ### 5. Style frontend UI
-###### (ShadCN, Motion, MagicUI) 
+###### (ShadCN, Motion) 
 
 Having spent years of my professional career building out custom UIs from scratch, I admire using UI component libraries immensely.
 
-ShadCN was my choice because it's built on top of the work done by RadixUI, an open-source UI library that weighs accessibility concerns heavily. There are many competing UI frameworks that tout similar WCAG complaince claims, but fall short of this when I inspect their components with a screen reader.
+ShadCN was my choice because it's built on top of the work done by RadixUI, an open-source UI library that weighs accessibility concerns heavily. There are many competing UI frameworks that tout similar WCAG complaince claims, but fall short of this when I inspect their components with a screen reader. Plus it's built on Tailwind.
 
-Note: I see [Mantine](https://ui.mantine.dev/) as the industry leader for **production-ready UI**. It has more utility components that are useful for more elaborate projects than this.
-
+Note: [Mantine](https://ui.mantine.dev/) is another industry leader for **production-ready UI**. It also comes stock with great utility components like a calendar picker, but attempting a tailwind integration was PAINFUL, as Mantine is built with modular CSS... ShadCN it is!
 
 ### 6. Containerization + Deploy Pipeline
 ###### (Docker, Github Actions, ---) 
