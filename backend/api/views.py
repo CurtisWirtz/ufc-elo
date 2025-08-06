@@ -78,6 +78,7 @@ class FighterListView(generics.ListAPIView):
 class FighterDetailView(generics.RetrieveAPIView):
     queryset = Fighter.objects.all()
     serializer_class = FighterDetailSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'fighter_id'
 
 
@@ -99,7 +100,7 @@ class CombinedSearchView(generics.ListAPIView):
                 SearchVector('nickname', weight='B')
             )
             # Annotate the queryset with the search vector (as 'search_document')
-            # and the rank (as 'rank')
+            # and the rank (as 'rank') https://docs.djangoproject.com/en/5.2/ref/models/querysets/#annotate
             fighter_queryset = Fighter.objects.annotate(
                 search_document=fighter_vector_definition,
                 rank=SearchRank(fighter_vector_definition, search_query_obj)

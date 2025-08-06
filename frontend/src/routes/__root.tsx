@@ -19,7 +19,7 @@ function RootLayoutComponent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="w-full min-h-screen">
       <Header isAuthenticated={isAuthenticated} user={user} handleLogout={handleLogout} />
 
       <main className="flex-grow">

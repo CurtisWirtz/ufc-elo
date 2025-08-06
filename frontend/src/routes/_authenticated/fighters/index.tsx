@@ -3,8 +3,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import type { PaginatedResponse } from '../../../api/queries.ts';
 import { getItems } from '../../../api/queries.ts';
 import type { Fighter } from '../../../types/fighter.types.ts';
-import { formatDate } from '../../../utils/dateUtils.ts';
-import { getPageParamFromUrl, constructItemsApiUrl } from '../../../utils/urlUtils.ts';
+import { formatDate } from '../../../lib/dateUtils.ts';
+import { getPageParamFromUrl, constructItemsApiUrl } from '../../../lib/urlUtils.ts';
 
 export const Route = createFileRoute('/_authenticated/fighters/')({
   component: FightersIndex,
