@@ -1,16 +1,15 @@
-import type { ReactNode } from "react";
+import { ReactNode } from "react";
 
-// import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-import LogoUI from "@/components/logos/octagon";
+import LaunchUI from "../../logos/launch-ui";
 import {
   Footer,
   FooterBottom,
   FooterColumn,
   FooterContent,
-} from "@/components/ui/footer";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+} from "../../ui/footer";
+import { ModeToggle } from "../../ui/mode-toggle";
 
 interface FooterLink {
   text: string;
@@ -33,36 +32,37 @@ interface FooterProps {
 }
 
 export default function FooterSection({
-  logo = <LogoUI />,
-  name = "MMA Elo Explorer",
+  logo = <LaunchUI />,
+  name = "Launch UI",
   columns = [
     {
-      title: "Explore",
+      title: "Product",
       links: [
-        { text: "Events", href: "/events" },
-        { text: "Fighters", href: "/fighters" },
+        { text: "Changelog", href: "https://www.launchuicomponents.com/" },
+        { text: "Documentation", href: "https://www.launchuicomponents.com/" },
       ],
     },
-    // {
-    //   title: "Company",
-    //   links: [
-    //     { text: "About", href: "/" },
-    //     { text: "Careers", href: "/" },
-    //     { text: "Blog", href: "/" },
-    //   ],
-    // },
+    {
+      title: "Company",
+      links: [
+        { text: "About", href: "https://www.launchuicomponents.com/" },
+        { text: "Careers", href: "https://www.launchuicomponents.com/" },
+        { text: "Blog", href: "https://www.launchuicomponents.com/" },
+      ],
+    },
     {
       title: "Contact",
       links: [
-        { text: "LinkedIn", href: "https://www.linkedin.com/in/curtiswirtz/" },
-        { text: "Github", href: "https://github.com/CurtisWirtz/ufc-elo" },
+        { text: "Discord", href: "https://www.launchuicomponents.com/" },
+        { text: "Twitter", href: "https://www.launchuicomponents.com/" },
+        { text: "Github", href: "https://www.launchuicomponents.com/" },
       ],
     },
   ],
-  // copyright = "",
+  copyright = "© 2025 Mikołaj Dobrucki. All rights reserved",
   policies = [
-    // { text: "Privacy Policy", href: "/" },
-    // { text: "Terms of Service", href: "/" },
+    { text: "Privacy Policy", href: "https://www.launchuicomponents.com/" },
+    { text: "Terms of Service", href: "https://www.launchuicomponents.com/" },
   ],
   showModeToggle = true,
   className,
@@ -94,7 +94,7 @@ export default function FooterSection({
             ))}
           </FooterContent>
           <FooterBottom>
-            <div>&copy; {new Date().getFullYear()} MMA Elo Explorer. Curtis Wirtz - All rights reserved.</div>
+            <div>{copyright}</div>
             <div className="flex items-center gap-4">
               {policies.map((policy, index) => (
                 <a key={index} href={policy.href}>

@@ -33,7 +33,7 @@ function RootLayoutComponent() {
         <Footer />
 
         {/* Don't use in production */}
-        <TanStackRouterDevtools />
+        {/* <TanStackRouterDevtools /> */}
       </div>
     </ThemeProvider>
   )
