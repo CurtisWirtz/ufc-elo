@@ -18,7 +18,7 @@ function RootLayoutComponent() {
 
   const handleLogout = () => {
     logout(); // Call the logout function from AuthProvider
-    navigate({ to: '/login', replace: true }); // Redirect to login page after logout
+    navigate({ to: '/', replace: true }); // Redirect to login page after logout
   };
 
   return (

@@ -58,7 +58,7 @@ export default function Header({
     { text: "Events", href: "/events" },
   ],
   actions = [
-    { text: "Log in", href: "/login", isButton: false },
+    { text: "Login", href: "/login", isButton: false },
     {
       text: "Register",
       href: "/register",

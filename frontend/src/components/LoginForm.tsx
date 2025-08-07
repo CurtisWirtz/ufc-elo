@@ -1,15 +1,24 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { api } from "../api/client.ts";
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, Link } from '@tanstack/react-router';
 import { useAuth } from '../AuthProvider.tsx';
 import { loginSchema } from '../schemas/authSchema';
 import type { LoginFormInputs } from '../schemas/authSchema';
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-
-
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -21,7 +30,7 @@ import {
 } from "@/components/ui/form"
 
 
-const LoginForm: React.FC = () => {
+const LoginForm: React.FC = (className: string = "") => {
     const form = useForm<LoginFormInputs>({
         resolver: zodResolver(loginSchema), // Use Zod for validation
         defaultValues: { // Optional: Set default values for inputs
@@ -105,62 +114,73 @@ const LoginForm: React.FC = () => {
     }
 
     return (
-    <div className="p-4 bg-white shadow-md rounded-lg max-w-md mx-auto my-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <Section
+        className={cn(
+            "overflow-hidden pb-0 sm:pb-0 md:pb-0 min-h-100 md:min-h-150",
+            className,
+        )}
+        >
+            <div className="flex flex-col items-center gap-6 sm:gap-12">
+                <Card className="w-full max-w-sm">
+                    <CardHeader>
+                        <CardTitle>Login to your account</CardTitle>
+                        <CardDescription>
+                            Enter your credentials to login
+                        </CardDescription>
+                        <CardAction className="flex flex-col text-center">
+                            <span className='mb-1 text-sm'>New here?</span>
+                            <Button variant="outline" className="cursor-pointer">
+                                <Link to="/register">Register</Link>
+                            </Button>
+                        </CardAction>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)}>
+                                {/* Display general server-side errors */}
+                                {form.formState.errors.root?.serverError && <p className="text-red-500 text-sm mb-4 text-center">{form.formState.errors.root.serverError.message}</p>}
 
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-                {/* Display general server-side errors */}
-                {form.formState.errors.root?.serverError && <p className="text-red-500 text-sm mb-4 text-center">{form.formState.errors.root.serverError.message}</p>}
+                                <div className="mb-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="username"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Username</FormLabel>
+                                                <FormControl>
+                                                    <Input type="text" id="username" {...field} disabled={form.formState.isSubmitting} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
 
-                <div className="mb-4">
-                    {/* <Label htmlFor="username">
-                        Username:
-                    </Label>
-                    <Input
-                        type="text"
-                        id="username"
-                        {form.register("username")}
-                        disabled={isSubmitting}
-                    /> */}
+                                <div className="mb-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="password"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Password</FormLabel>
+                                                <FormControl>
+                                                    <Input type="password" id="password" {...field} disabled={form.formState.isSubmitting} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
 
-                    <FormField
-                        control={form.control}
-                        name="username"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Username</FormLabel>
-                                <FormControl>
-                                    <Input type="text" id="username" {...field} disabled={form.formState.isSubmitting} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input type="password" id="password" {...field} disabled={form.formState.isSubmitting} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-               </div>
-
-                <Button type="submit" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Logging In...' : 'Log In'}
-                </Button>
-            </form>
-        </Form>
-    </div>
+                                <Button type="submit" className="w-full cursor-pointer disabled:not-allowed" disabled={form.formState.isSubmitting}>
+                                    {form.formState.isSubmitting ? 'Logging In...' : 'Login'}
+                                </Button>
+                            </form>
+                        </Form>
+                    </CardContent>
+                </Card>
+            </div>
+        </Section>
     )
 }
 
