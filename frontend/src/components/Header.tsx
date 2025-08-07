@@ -18,6 +18,7 @@ import {
 import Navigation from "@/components/ui/navigation";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 interface NavbarLink {
   text: string;
@@ -82,6 +83,7 @@ export default function Header({
               {logo}
               {name}
             </Link>
+            <ModeToggle />
             {isAuthenticated && (
               <>
                 {showNavigation && (customNavigation || <Navigation />)}
