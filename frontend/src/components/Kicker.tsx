@@ -23,7 +23,7 @@ interface CTAProps {
   className?: string;
 }
 
-export default function CTA({
+export default function Kicker({
   title = 'Answer the age old question: "Who would win?"',
   buttons = [
     {
