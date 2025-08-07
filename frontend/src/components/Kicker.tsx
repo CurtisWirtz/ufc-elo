@@ -24,7 +24,7 @@ interface CTAProps {
 }
 
 export default function Kicker({
-  title = 'Answer the age old question: "Who would win?"',
+  title = 'Answer the age old question: "Who would\'ve won?"',
   buttons = [
     {
       href: "/register",
