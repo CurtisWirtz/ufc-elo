@@ -1,39 +1,11 @@
-import { Link } from '@tanstack/react-router';
-
-import { ArrowRightIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
-// import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-import Github from "@/components/logos/github";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import type { ButtonProps } from "@/components/ui/button";
-import Glow from "@/components/ui/glow";
-import { Mockup, MockupFrame } from "@/components/ui/mockup";
 import { Section } from "@/components/ui/section";
-import Screenshot from "@/components/ui/screenshot";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 
-interface HeroButtonProps {
-  href: string;
-  text: string;
-  variant?: ButtonProps["variant"];
-  icon?: ReactNode;
-  iconRight?: ReactNode;
-}
-
-interface HeroProps {
-  title?: string;
-  description?: string;
-  mockup?: ReactNode | false;
-  badge?: ReactNode | false;
-  buttons?: HeroButtonProps[] | false;
-  className?: string;
-}
-
-export default function DatasetStats(className: string) {
+export default function DatasetStats(className: string = "") {
   return (
     <Section
       className={cn(
@@ -47,31 +19,31 @@ export default function DatasetStats(className: string) {
                 Browse our massive collection of MMA data:
             </h1>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-8">
-                <div className="flex flex-col col-span-1">
+                <div className="flex flex-col col-span-1 items-baseline gap-2">
                     <NumberTicker
                         value={10845}
                         decimalPlaces={0}
-                        className="whitespace-pre-wrap text-8xl font-medium tracking-tighter text-black dark:text-white"
+                        className="from-foreground to-foreground dark:to-brand bg-linear-to-r bg-clip-text text-7xl font-medium text-transparent drop-shadow-[2px_1px_24px_var(--brand-foreground)] transition-all duration-300"
                     />
                     <h2 className="text-brand">BOUTS</h2>
                 </div>
-                <div className="flex flex-col col-span-1">
+                <div className="flex flex-col col-span-1 items-baseline gap-2">
                     <NumberTicker
                         value={4375}
                         decimalPlaces={0}
                         delay={0.3}
-                        className="whitespace-pre-wrap text-8xl font-medium tracking-tighter text-black dark:text-white"
+                        className="from-foreground to-foreground dark:to-brand bg-linear-to-r bg-clip-text text-7xl font-medium text-transparent drop-shadow-[2px_1px_24px_var(--brand-foreground)] transition-all duration-300"
                     />
                     <h2 className="text-brand">FIGHTERS</h2>
                 </div>
-                <div className="flex flex-col col-span-1">
+                <div className="flex flex-col col-span-1 items-baseline gap-2">
                     <NumberTicker
                         value={1209}
                         decimalPlaces={0}
                         delay={0.6}
-                        className="whitespace-pre-wrap text-8xl font-medium tracking-tighter text-black dark:text-white"
+                        className="from-foreground to-foreground dark:to-brand bg-linear-to-r bg-clip-text text-7xl font-medium text-transparent drop-shadow-[2px_1px_24px_var(--brand-foreground)] transition-all duration-300"
                     />
-                    <h2 className="text-brand">EVENTS</h2>
+                    <h2 className="text-brand mb-20">EVENTS</h2>
                 </div>
             </div>
         </div>
@@ -79,3 +51,5 @@ export default function DatasetStats(className: string) {
     </Section>
   )
 }
+
+
