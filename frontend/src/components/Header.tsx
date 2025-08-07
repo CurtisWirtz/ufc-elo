@@ -18,6 +18,7 @@ import {
 import Navigation from "@/components/ui/navigation";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 interface NavbarLink {
   text: string;
@@ -50,7 +51,7 @@ export default function Header({
   handleLogout,
 
   logo = <LogoUI />,
-  name = "MMA Elo",
+  name = "MMA Elo Explorer",
   homeUrl = "/",
   mobileLinks = [
     { text: "Fighters", href: "/fighters" },
@@ -71,7 +72,7 @@ export default function Header({
 }: NavbarProps) {
   return (
     <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
-      <div className="fade-bottom bg-background/15 absolute left-0 h-16 w-full backdrop-blur-lg"></div>
+      <div className="fade-bottom bg-background/15 absolute left-0 h-24 w-full backdrop-blur-lg"></div>
       <div className="max-w-container relative mx-auto">
         <NavbarComponent>
           <NavbarLeft>
@@ -82,6 +83,7 @@ export default function Header({
               {logo}
               {name}
             </Link>
+            <ModeToggle />
             {isAuthenticated && (
               <>
                 {showNavigation && (customNavigation || <Navigation />)}
