@@ -13,7 +13,6 @@ import {
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -30,7 +29,7 @@ import {
 } from "@/components/ui/form"
 
 
-const LoginForm: React.FC = (className: string = "") => {
+const LoginForm: React.FC = () => {
     const form = useForm<LoginFormInputs>({
         resolver: zodResolver(loginSchema), // Use Zod for validation
         defaultValues: { // Optional: Set default values for inputs
@@ -117,7 +116,7 @@ const LoginForm: React.FC = (className: string = "") => {
         <Section
         className={cn(
             "overflow-hidden pb-0 sm:pb-0 md:pb-0 min-h-100 md:min-h-150",
-            className,
+            "",
         )}
         >
             <div className="flex flex-col items-center gap-6 sm:gap-12">
