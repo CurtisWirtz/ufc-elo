@@ -1,10 +1,10 @@
-// components/HeaderSearchBar.tsx
 import React from 'react';
 import { useNavigate } from '@tanstack/react-router'; // Import useLocation to access state
 import { useForm } from 'react-hook-form';
 import { searchSchema } from '../schemas/searchSchema';
 import type { SearchFormInputs } from '../schemas/searchSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
 
 export const HeaderSearchBar: React.FC = ({ sheetClose }) => {
   const navigate = useNavigate();
@@ -54,9 +54,9 @@ export const HeaderSearchBar: React.FC = ({ sheetClose }) => {
   return (
     <div className="relative">
       <form onSubmit={handleSubmit(onSubmit, onError)} className="flex items-center relative">
-        <input
+        <Input
           type="text"
-          placeholder="Search for fighters and events by name..."
+          placeholder="Search for fighters or events..."
           {...register("searchQuery")}
           className={`flex-grow p-2 text-sm border rounded-md focus:outline-none focus:ring-1 ${
             errors.searchQuery ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
