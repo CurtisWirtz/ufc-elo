@@ -1,20 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router';
-
 import { ArrowRightIcon } from "lucide-react";
-import type { ReactNode } from "react";
+import { ReactNode } from "react";
 
-// import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-import Github from "@/components/logos/github";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import type { ButtonProps } from "@/components/ui/button";
-import Glow from "@/components/ui/glow";
-import { Mockup, MockupFrame } from "@/components/ui/mockup";
-import { Section } from "@/components/ui/section";
-import Screenshot from "@/components/ui/screenshot";
+import Github from "../../logos/github";
+import { Badge } from "../../ui/badge";
+import { Button, type ButtonProps } from "../../ui/button";
+import Glow from "../../ui/glow";
+import { Mockup, MockupFrame } from "../../ui/mockup";
+import Screenshot from "../../ui/screenshot";
+import { Section } from "../../ui/section";
 
 interface HeroButtonProps {
   href: string;
@@ -33,22 +28,14 @@ interface HeroProps {
   className?: string;
 }
 
-export const Route = createFileRoute('/')({
-  // beforeLoad: () => {
-  //   // Redirect to /events and replace the current entry in history
-  //   throw redirect({ to: '/events', replace: true })
-  // },
-  component: Hero,
-})
-
 export default function Hero({
-  title = "Who would've won in their prime, Fedor or Randy/Ando/Bones?",
-  description = "By applying the Elo ranking system to MMA fighters, we can simulate the results of bouts bewteen any two fighters at any point in their careers. Imagine Ubereem vs Ngannou, or Chuck vs Wanderlei while both thier primes.",
+  title = "Give your big idea the design it deserves",
+  description = "Professionally designed blocks and templates built with React, Shadcn/ui and Tailwind that will help your product stand out.",
   mockup = (
     <Screenshot
-      srcLight="/bones-alex.webp"
-      srcDark="/bones-alex.webp"
-      alt="Which fighter would win in your dream matchups?"
+      srcLight="/app-light.png"
+      srcDark="/app-dark.png"
+      alt="Launch UI app screenshot"
       width={1248}
       height={765}
       className="w-full"
@@ -57,22 +44,22 @@ export default function Hero({
   badge = (
     <Badge variant="outline" className="animate-appear">
       <span className="text-muted-foreground">
-        MMA Elo Explorer is out!
+        New version of Launch UI is out!
       </span>
-      <Link to={"/register"} className="flex items-center gap-1">
-        Get Started
+      <a href="https://www.launchuicomponents.com/" className="flex items-center gap-1">
+        Get started
         <ArrowRightIcon className="size-3" />
-      </Link>
+      </a>
     </Badge>
   ),
   buttons = [
     {
-      href: "/register",
-      text: "Register",
+      href: "https://www.launchuicomponents.com/",
+      text: "Get Started",
       variant: "default",
     },
     {
-      href: "https://github.com/CurtisWirtz/ufc-elo",
+      href: "https://www.launchuicomponents.com/",
       text: "Github",
       variant: "glow",
       icon: <Github className="mr-2 size-4" />,
@@ -105,11 +92,11 @@ export default function Hero({
                   size="lg"
                   asChild
                 >
-                  <Link to={button.href}>
+                  <a href={button.href}>
                     {button.icon}
                     {button.text}
                     {button.iconRight}
-                  </Link>
+                  </a>
                 </Button>
               ))}
             </div>
