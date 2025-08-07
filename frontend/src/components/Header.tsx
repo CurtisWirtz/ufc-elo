@@ -120,6 +120,7 @@ export default function Header({
               )
             ) : (
               <div className="hidden md:flex items-center gap-2">
+                <HeaderSearchBar className="w-28" />
                 {user && (
                   <div className="flex items-center gap-2">
                     <Avatar>
