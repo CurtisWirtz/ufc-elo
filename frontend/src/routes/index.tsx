@@ -1,5 +1,6 @@
-import HomeHero from '@/components/HomeHero';
 import { createFileRoute } from '@tanstack/react-router'
+import HomeHero from '@/components/HomeHero';
+import CTA from '@/components/CTA';
 
 export const Route = createFileRoute('/')({
   // beforeLoad: () => {
@@ -13,6 +14,7 @@ export default function LandingPage() {
   return (
     <>
       <HomeHero />
+      <CTA />
     </>
   )
 }
