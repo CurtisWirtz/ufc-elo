@@ -128,7 +128,7 @@ const LoginForm: React.FC = () => {
                         </CardDescription>
                         <CardAction className="flex flex-col text-center">
                             <span className='mb-1 text-sm'>New here?</span>
-                            <Button variant="outline" className="cursor-pointer">
+                            <Button variant="outline" className="cursor-pointer" asChild>
                                 <Link to="/register">Register</Link>
                             </Button>
                         </CardAction>

@@ -128,13 +128,13 @@ export function RegisterForm() {
       <div className="flex flex-col items-center gap-6 sm:gap-12">
         <Card className="w-full max-w-sm">
           <CardHeader>
-            <CardTitle>Registering is quick and easyZ</CardTitle>
+            <CardTitle>Registering is Quick!</CardTitle>
               <CardDescription>
                 Choose a username and password to create an account
               </CardDescription>
               <CardAction className="flex flex-col text-center">
                   <span className='mb-1 text-sm'>Already registered?</span>
-                  <Button variant="outline" className="cursor-pointer">
+                  <Button variant="outline" className="cursor-pointer" asChild>
                       <Link to="/login">Login</Link>
                   </Button>
               </CardAction>
