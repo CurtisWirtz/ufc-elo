@@ -104,7 +104,7 @@ function EventsIndex() {
                 return (
                   <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b last:border-0">
                     <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center tablet:justify-center">
-                      <Button asChild>
+                      <Button asChild variant="secondary">
                         <Link
                           to="/events/$eventId"
                           params={{ eventId: event.event_id }}
