@@ -6,10 +6,18 @@ import type { Event } from '../../../types/event.types.ts';
 import { formatDate, isFutureDate } from '../../../lib/dateUtils.ts';
 import { getPageParamFromUrl, constructItemsApiUrl } from '../../../lib/urlUtils.ts';
 
+import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button.tsx';
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsIndex,
   validateSearch: (rawSearch: Record<string, unknown>): { page: number } => {
-    // ensure rawSearch is an object (or empty object if undefined/null)
+    // ensure rawSearch is an object (or empty object if undefined/null) - utilizing tanstack router search for pagination
+    // this is a safeguard to ensure we always return an object with a 'page' property
+    // if rawSearch is not an object, we default to an empty object
+    // this allows us to safely access properties like rawSearch.page without TypeErrors
     const actualSearch = rawSearch && typeof rawSearch === 'object' ? rawSearch : {};
 
     let pageNumber: number;
@@ -40,8 +48,8 @@ export const Route = createFileRoute('/_authenticated/events/')({
       staleTime: 1000 * 60 * 5, // add cache stale time... refresh after 5 mins
     });
   },
-  pendingComponent: () => <div>Loading...</div>,
-  errorComponent: () => <div>Error fetching events</div>,
+  pendingComponent: () => <div className="flex justify-center w-full my-20 text-4xl">Loading...</div>,
+  errorComponent: () => <div className="flex justify-center w-full my-20 text-4xl">Error fetching events</div>,
 });
 
 
@@ -76,119 +84,145 @@ function EventsIndex() {
   const endItem = Math.min(currentPage * pageSize, totalEvents);
 
   return (
-    <div className="w-full mt-2 items-center bg-gray-100 min-h-screen p-6">
-      <h1 className="text-4xl font-bold mb-6 text-gray-800">Events List</h1>
-      <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden">
-        <thead>
-          <tr>
-            <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-600">Event Name</th>
-            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Date</th>
-            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.length > 0 ? (
-            events.map((event: Event) => {
-              return (
-                <tr key={event.event_id} className="hover:bg-gray-50 border-b border-gray-200">
-                  <td className='p-3'>
-                    <Link
-                      to="/events/$eventId"
-                      params={{ eventId: event.event_id }}
-                      className="text-blue-500 hover:underline flex w-full justify-start"
-                    >
-                      {event.name}
-                    </Link>
-                  </td>
-                  <td className="whitespace-pre p-3 flex flex-col items-center">
-                    {/* Keep the upcoming indicator, but let all events render */}
-                    {isFutureDate(event.date) && <span className="text-red-500 font-semibold text-xs mb-1">Upcoming: </span>}
-                    <span>{formatDate(event.date)}</span>
-                  </td>
-                  <td className="whitespace-pre p-3 text-center">
-                    {event.location}
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan={3} className="p-3 text-center text-gray-500">
-                No upcoming events found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      {/* Pagination Controls */}
-      {totalEvents > 0 && ( // if there are events...
-        <div className="flex flex-col items-center mt-6 space-y-4">
-          {/* Items Counter */}
-          <div className="text-lg font-medium text-gray-700">
-            Displaying {startItem} - {endItem} of {totalEvents} events
+    <Section
+      className={cn(
+          "py-0! px-5! max-w-container mx-auto",
+          "",
+    )}>
+      <div className="bg-background w-full mt-6 items-center min-h-screen">
+        <Breadcrumbs />
+        <h1 className="animate-appear text-4xl font-bold mb-6">Events List</h1>
+        <div className="w-full animate-appear">
+          <div className="hidden tablet:grid tablet:grid-cols-6 border-b border-brand pb-3 gap-3">
+            <div className="tablet:col-span-3 xl:col-span-2 text-center text-brand text-2xl">Event Name</div>
+            <div className="tablet:col-span-1 xl:col-span-2 text-center text-brand text-2xl">Date</div>
+            <div className="tablet:col-span-2 xl:col-span-2 text-center text-brand text-2xl">Location</div>
           </div>
-
-          {/* Pagination Controls */}
-          <div className="flex justify-center space-x-4 items-center">
-            {/* First Page Link */}
-            {currentPage > 1 && totalPages > 1 ? (
-              <Link
-                to="."
-                search={{ page: 1 }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`<< First`}
-              </Link>
+          <div className="flex flex-col">
+            {events.length > 0 ? (
+              events.map((event: Event) => {
+                return (
+                  <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b last:border-0">
+                    <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center tablet:justify-center">
+                      <Button asChild variant="secondary" className="group">
+                        <Link
+                          to="/events/$eventId"
+                          params={{ eventId: event.event_id }}
+                          className="flex w-min mx-auto tablet:w-full tablet:justify-center px-2 order-2"
+                        >
+                          {event.name}<span className="ml-2 group-hover:translate-x-2 duration-300 transition-all text-lg mb-1 text-brand">&#187;</span>
+                        </Link>
+                      </Button>
+                      <div className="flex tablet:hidden justify-center order-1">
+                        {isFutureDate(event.date) && <span className="text-brand font-semibold mr-2">Upcoming: </span>}
+                        <span>{formatDate(event.date)}</span>
+                      </div>
+                      <div className="flex tablet:hidden order-3 pt-2 justify-center">
+                        {event.location}
+                      </div>
+                    </div>
+                    <div className="tablet:col-span-1 xl:col-span-2 hidden tablet:flex tablet:flex-col justify-center items-center md:whitespace-pre ">
+                      {/* Keep the upcoming indicator, but let all events render */}
+                      {isFutureDate(event.date) && <span className="text-brand font-semibold">Upcoming: </span>}
+                      <span>{formatDate(event.date)}</span>
+                    </div>
+                    <div className="tablet:col-span-2 xl:col-span-2 hidden tablet:flex tablet:justify-center md:whitespace-pre p-3 md:text-center">
+                      {event.location}
+                    </div>
+                  </div>
+                );
+              })
             ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`<< First`}</span>
-            )}
-
-            {/* Previous Page Link */}
-            {previousPageNumber !== undefined ? (
-              <Link
-                to="."
-                search={{ page: previousPageNumber }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`< Prev`}
-              </Link>
-            ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`< Prev`}</span>
-            )}
-
-            {/* Current Page Indicator */}
-            <span className="text-lg font-medium text-gray-700 mx-2">Page {currentPage} of {totalPages}</span>
-
-            {/* Next Page Link */}
-            {nextPageNumber !== undefined ? (
-              <Link
-                to="."
-                search={{ page: nextPageNumber }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`Next >`}
-              </Link>
-            ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`Next >`}</span>
-            )}    
-
-            {/* Last Page Link */}
-            {currentPage < totalPages && totalPages > 1 ? (
-              <Link
-                to="."
-                search={{ page: totalPages }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`Last >>`}
-              </Link>
-            ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`Last >>`}</span>
+              <div className="p-3 text-center">
+                No events found.
+              </div>
             )}
           </div>
         </div>
-      )}
-      
-    </div>
+
+        {/* Pagination Controls */}
+        {totalEvents > 0 && ( // if there are events...
+          <div className="animate-appear flex flex-col items-center mt-6">
+            {/* Items Counter */}
+            <div className="text-lg text-brand font-medium mb-5">
+              Displaying {startItem} - {endItem} of {totalEvents} events
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-center items-center">
+              {/* First Page Link */}
+              {currentPage > 1 && totalPages > 1 ? (
+                <Button asChild>
+                  <Link
+                    to="."
+                    search={{ page: 1 }}
+                  >
+                    {`<<`}
+                  </Link>
+                </Button>
+              ) : (
+                <Button className="cursor-not-allowed opacity-50 mr-2">
+                  {`<<`}
+                </Button>
+              )}
+
+              {/* Previous Page Link */}
+              {previousPageNumber !== undefined ? (
+                <Button asChild>
+                  <Link
+                    to="."
+                    search={{ page: previousPageNumber }}
+                    className="ml-2"
+                  >
+                    {`<`}
+                  </Link>
+                </Button>
+              ) : (
+                <Button className="cursor-not-allowed opacity-50">
+                  {`<`}
+                </Button>
+              )}
+
+              {/* Current Page Indicator */}
+              <span className="text-lg font-medium mx-4">Page {currentPage} of {totalPages}</span>
+
+              {/* Next Page Link */}
+              {nextPageNumber !== undefined ? (
+                <Button asChild>
+                  <Link
+                    to="."
+                    search={{ page: nextPageNumber }}
+                    className="mr-2"
+                  >
+                    {`>`}
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild>
+                  {`>`}
+                </Button>
+              )}
+
+              {/* Last Page Link */}
+              {currentPage < totalPages && totalPages > 1 ? (
+                <Button asChild>
+                  <Link
+                    to="."
+                    search={{ page: totalPages }}
+                  >
+                    {`>>`}
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild>
+                  {`>>`}
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+        
+      </div>
+    </Section>
   );
 }

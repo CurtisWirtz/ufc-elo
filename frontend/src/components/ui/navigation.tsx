@@ -129,7 +129,7 @@ export default function Navigation({
         {menuItems.map((item, index) => (
           <NavigationMenuItem key={index}>
             {item.isLink ? (
-              <Link to={item.href || ""} className={navigationMenuTriggerStyle()}>
+              <Link to={item.href || ""} className={`${navigationMenuTriggerStyle()} ${location.pathname.startsWith(item.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}`}>
                 {/* <NavigationMenuLink className={navigationMenuTriggerStyle()}> */}
                   {item.title}
                 {/* </NavigationMenuLink> */}

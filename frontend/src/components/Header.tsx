@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouterState } from '@tanstack/react-router'
 import { HeaderSearchBar } from './HeaderSearchBar'
 import avatarSvg from '../assets/svg/avatar.svg';
 
@@ -70,6 +70,9 @@ export default function Header({
   customNavigation,
   className,
 }: NavbarProps) {
+  const { location } = useRouterState()
+  const currentPath = location.pathname
+
   return (
     <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
       <div className="fade-bottom bg-background/15 absolute left-0 h-24 w-full backdrop-blur-lg"></div>
@@ -86,7 +89,7 @@ export default function Header({
             <ModeToggle />
             {isAuthenticated && (
               <>
-                {showNavigation && (customNavigation || <Navigation />)}
+                {showNavigation && (customNavigation || <Navigation className=""/>)}
               </>
             )}
           </NavbarLeft>
@@ -117,6 +120,7 @@ export default function Header({
               )
             ) : (
               <div className="hidden md:flex items-center gap-2">
+                <HeaderSearchBar className="w-28" />
                 {user && (
                   <div className="flex items-center gap-2">
                     <Avatar>
@@ -168,7 +172,7 @@ export default function Header({
                       <SheetClose key={index} className="text-start" asChild>
                         <Link
                           to={link.href}
-                          className="text-muted-foreground hover:text-foreground"
+                          className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
                         >
                           {link.text}
                         </Link>

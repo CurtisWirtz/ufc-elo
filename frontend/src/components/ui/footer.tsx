@@ -17,7 +17,7 @@ function FooterContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="footer-content"
       className={cn(
-        "grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5",
+        "grid grid-cols-3 gap-8",
         className,
       )}
       {...props}

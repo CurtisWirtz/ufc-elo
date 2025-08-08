@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 // import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
 
 import LogoUI from "@/components/logos/octagon";
 import {
@@ -72,7 +73,7 @@ export default function FooterSection({
       <div className="max-w-container mx-auto">
         <Footer>
           <FooterContent>
-            <FooterColumn className="col-span-2 sm:col-span-3 md:col-span-1">
+            <FooterColumn className="col-span-3 md:col-span-1">
               <div className="flex items-center gap-2">
                 {logo}
                 <h3 className="text-xl font-bold">{name}</h3>
@@ -80,26 +81,26 @@ export default function FooterSection({
             </FooterColumn>
             {columns.map((column, index) => (
               <FooterColumn key={index}>
-                <h3 className="text-md pt-1 font-semibold">{column.title}</h3>
+                <h3 className="text-md pt-1 font-semibold text-brand">{column.title}</h3>
                 {column.links.map((link, linkIndex) => (
-                  <a
+                  <Link
                     key={linkIndex}
-                    href={link.href}
+                    to={link.href}
                     className="text-muted-foreground text-sm"
                   >
                     {link.text}
-                  </a>
+                  </Link>
                 ))}
               </FooterColumn>
             ))}
           </FooterContent>
           <FooterBottom>
-            <div>&copy; {new Date().getFullYear()} MMA Elo Explorer. Curtis Wirtz - All rights reserved.</div>
+            <div className="text-brand">&copy; {new Date().getFullYear()} MMA Elo Explorer. Curtis Wirtz - All rights reserved.</div>
             <div className="flex items-center gap-4">
               {policies.map((policy, index) => (
-                <a key={index} href={policy.href}>
+                <Link key={index} to={policy.href}>
                   {policy.text}
-                </a>
+                </Link>
               ))}
               {showModeToggle && <ModeToggle />}
             </div>
