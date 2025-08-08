@@ -88,7 +88,7 @@ function FightersIndex() {
       <div className="bg-background w-full mt-6 items-center min-h-screen">
         <Breadcrumbs />
         <h1 className="animate-appear text-4xl font-bold mb-6">Fighters List</h1>
-        <div className="w-full animate-appear">
+        <div className="w-full animate-appear p-6 rounded-md bg-brand/10">
           <div className="hidden md:grid md:grid-cols-7 tablet:grid-cols-8 border-b border-brand pb-3 gap-3">
             <div className="col-span-3 text-center text-brand text-2xl">Fighter Name</div>
             <div className="col-span-1 md:col-span-2 text-center text-brand text-2xl">Record</div>

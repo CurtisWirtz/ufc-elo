@@ -92,7 +92,7 @@ function EventsIndex() {
       <div className="bg-background w-full mt-6 items-center min-h-screen">
         <Breadcrumbs />
         <h1 className="animate-appear text-4xl font-bold mb-6">Events List</h1>
-        <div className="w-full animate-appear">
+        <div className="w-full animate-appear p-6 rounded-md bg-brand/10 shadow-lg">
           <div className="hidden tablet:grid tablet:grid-cols-6 border-b border-brand pb-3 gap-3">
             <div className="tablet:col-span-3 xl:col-span-2 text-center text-brand text-2xl">Event Name</div>
             <div className="tablet:col-span-1 xl:col-span-2 text-center text-brand text-2xl">Date</div>
