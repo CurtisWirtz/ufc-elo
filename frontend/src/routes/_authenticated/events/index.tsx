@@ -6,10 +6,18 @@ import type { Event } from '../../../types/event.types.ts';
 import { formatDate, isFutureDate } from '../../../lib/dateUtils.ts';
 import { getPageParamFromUrl, constructItemsApiUrl } from '../../../lib/urlUtils.ts';
 
+import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button.tsx';
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsIndex,
   validateSearch: (rawSearch: Record<string, unknown>): { page: number } => {
-    // ensure rawSearch is an object (or empty object if undefined/null)
+    // ensure rawSearch is an object (or empty object if undefined/null) - utilizing tanstack router search for pagination
+    // this is a safeguard to ensure we always return an object with a 'page' property
+    // if rawSearch is not an object, we default to an empty object
+    // this allows us to safely access properties like rawSearch.page without TypeErrors
     const actualSearch = rawSearch && typeof rawSearch === 'object' ? rawSearch : {};
 
     let pageNumber: number;
@@ -76,50 +84,62 @@ function EventsIndex() {
   const endItem = Math.min(currentPage * pageSize, totalEvents);
 
   return (
-    <div className="w-full mt-2 items-center bg-gray-100 min-h-screen p-6">
-      <h1 className="text-4xl font-bold mb-6 text-gray-800">Events List</h1>
-      <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden">
-        <thead>
-          <tr>
-            <th className="py-3 px-4 border-b text-left text-sm font-semibold text-gray-600">Event Name</th>
-            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Date</th>
-            <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Location</th>
-          </tr>
-        </thead>
-        <tbody>
+  <Section
+    className={cn(
+        "py-0! px-5! max-w-container mx-auto",
+        "",
+    )}
+    >
+    <div className="bg-background w-full mt-6 items-center min-h-screen">
+      <Breadcrumbs />
+      <h1 className="text-4xl font-bold mb-6">Events List</h1>
+      <div className="w-full">
+        <div className="hidden tablet:grid tablet:grid-cols-6 border-b border-brand pb-3 gap-3">
+          <div className="tablet:col-span-3 xl:col-span-2 text-center text-brand text-2xl">Event Name</div>
+          <div className="tablet:col-span-1 xl:col-span-2 text-center text-brand text-2xl">Date</div>
+          <div className="tablet:col-span-2 xl:col-span-2 text-center text-brand text-2xl">Location</div>
+        </div>
+        <div className="flex flex-col">
           {events.length > 0 ? (
             events.map((event: Event) => {
               return (
-                <tr key={event.event_id} className="hover:bg-gray-50 border-b border-gray-200">
-                  <td className='p-3'>
-                    <Link
-                      to="/events/$eventId"
-                      params={{ eventId: event.event_id }}
-                      className="text-blue-500 hover:underline flex w-full justify-start"
-                    >
-                      {event.name}
-                    </Link>
-                  </td>
-                  <td className="whitespace-pre p-3 flex flex-col items-center">
+                <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b last:border-0">
+                  <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center">
+                    <Button asChild>
+                      <Link
+                        to="/events/$eventId"
+                        params={{ eventId: event.event_id }}
+                        className="flex tablet:w-full tablet:justify-center px-2 order-2"
+                      >
+                        {event.name}
+                      </Link>
+                    </Button>
+                    <div className="flex tablet:hidden justify-center order-1 pb-2">
+                      {isFutureDate(event.date) && <span className="text-brand font-semibold mr-2">Upcoming: </span>}
+                      <span>{formatDate(event.date)}</span>
+                    </div>
+                    <div className="flex tablet:hidden order-3 pt-2 justify-center">
+                      {event.location}
+                    </div>
+                  </div>
+                  <div className="tablet:col-span-1 xl:col-span-2 hidden tablet:flex tablet:flex-col justify-center items-center md:whitespace-pre ">
                     {/* Keep the upcoming indicator, but let all events render */}
-                    {isFutureDate(event.date) && <span className="text-red-500 font-semibold text-xs mb-1">Upcoming: </span>}
+                    {isFutureDate(event.date) && <span className="text-brand font-semibold">Upcoming: </span>}
                     <span>{formatDate(event.date)}</span>
-                  </td>
-                  <td className="whitespace-pre p-3 text-center">
+                  </div>
+                  <div className="tablet:col-span-2 xl:col-span-2 hidden tablet:flex tablet:justify-center md:whitespace-pre p-3 md:text-center">
                     {event.location}
-                  </td>
-                </tr>
+                  </div>
+                </div>
               );
             })
           ) : (
-            <tr>
-              <td colSpan={3} className="p-3 text-center text-gray-500">
-                No upcoming events found.
-              </td>
-            </tr>
+            <div className="p-3 text-center">
+              No events found.
+            </div>
           )}
-        </tbody>
-      </table>
+        </div>
+      </div>
 
       {/* Pagination Controls */}
       {totalEvents > 0 && ( // if there are events...
@@ -190,5 +210,6 @@ function EventsIndex() {
       )}
       
     </div>
+  </Section>
   );
 }
