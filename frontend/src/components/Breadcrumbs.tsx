@@ -45,7 +45,7 @@ export function Breadcrumbs() {
 
 
     return (
-        <Breadcrumb className="mb-5">
+        <Breadcrumb className="mb-5 animate-appear">
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink asChild>
