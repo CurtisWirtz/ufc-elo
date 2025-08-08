@@ -16,9 +16,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export function Breadcrumbs() {
+export function Breadcrumbs({overrideString}: {overrideString?: string}) {
     // const location = useLocation();
     // console.log('location:', location);
+    const override: string = overrideString || "";
 
     function capitalizeFirstLetter(str: string): string {
         if (str.length === 0) {
@@ -59,7 +60,7 @@ export function Breadcrumbs() {
                             <BreadcrumbItem key={index}>
                                 {index + 1 === breadcrumb_routes.length ? (
                                     <BreadcrumbPage className={`${index + 1 === breadcrumb_routes.length && 'text-brand'}`}>
-                                        {route.name}
+                                        {override ? override : route.name}
                                     </BreadcrumbPage>
                                 ) : (
                                     <BreadcrumbLink asChild>
