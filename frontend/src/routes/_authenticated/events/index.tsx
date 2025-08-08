@@ -104,7 +104,7 @@ function EventsIndex() {
             events.map((event: Event) => {
               return (
                 <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b last:border-0">
-                  <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center">
+                  <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center tablet:justify-center">
                     <Button asChild>
                       <Link
                         to="/events/$eventId"
@@ -143,67 +143,81 @@ function EventsIndex() {
 
       {/* Pagination Controls */}
       {totalEvents > 0 && ( // if there are events...
-        <div className="flex flex-col items-center mt-6 space-y-4">
+        <div className="flex flex-col items-center mt-6">
           {/* Items Counter */}
-          <div className="text-lg font-medium text-gray-700">
+          <div className="text-lg text-brand font-medium mb-5">
             Displaying {startItem} - {endItem} of {totalEvents} events
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex justify-center space-x-4 items-center">
+          <div className="flex justify-center items-center">
             {/* First Page Link */}
             {currentPage > 1 && totalPages > 1 ? (
-              <Link
-                to="."
-                search={{ page: 1 }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`<< First`}
-              </Link>
+              <Button asChild>
+                <Link
+                  to="."
+                  search={{ page: 1 }}
+                >
+                  {`<<`}
+                </Link>
+              </Button>
             ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`<< First`}</span>
+              <Button className="cursor-not-allowed opacity-50 mr-2">
+                {`<<`}
+              </Button>
             )}
 
             {/* Previous Page Link */}
             {previousPageNumber !== undefined ? (
-              <Link
-                to="."
-                search={{ page: previousPageNumber }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`< Prev`}
-              </Link>
+              <Button asChild>
+                <Link
+                  to="."
+                  search={{ page: previousPageNumber }}
+                  className="ml-2"
+                >
+                  {`<`}
+                </Link>
+              </Button>
             ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`< Prev`}</span>
+              <Button className="cursor-not-allowed opacity-50">
+                {`<`}
+              </Button>
             )}
 
             {/* Current Page Indicator */}
-            <span className="text-lg font-medium text-gray-700 mx-2">Page {currentPage} of {totalPages}</span>
+            <span className="text-lg font-medium mx-4">Page {currentPage} of {totalPages}</span>
 
             {/* Next Page Link */}
             {nextPageNumber !== undefined ? (
-              <Link
-                to="."
-                search={{ page: nextPageNumber }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`Next >`}
-              </Link>
+              <Button asChild>
+                <Link
+                  to="."
+                  search={{ page: nextPageNumber }}
+                  className="mr-2"
+                >
+                  {`>`}
+                </Link>
+              </Button>
             ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`Next >`}</span>
-            )}    
+              <Button asChild>
+                {`>`}
+              </Button>
+            )}
 
             {/* Last Page Link */}
             {currentPage < totalPages && totalPages > 1 ? (
-              <Link
-                to="."
-                search={{ page: totalPages }}
-                className="text-blue-600 hover:underline px-3 py-1 rounded-md border border-blue-600 hover:bg-blue-50 text-sm"
-              >
-                {`Last >>`}
-              </Link>
+              <Button asChild>
+                <Link
+                  to="."
+                  search={{ page: totalPages }}
+                >
+                  {`>>`}
+                </Link>
+              </Button>
             ) : (
-              <span className="text-gray-400 px-3 py-1 border border-gray-400 rounded-md cursor-not-allowed text-sm">{`Last >>`}</span>
+              <Button asChild>
+                {`>>`}
+              </Button>
             )}
           </div>
         </div>
