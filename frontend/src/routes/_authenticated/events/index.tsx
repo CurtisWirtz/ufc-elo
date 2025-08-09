@@ -110,7 +110,7 @@ function EventsIndex() {
                           params={{ eventId: event.event_id }}
                           className="flex w-min mx-auto tablet:w-full tablet:justify-center px-2 order-2"
                         >
-                          {event.name}<span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-lg mb-1 text-brand">&#187;</span>
+                          {event.name}<span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-lg text-brand">&#187;</span>
                         </Link>
                       </Button>
                       <div className="flex tablet:hidden justify-center order-1">

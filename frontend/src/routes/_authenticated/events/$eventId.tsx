@@ -3,6 +3,10 @@ import { getItemById } from '../../../api/queries.ts'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Bout } from '../../../types/bout.types.ts'
 import { formatDate } from '../../../lib/dateUtils.ts'
+import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/utils";
+import {Breadcrumbs} from '@/components/Breadcrumbs'
+import { Button } from '@/components/ui/button.tsx'
 
 
 export const Route = createFileRoute('/_authenticated/events/$eventId')({
@@ -30,68 +34,97 @@ function EventPage() {
   // console.log('event.ordered_bouts:', event.data.ordered_bouts[0]);
 
   return (
-    <div className="w-full mt-2 items-center bg-gray-100 min-h-screen p-6 text-center">
-      {event.data?.name && (
-        <>
-          <h1 className="text-4xl font-bold text-gray-800">{event.data.name}</h1>
-          <p className="text-2xl text-gray-600 mb-6">{formatDate(event.data.date)} | {event.data.location}</p>
-        </>
-      )}
-
-      {ordered_bouts && ordered_bouts.length > 0 && (
-        <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden">
-          <thead>
-            <tr>
-              <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Fighters</th>
-              <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Method</th>
-              <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Round</th>
-              <th className="py-3 px-4 border-b text-center text-sm font-semibold text-gray-600">Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ordered_bouts.map((bout) => (
-              <tr key={bout.bout_id} className="pb-5 border-b border-gray-200">
-                  <td className="flex flex-col pb-5">
-                    <div className="flex">
-                      <div className="flex justify-between grow-1 max-w-[500px] mx-auto">
-                        <div className="flex flex-col items-center">
-                          <Link to={`/fighters/${bout.fighter_1.fighter_id}`} className="text-center hover:underline text-blue-500">{bout.fighter_1.name}</Link>
-                          {bout.winning_fighter ? 
-                            (bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id) ? (
-                              <div className="bg-green-500 rounded-full text-white w-5 h-5 relative mr-auto"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">W</span></div>
-                            ) : (
-                              <div className="bg-red-500 rounded-full text-white w-5 h-5 relative mr-auto"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">L</span></div>
-                            )
-                          :
-                          (<span className="bg-blue-500 uppercase">{bout.method}</span>)
-                          }
+    <Section
+      className={cn(
+          "py-0! px-5! max-w-container mx-auto",
+          "",
+    )}>
+      <div className="bg-background w-full mt-6 items-center min-h-screen">
+        <Breadcrumbs overrideString={event.data.name} />
+        <h1 className="animate-appear text-4xl font-bold mb-6 text-center">{event.data.name}</h1>
+        <p className="animate-appear text-2xl mb-6 text-center text-brand">{formatDate(event.data.date)} | {event.data.location}</p>
+        <div className="w-full animate-appear p-6 rounded-md bg-brand/10 shadow-lg">
+          {ordered_bouts && ordered_bouts.length > 0 && (
+            <div className="flex flex-col">
+              <div className="hidden md:grid grid-cols-8 border-b border-brand">
+                <div className="col-span-4 py-3 px-4 text-center text-brand text-2xl">Fighters</div>
+                <div className="col-span-2 py-3 px-4 text-center text-brand text-2xl">Method</div>
+                <div className="col-span-1 py-3 px-4 text-center text-brand text-2xl">Round</div>
+                <div className="col-span-1 py-3 px-4 text-center text-brand text-2xl">Time</div>
+              </div>
+              <div>
+                {ordered_bouts.map((bout) => (
+                  <div key={bout.bout_id} className="py-5 tablet:py-3 border-b border-light-foreground last:border-0 md:grid md:grid-cols-8">
+                      <div className="col-span-4 flex flex-col pb-5">
+                        <div className="flex">
+                          <div className="flex justify-center w-full mx-auto">
+                            <div className="flex flex-col items-center">
+                              <Button asChild variant="secondary" className={`group ${bout.winning_fighter?.fighter_id && bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id && 'border-brand border-2'}`}>
+                                <Link to={`/fighters/${bout.fighter_1.fighter_id}`} className="text-center">
+                                  {bout.fighter_1.name}
+                                  <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
+                                </Link>
+                              </Button>
+                              {bout.winning_fighter ? 
+                                (bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id) && (
+                                  <span className="text-brand font-semibold tracking-wider mt-2">
+                                    Winner
+                                  </span>
+                                )
+                              :
+                              (<span className="text-brand uppercase mt-2">{bout.method}</span>)
+                              }
+                            </div>
+                            <div className="mx-4 flex mt-1 text-brand">vs</div>
+                            <div className="flex flex-col items-center">
+                              <Button asChild variant="secondary" className={`group ${bout.winning_fighter?.fighter_id && bout.fighter_2.fighter_id === bout.winning_fighter.fighter_id && 'border-brand border-2'}`}>
+                                <Link to={`/fighters/${bout.fighter_2.fighter_id}`} className="text-center">
+                                  {bout.fighter_2.name}
+                                  <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
+                                </Link>
+                              </Button>
+                              {bout.winning_fighter ? 
+                                (bout.fighter_2.fighter_id === bout.winning_fighter.fighter_id) && (
+                                  <span className="text-brand font-semibold tracking-wider mt-2">
+                                    Winner
+                                  </span>                                
+                                )
+                              :
+                              (<span className="text-brand uppercase mt-2">{bout.method}</span>)
+                              }
+                            </div>
+                          </div>
                         </div>
-                        <div className="mx-2 flex items-center">vs</div>
-                        <div className="flex flex-col items-center">
-                          <Link to={`/fighters/${bout.fighter_2.fighter_id}`} className="text-center hover:underline text-blue-500">{bout.fighter_2.name}</Link>
-                          {bout.winning_fighter ? 
-                            (bout.fighter_2.fighter_id === bout.winning_fighter.fighter_id) ? (
-                              <div className="bg-green-500 rounded-full text-white w-5 h-5 relative ml-auto"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">W</span></div>
-                            ) : (
-                              <div className="bg-red-500 rounded-full text-white w-5 h-5 relative ml-auto"><span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">L</span></div>
-                            )
-                          :
-                          (<span className="bg-blue-500 uppercase">{bout.method}</span>)
-                          }
+                        {bout.details && 
+                          <div className="mx-auto text-sm mt-2 text-center order-last md:order-none ">
+                            <span>{bout.details}</span>
+                          </div>
+                        }
+                        <div className="md:hidden flex justify-between mt-2">
+                          <div className="text-center flex flex-col">
+                            <span className="text-brand font-semibold tracking-wider">Method: </span>
+                            <span>{bout.method}</span>
+                          </div>
+                          <div className="text-center flex flex-col">
+                            <span className="text-brand font-semibold tracking-wider">Round: </span>
+                            <span>{bout.ending_round}</span>
+                          </div>
+                          <div className="text-center flex flex-col">
+                            <span className="text-brand font-semibold tracking-wider">Time: </span>
+                            <span>{bout.ending_time}</span>
+                            </div>
                         </div>
                       </div>
-                    </div>
-                    {bout.details && <div className="mx-auto text-sm text-gray-500">{bout.details}</div>}
-                  </td>
-                  <td className="col-span-1 text-center">{bout.method}</td>
-                  <td className="col-span-1 text-center">{bout.ending_round}</td>
-                  <td className="col-span-1 text-center">{bout.ending_time}</td>
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}      
-    </div>
+                      <div className="hidden col-span-2 text-center md:flex justify-center items-center">{bout.method}</div>
+                      <div className="hidden col-span-1 text-center md:flex justify-center items-center">{bout.ending_round}</div>
+                      <div className="hidden col-span-1 text-center md:flex justify-center items-center">{bout.ending_time}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}      
+          </div>
+      </div>
+    </Section>
   );
 }

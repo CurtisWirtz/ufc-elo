@@ -109,7 +109,7 @@ function FightersIndex() {
                         >
                           {fighter.name}
                           {fighter.nickname && <span className="italic ml-2">"{fighter.nickname}"</span>}
-                          <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all mb-1 text-brand">&#187;</span>
+                          <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
                         </Link>
                       </Button>
                       <div className="md:hidden flex">
