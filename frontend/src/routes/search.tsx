@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { createFileRoute, useLocation, Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client';
+import { Button } from '@/components/ui/button';
+import { formatDate } from '../lib/dateUtils.ts'
 
 interface FighterResult {
   type: 'fighter';
@@ -76,8 +78,8 @@ function SearchResultsPage() {
   });
 
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6 text-center">Search Results</h1>
+    <div className="container mx-auto p-4 max-w-3xl">
+      <h1 className="animate-appear text-4xl font-bold mb-6 text-center">Search Results</h1>
 
       {validationError && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -87,38 +89,51 @@ function SearchResultsPage() {
       )}
 
       {!q && !validationError && ( // initial state... OR after a direct navigation without query/error
-        <p className="text-gray-600 text-center text-lg">Enter a search term in the header to find results.</p>
+        <p className="text-center text-lg text-brand">Enter a search term in the header to find results.</p>
       )}
 
       {(isLoading || isFetching) && q && !validationError && (
-        <p className="text-blue-600 text-center text-lg">Searching for "{q}"...</p>
+        <p className="text-brand text-center text-lg">Searching for "{q}"...</p>
       )}
       {isError && q && !validationError && (
-        <p className="text-red-600 text-center text-lg">Error: {error?.message}</p>
+        <p className="text-brand text-center text-lg">Error: {error?.message}</p>
       )}
 
       {results && results.length > 0 && q && !isFetching && !validationError && (
         <>
-          <p className="text-gray-700 text-center mb-4">Found {results.length} results for "{q}"</p>
+          <p className="text-brand text-center mb-4">Found {results.length} results for "{q}"</p>
           <ul className="space-y-4">
             {results.map((item) => (
               <li key={`${item.type}-${item.type === 'fighter' ? item.fighter_id : item.event_id}`}
-                  className="p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center bg-brand/10"
+              >
                 {item.type === 'fighter' ? (
                   <>
-                    <Link to="/fighters/$fighterId" params={{ fighterId: item.fighter_id }} className="text-blue-500 hover:underline"><p className="font-bold text-lg">{item.name} {item.nickname && `"${item.nickname}"`}</p></Link>
-                    <p className="text-sm text-gray-600">
-                        Fighter
-                        {item?.weight_lb && ` | Weight: ${item.weight_lb} lbs`}
-                        {` | Record: ${item.wins}-${item.losses}${item.draws && `-${item.draws}`}`}
-                    </p>
+                    <h4 className="text-brand mb-1">Fighter</h4>
+                    <Button asChild variant="secondary" className="group mb-2">
+                      <Link to={`/fighters/${item.fighter_id}`}>
+                        <span className="">{item.name} {item.nickname && `"${item.nickname}"`}</span>
+                        <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
+                      </Link>
+                    </Button>
+                    <span>
+                      {item?.weight_lb && `Weight: ${item.weight_lb} lbs`}
+                      {` | Record: ${item.wins}-${item.losses}${item.draws && `-${item.draws}`}`}
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Link to="/events/$eventId" params={{ eventId: item.event_id }} className="text-blue-500 hover:underline"><p className="font-bold text-lg">{item.name}</p></Link>
-                    <p className="text-sm text-gray-600">
-                        Event on {new Date(item.date).toLocaleDateString()} at {item.location}
-                    </p>
+                    <h4 className="text-brand mb-1">Event</h4>
+                    <Button asChild variant="secondary" className="group mb-2">
+                      <Link to={`/events/${item.event_id}`}>
+                        <span className="">{item.name}</span>
+                        <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
+                      </Link>
+                    </Button>
+                    <span className="flex flex-col items-center justify-center">
+                        <span className="">{formatDate(item.date)}</span>
+                        <span className="">{item.location}</span>
+                    </span>
                   </>
                 )}
               </li>
@@ -128,7 +143,7 @@ function SearchResultsPage() {
       )}
 
       {results && results.length === 0 && q && !isFetching && !isLoading && !validationError && (
-        <p className="text-gray-600 text-center text-lg">No results found for "{q}".</p>
+        <p className="text-brand text-center text-lg">No results found for "{q}".</p>
       )}
     </div>
   );
