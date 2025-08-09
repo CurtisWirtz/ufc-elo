@@ -92,7 +92,7 @@ function EventsIndex() {
       <div className="bg-background w-full mt-6 items-center min-h-screen">
         <Breadcrumbs />
         <h1 className="animate-appear text-4xl font-bold mb-6">Events List</h1>
-        <div className="w-full animate-appear">
+        <div className="w-full animate-appear p-6 rounded-md bg-brand/10 shadow-lg">
           <div className="hidden tablet:grid tablet:grid-cols-6 border-b border-brand pb-3 gap-3">
             <div className="tablet:col-span-3 xl:col-span-2 text-center text-brand text-2xl">Event Name</div>
             <div className="tablet:col-span-1 xl:col-span-2 text-center text-brand text-2xl">Date</div>
@@ -102,7 +102,7 @@ function EventsIndex() {
             {events.length > 0 ? (
               events.map((event: Event) => {
                 return (
-                  <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b last:border-0">
+                  <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b border-light-foreground last:border-0">
                     <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center tablet:justify-center">
                       <Button asChild variant="secondary" className="group">
                         <Link
@@ -110,10 +110,10 @@ function EventsIndex() {
                           params={{ eventId: event.event_id }}
                           className="flex w-min mx-auto tablet:w-full tablet:justify-center px-2 order-2"
                         >
-                          {event.name}<span className="ml-2 group-hover:translate-x-2 duration-300 transition-all text-lg mb-1 text-brand">&#187;</span>
+                          {event.name}<span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-lg text-brand">&#187;</span>
                         </Link>
                       </Button>
-                      <div className="flex tablet:hidden justify-center order-1">
+                      <div className="flex tablet:hidden justify-center order-1 mb-2 tablet:mb-0">
                         {isFutureDate(event.date) && <span className="text-brand font-semibold mr-2">Upcoming: </span>}
                         <span>{formatDate(event.date)}</span>
                       </div>

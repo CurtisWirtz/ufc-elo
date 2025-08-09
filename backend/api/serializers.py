@@ -74,7 +74,7 @@ class NoteSerializer(serializers.ModelSerializer):
 class SimpleEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['event_id', 'name', 'date']
+        fields = ['event_id', 'name', 'date', 'location']
 
 class FighterSerializer(serializers.ModelSerializer):
     """

@@ -1,24 +1,19 @@
-import { Link, useMatches, useLocation } from "@tanstack/react-router"
+import React from "react"
+import { Link, useLocation } from "@tanstack/react-router"
 
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
-export function Breadcrumbs() {
+export function Breadcrumbs({overrideString}: {overrideString?: string}) {
     // const location = useLocation();
     // console.log('location:', location);
+    const override: string = overrideString || "";
 
     function capitalizeFirstLetter(str: string): string {
         if (str.length === 0) {
@@ -41,7 +36,6 @@ export function Breadcrumbs() {
             return acc;
         },
     [],);
-    console.log('breadcrumb_routes:', breadcrumb_routes);
 
 
     return (
@@ -54,12 +48,12 @@ export function Breadcrumbs() {
                 </BreadcrumbItem>
                 {breadcrumb_routes.length > 0 && 
                     breadcrumb_routes.map((route, index) => (
-                        <>
+                        <React.Fragment key={index}>
                             <BreadcrumbSeparator />
-                            <BreadcrumbItem key={index}>
+                            <BreadcrumbItem>
                                 {index + 1 === breadcrumb_routes.length ? (
                                     <BreadcrumbPage className={`${index + 1 === breadcrumb_routes.length && 'text-brand'}`}>
-                                        {route.name}
+                                        {override ? override : route.name}
                                     </BreadcrumbPage>
                                 ) : (
                                     <BreadcrumbLink asChild>
@@ -68,7 +62,7 @@ export function Breadcrumbs() {
                                 )}
                                 
                             </BreadcrumbItem>
-                        </>
+                        </React.Fragment>
                     )
                 )}
             </BreadcrumbList>

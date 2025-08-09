@@ -88,7 +88,7 @@ function FightersIndex() {
       <div className="bg-background w-full mt-6 items-center min-h-screen">
         <Breadcrumbs />
         <h1 className="animate-appear text-4xl font-bold mb-6">Fighters List</h1>
-        <div className="w-full animate-appear">
+        <div className="w-full animate-appear p-6 rounded-md bg-brand/10">
           <div className="hidden md:grid md:grid-cols-7 tablet:grid-cols-8 border-b border-brand pb-3 gap-3">
             <div className="col-span-3 text-center text-brand text-2xl">Fighter Name</div>
             <div className="col-span-1 md:col-span-2 text-center text-brand text-2xl">Record</div>
@@ -99,7 +99,7 @@ function FightersIndex() {
             {fighters.length > 0 ? (
               fighters.map((fighter: Fighter) => {
                 return (
-                  <div key={fighter.fighter_id} className="md:grid md:grid-cols-7 tablet:grid-cols-8 py-5 tablet:py-3 border-b last:border-0">
+                  <div key={fighter.fighter_id} className="md:grid md:grid-cols-7 tablet:grid-cols-8 py-5 tablet:py-3 border-b border-light-foreground last:border-0">
                     <div className="col-span-3 flex flex-col md:flex-row items-center">
                       <Button asChild variant="secondary" className="group">
                         <Link
@@ -109,7 +109,7 @@ function FightersIndex() {
                         >
                           {fighter.name}
                           {fighter.nickname && <span className="italic ml-2">"{fighter.nickname}"</span>}
-                          <span className="ml-2 group-hover:translate-x-2 duration-300 transition-all mb-1 text-brand">&#187;</span>
+                          <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
                         </Link>
                       </Button>
                       <div className="md:hidden flex">
@@ -160,7 +160,7 @@ function FightersIndex() {
           <div className="animate-appear flex flex-col items-center mt-6">
             {/* Items Counter */}
             <div className="text-lg text-brand font-medium mb-5">
-              Displaying {startItem} - {endItem} of {totalFighters} events
+              Displaying {startItem} - {endItem} of {totalFighters} fighters
             </div>
 
             {/* Pagination Controls */}
