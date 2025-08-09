@@ -113,7 +113,7 @@ function EventsIndex() {
                           {event.name}<span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-lg text-brand">&#187;</span>
                         </Link>
                       </Button>
-                      <div className="flex tablet:hidden justify-center order-1">
+                      <div className="flex tablet:hidden justify-center order-1 mb-2 tablet:mb-0">
                         {isFutureDate(event.date) && <span className="text-brand font-semibold mr-2">Upcoming: </span>}
                         <span>{formatDate(event.date)}</span>
                       </div>
