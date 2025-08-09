@@ -102,7 +102,7 @@ function EventsIndex() {
             {events.length > 0 ? (
               events.map((event: Event) => {
                 return (
-                  <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b last:border-0">
+                  <div key={event.event_id} className="tablet:grid tablet:grid-cols-6 py-5 tablet:py-3 border-b border-light-foreground last:border-0">
                     <div className="tablet:col-span-3 xl:col-span-2 flex flex-col tablet:items-center tablet:justify-center">
                       <Button asChild variant="secondary" className="group">
                         <Link
@@ -110,7 +110,7 @@ function EventsIndex() {
                           params={{ eventId: event.event_id }}
                           className="flex w-min mx-auto tablet:w-full tablet:justify-center px-2 order-2"
                         >
-                          {event.name}<span className="ml-2 group-hover:translate-x-2 duration-300 transition-all text-lg mb-1 text-brand">&#187;</span>
+                          {event.name}<span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-lg mb-1 text-brand">&#187;</span>
                         </Link>
                       </Button>
                       <div className="flex tablet:hidden justify-center order-1">
