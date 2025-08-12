@@ -117,7 +117,7 @@ function EventsIndex() {
                         {isFutureDate(event.date) && <span className="text-brand font-semibold mr-2">Upcoming: </span>}
                         <span>{formatDate(event.date)}</span>
                       </div>
-                      <div className="flex tablet:hidden order-3 pt-2 justify-center">
+                      <div className="flex tablet:hidden order-3 pt-2 justify-center text-center">
                         {event.location}
                       </div>
                     </div>

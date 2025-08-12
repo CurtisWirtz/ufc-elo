@@ -91,7 +91,7 @@ function FighterPage() {
 
           {fighter.data?.participated_bouts && fighter.data?.participated_bouts.length > 0 && (
             isFutureDate(fighter.data?.participated_bouts[0].event.date) && (
-              <div className="border-1 border-brand p-4 rounded mb-6 text-center flex flex-col items-center">
+              <div className="border-1 border-brand p-4 rounded-md mb-6 text-center flex flex-col items-center max-w-2xl mx-auto">
                 <p className="text-2xl text-brand mb-2">Upcoming Bout:</p>
                 <span className="">{formatDate(fighter.data?.participated_bouts[0].event.date)}</span>
                 <span className="">{fighter.data?.participated_bouts[0].event.location}</span>
@@ -102,7 +102,7 @@ function FighterPage() {
                   </Link>
                 </Button>
                 <span className="text-xl mt-5 mb-2 text-brand">Opponent: </span>
-                <p className="">
+                <div className="">
                   {(fighter.data?.participated_bouts[0].fighter_1.fighter_id === fighter.data.fighter_id) ? (
                     <Button asChild variant="secondary" className="group w-min">
                       <Link to={`/fighters/${fighter.data?.participated_bouts[0].fighter_2.fighter_id}`}>
@@ -118,14 +118,14 @@ function FighterPage() {
                       </Link>
                     </Button>
                   )}
-                </p>
+                </div>
               </div>
             )
           )}
 
           <h1 className="text-3xl mb-5 text-brand text-center">Bout History</h1>
           <div className="hidden tablet:grid grid-cols-12 border-b border-brand">
-            <div className="col-span-4 py-3 px-4 text-center text-brand text-lg">Opponent</div>
+            <div className="col-span-4 py-3 pl-2.5 pr-4 text-brand text-lg"><span className="mr-9">W/L</span>Opponent</div>
             <div className="col-span-4 py-3 px-4 text-center text-brand text-lg">Event</div>
             <div className="col-span-2 py-3 px-4 text-center text-brand text-lg">Method</div>
             <div className="col-span-1 py-3 px-4 text-center text-brand text-lg">Round</div>
@@ -137,37 +137,40 @@ function FighterPage() {
                 if (!isFutureDate(bout.event.date)) {
                   return (
                     <div key={bout.bout_id} className="py-5 tablet:py-3 tablet:grid grid-cols-12 border-b last:border-0">
-                      <div className="tablet:col-span-4 text-center">
+                      <div className="tablet:col-span-4 text-center tablet:text-start tablet:grid tablet:grid-cols-[min-content_1fr]">
                         {bout.winning_fighter ? 
                           (fighter.data.fighter_id === bout.winning_fighter.fighter_id) ? (
-                            <span className="border-2 border-brand text-brand rounded-sm px-2 py-1.5 mr-2">
+                            <span className="border-2 border-brand text-brand rounded-sm px-2 py-1.5 mr-3.5 tablet:col-span-1 w-min">
                               Win
                             </span>
                           ) : (
-                            <span className="mr-5">
+                            <span className="mr-5 tablet:col-span-1 w-min ml-2.5 mx-auto flex items-center">
                               Loss
                             </span>
+                          ) : (
+                            <span className="block text-brand uppercase tablet:col-span-1">
+                              {bout.method}
+                            </span>
                           )
-                        : (<span className="block text-brand  uppercase">{bout.method}</span>)
                         }
 
                         {(bout.fighter_1.fighter_id === fighter.data.fighter_id) ? (
-                          <Button asChild variant="secondary" className="group w-min">
+                          <Button asChild variant="secondary" className="group w-min tablet:col-span-1">
                             <Link to={`/fighters/${bout.fighter_2.fighter_id}`}>
                               {bout.fighter_2.name}
                               <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
                             </Link>
                           </Button>
                         ) : (
-                          <Button asChild variant="secondary" className="group w-min">
+                          <Button asChild variant="secondary" className="group w-min tablet:col-span-1">
                             <Link to={`/fighters/${bout.fighter_1.fighter_id}`}>
                               {bout.fighter_1.name}
                               <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
                             </Link>
                           </Button>
                         )}
-                        {bout.details && <div className="text-sm font-normal mt-2">{bout.details}</div>}
-                        {bout.referee && <span className="flex tablet:hidden justify-center text-sm mt-1 text-brand">Referee: {bout.referee}</span>}
+                        {bout.details && <div className="text-sm font-normal mt-2 tablet:col-span-2 tablet:ml-2.5">{bout.details}</div>}
+                        {bout.referee && <span className="flex tablet:hidden justify-center text-sm mt-1">Referee: {bout.referee}</span>}
                       </div>
                       <div className="flex justify-between tablet:hidden my-2 max-w-80 mx-auto">
                         <div className="text-center flex flex-col items-center">
