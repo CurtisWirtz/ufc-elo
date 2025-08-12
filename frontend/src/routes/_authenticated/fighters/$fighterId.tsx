@@ -148,8 +148,12 @@ function FighterPage() {
                               Loss
                             </span>
                           ) : (
-                            <span className="block text-brand uppercase tablet:col-span-1">
-                              {bout.method}
+                            <span className="block text-brand uppercase tablet:col-span-1 tablet:flex tablet:items-center tablet:mr-4 tablet:ml-2">
+                              {((bout.method.toUpperCase()) === "OVERTURNED") ? (
+                                bout.method
+                              ) : (
+                                "DRAW"
+                              )}
                             </span>
                           )
                         }

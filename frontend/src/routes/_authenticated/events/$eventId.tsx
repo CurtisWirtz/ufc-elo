@@ -58,8 +58,8 @@ function EventPage() {
                       <div className="col-span-4 flex flex-col pb-5">
                         <div className="flex">
                           <div className="flex justify-center w-full mx-auto">
-                            <div className="flex flex-col items-center">
-                              <Button asChild variant="secondary" className={`group ${bout.winning_fighter?.fighter_id && bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id && 'border-brand border-2'}`}>
+                            <div className="flex flex-col items-center tablet:w-1/2">
+                              <Button asChild variant="secondary" className={`tablet:ml-auto group ${bout.winning_fighter?.fighter_id && bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id && 'border-brand border-2'}`}>
                                 <Link to={`/fighters/${bout.fighter_1.fighter_id}`} className="text-center">
                                   {bout.fighter_1.name}
                                   <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
@@ -67,17 +67,23 @@ function EventPage() {
                               </Button>
                               {bout.winning_fighter ? 
                                 (bout.fighter_1.fighter_id === bout.winning_fighter.fighter_id) && (
-                                  <span className="text-brand font-semibold tracking-wider mt-2">
+                                  <span className="text-brand font-semibold tracking-wider mt-2 tablet:w-[inherit] tablet:text-center tablet:ml-auto">
                                     Winner
                                   </span>
+                                ) : (
+                                  <span className="text-brand uppercase mt-2 tablet:w-[inherit] tablet:text-center tablet:ml-auto -mr-2">
+                                    {bout.method && ((bout.method.toUpperCase()) === "OVERTURNED") ? (
+                                      bout.method
+                                    ) : (
+                                      "DRAW"
+                                    )}
+                                  </span>
                                 )
-                              :
-                              (<span className="text-brand uppercase mt-2">{bout.method}</span>)
                               }
                             </div>
-                            <div className="mx-4 flex mt-1 text-brand">vs</div>
-                            <div className="flex flex-col items-center">
-                              <Button asChild variant="secondary" className={`group ${bout.winning_fighter?.fighter_id && bout.fighter_2.fighter_id === bout.winning_fighter.fighter_id && 'border-brand border-2'}`}>
+                            <div className="mx-4 flex mt-1 text-brand w-min">vs</div>
+                            <div className="flex flex-col items-center tablet:w-1/2">
+                              <Button asChild variant="secondary" className={`tablet:mr-auto group ${bout.winning_fighter?.fighter_id && bout.fighter_2.fighter_id === bout.winning_fighter.fighter_id && 'border-brand border-2'}`}>
                                 <Link to={`/fighters/${bout.fighter_2.fighter_id}`} className="text-center">
                                   {bout.fighter_2.name}
                                   <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
@@ -85,12 +91,18 @@ function EventPage() {
                               </Button>
                               {bout.winning_fighter ? 
                                 (bout.fighter_2.fighter_id === bout.winning_fighter.fighter_id) && (
-                                  <span className="text-brand font-semibold tracking-wider mt-2">
+                                  <span className="text-brand font-semibold tracking-wider mt-2 tablet:w-[inherit] tablet:text-center tablet:mr-auto">
                                     Winner
-                                  </span>                                
+                                  </span>
+                                ) : (
+                                  <span className="text-brand uppercase mt-2 tablet:w-[inherit] tablet:text-center tablet:mr-auto -ml-2">
+                                    {bout.method && ((bout.method.toUpperCase()) === "OVERTURNED") ? (
+                                      bout.method
+                                    ) : (
+                                      "DRAW"
+                                    )}
+                                  </span>
                                 )
-                              :
-                              (<span className="text-brand uppercase mt-2">{bout.method}</span>)
                               }
                             </div>
                           </div>
