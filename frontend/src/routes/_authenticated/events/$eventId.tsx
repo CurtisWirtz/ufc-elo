@@ -2,7 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { getItemById } from '../../../api/queries.ts'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Bout } from '../../../types/bout.types.ts'
-import { formatDate } from '../../../lib/dateUtils.ts'
+import { formatDate, isFutureDate } from '../../../lib/dateUtils.ts'
 import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import {Breadcrumbs} from '@/components/Breadcrumbs'
@@ -32,6 +32,9 @@ function EventPage() {
   const ordered_bouts: Bout[] = event.data.ordered_bouts;
   // console.log('event.data:', event.data);
   // console.log('event.ordered_bouts:', event.data.ordered_bouts[0]);
+  
+
+  const upcoming: boolean = isFutureDate(event.data.date);
 
   return (
     <Section
@@ -75,7 +78,7 @@ function EventPage() {
                                     {bout.method && ((bout.method.toUpperCase()) === "OVERTURNED") ? (
                                       bout.method
                                     ) : (
-                                      "DRAW"
+                                      upcoming ? "UPCOMING" : "DRAW"
                                     )}
                                   </span>
                                 )
@@ -99,7 +102,7 @@ function EventPage() {
                                     {bout.method && ((bout.method.toUpperCase()) === "OVERTURNED") ? (
                                       bout.method
                                     ) : (
-                                      "DRAW"
+                                      upcoming ? "UPCOMING" : "DRAW"
                                     )}
                                   </span>
                                 )
