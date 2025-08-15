@@ -33,9 +33,16 @@ class Fighter(models.Model):
     reach_in = models.IntegerField(null=True, blank=True)
     stance = models.CharField(max_length=64, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
+
     elo = models.FloatField(default=1500.00)
     peak_elo = models.FloatField(default=1500.00)
-    elo_history = models.JSONField(default=dict)
+
+    # https://docs.djangoproject.com/en/5.2/ref/models/fields/#default 
+    # cannot default simply to default=list, as a list is mutable. so we need to use a callable
+    def elo_history_default():
+        return []
+        
+    elo_history = models.JSONField(default=elo_history_default)
 
     def __str__(self):
         return self.name
