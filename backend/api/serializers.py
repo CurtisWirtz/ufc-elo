@@ -220,7 +220,7 @@ class FighterSearchSerializer(serializers.ModelSerializer):
     # We only expose the minimum necessary fields for the search result display.
     class Meta:
         model = Fighter
-        fields = ['fighter_id', 'name', 'nickname', 'weight_lb', 'wins', 'losses', 'draws',  'elo', 'peak_elo']
+        fields = ['fighter_id', 'name', 'nickname', 'weight_lb', 'wins', 'losses', 'draws', 'elo', 'peak_elo']
 
 class EventSearchSerializer(serializers.ModelSerializer):
     # This serializer will be used when a search query matches an Event.
