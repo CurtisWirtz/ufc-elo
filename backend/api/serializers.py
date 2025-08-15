@@ -203,8 +203,7 @@ class SearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fighter
         fields = ['fighter_id', 'name', 'nickname', 'wins', 'losses', 'draws',
-                  'height_in', 'weight_lb', 'reach_in', 'stance', 'date_of_birth', 'events']
-        # Add any other fields you want to expose for a fighter in search results
+                  'height_in', 'weight_lb', 'reach_in', 'stance', 'date_of_birth', 'events', 'elo', 'peak_elo']
 
     def get_events(self, obj):
         # This method fetches the unique event names a fighter has participated in
@@ -221,7 +220,7 @@ class FighterSearchSerializer(serializers.ModelSerializer):
     # We only expose the minimum necessary fields for the search result display.
     class Meta:
         model = Fighter
-        fields = ['fighter_id', 'name', 'nickname', 'weight_lb', 'wins', 'losses', 'draws']
+        fields = ['fighter_id', 'name', 'nickname', 'weight_lb', 'wins', 'losses', 'draws',  'elo', 'peak_elo']
 
 class EventSearchSerializer(serializers.ModelSerializer):
     # This serializer will be used when a search query matches an Event.
