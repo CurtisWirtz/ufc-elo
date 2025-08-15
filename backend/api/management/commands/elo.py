@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 import math
 from api.models import Event, Bout, Fighter
 import logging
-from datetime import datetime
+from datetime import datetime, date
 
 # Set up logging to persist output
 log_file = "assigning_elo_rankings.log"
@@ -134,15 +134,15 @@ class Command(BaseCommand):
             logger.info(f"Ranking fighters from bouts at {event.name}.")
 
             # If the event is in the future, skip the event
-            today = datetime.now()
+            today = datetime.now().date()
             if event.date > today:
                 logger.info(f"Skipping future event: {event.name}")
                 continue
 
             # TODO: This safeguard should be removed once more events get added. July 4th was the last time I crawled/scraped data
             # These events are no longer in the future, but have not been scraped since the event took place (incomplete data)
-            most_recent_date_of_scraping = datetime(2025, 7, 4)
-            if event.data > most_recent_date_of_scraping:
+            most_recent_date_of_scraping = datetime(2025, 7, 4).date()
+            if event.date > most_recent_date_of_scraping:
                 logger.info(f"Skipping a recent event that has incomplete data: {event.name}")
                 continue
 
