@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 import math
 from api.models import Event, Bout, Fighter
 import logging
+from datetime import datetime
 
 # Set up logging to persist output
 log_file = "assigning_elo_rankings.log"
@@ -131,6 +132,12 @@ class Command(BaseCommand):
         # Events loop 
         for event in events:
             logger.info(f"Ranking fighters from bouts at {event.name}.")
+
+            # If the event is in the future, skip the event
+            today = datetime.now()
+            if event.date > today:
+                logger.info(f"Skipping future event: {event.name}")
+                continue
 
             # Get the bouts from the event by bout_id
             bout_ids = event.bout_order
