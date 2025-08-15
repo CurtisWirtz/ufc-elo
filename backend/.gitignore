@@ -5,3 +5,4 @@ json_data/
 .env
 
 database_ingestion.log
+assigning_elo_rankings.log
