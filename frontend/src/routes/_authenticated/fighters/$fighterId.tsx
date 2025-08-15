@@ -53,6 +53,20 @@ function FighterPage() {
           }
         </h1>
         <div className="w-full animate-appear p-6 rounded-md bg-brand/10 shadow-lg">
+          <div className="grid grid-cols-2 max-w-lg w-full mx-auto">
+            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
+              <span className="text-brand tablet:mr-2">Rating:</span>
+              <span className="">{Math.round(fighter.data.elo)}</span>
+            </div>
+            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
+              <span className="text-brand tablet:mr-2">Peak Rating:</span>
+              <span className="">{Math.round(fighter.data.peak_elo)}</span>
+            </div>
+          </div>
+
+          {/* Ranking Chart */}
+          <div className=""></div>
+
           <div className="grid grid-cols-3 mb-5">
             <div className="col-span-1 flex flex-col items-center">
               <span className="text-2xl text-brand">Record:</span>
