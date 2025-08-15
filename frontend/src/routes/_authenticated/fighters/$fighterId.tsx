@@ -140,7 +140,7 @@ function FighterPage() {
                       <div className="tablet:col-span-4 text-center tablet:text-start tablet:grid tablet:grid-cols-[min-content_1fr]">
                         {bout.winning_fighter ? 
                           (fighter.data.fighter_id === bout.winning_fighter.fighter_id) ? (
-                            <span className="border-2 border-brand text-brand rounded-sm px-2 py-1.5 mr-3.5 tablet:col-span-1 w-min">
+                            <span className="border-2 border-brand text-brand rounded-sm px-2 py-1.5 mr-3.5 tablet:col-span-1 w-min h-min">
                               Win
                             </span>
                           ) : (
@@ -173,7 +173,7 @@ function FighterPage() {
                             </Link>
                           </Button>
                         )}
-                        {bout.details && <div className="text-sm font-normal mt-2 tablet:col-span-2 tablet:ml-2.5">{bout.details}</div>}
+                        <div className="text-sm font-normal mt-2 tablet:col-span-2 tablet:ml-2.5 h-max">{bout.details ? bout.details : <span className="hidden tablet:flex text-transparent" tabIndex={-1}>No details</span>}</div>
                         {bout.referee && <span className="flex tablet:hidden justify-center text-sm mt-1">Referee: {bout.referee}</span>}
                       </div>
                       <div className="flex justify-between tablet:hidden my-2 max-w-80 mx-auto">
