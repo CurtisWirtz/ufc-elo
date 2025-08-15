@@ -52,7 +52,7 @@ class Command(BaseCommand):
 
         # Create the new elo history entry as a dictionary
         elo_history_entry = {
-            "date": bout.event.date,
+            "date": bout.event.date.strftime("%Y-%m-%d"),
             "bout_id": bout.bout_id,
             "opponent_id": opponent.fighter_id,
             "starting_elo": starting_elo,
@@ -131,6 +131,7 @@ class Command(BaseCommand):
         # Events loop 
         for event in events:
             logger.info(f"Ranking fighters from bouts at {event.name}.")
+
             # Get the bouts from the event by bout_id
             bout_ids = event.bout_order
             bouts = Bout.objects.filter(bout_id__in=bout_ids)
