@@ -139,6 +139,13 @@ class Command(BaseCommand):
                 logger.info(f"Skipping future event: {event.name}")
                 continue
 
+            # TODO: This safeguard should be removed once more events get added. July 4th was the last time I crawled/scraped data
+            # These events are no longer in the future, but have not been scraped since the event took place (incomplete data)
+            most_recent_date_of_scraping = datetime(2025, 7, 4)
+            if event.data > most_recent_date_of_scraping:
+                logger.info(f"Skipping a recent event that has incomplete data: {event.name}")
+                continue
+
             # Get the bouts from the event by bout_id
             bout_ids = event.bout_order
             bouts = Bout.objects.filter(bout_id__in=bout_ids)
