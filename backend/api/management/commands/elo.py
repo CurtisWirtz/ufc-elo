@@ -47,13 +47,14 @@ class Command(BaseCommand):
         return ( R + K *( S - E ) )
 
 
-    def update_fighter_elo_records(self, fighter, bout_id, opponent_id, starting_elo, ending_elo):
+    def update_fighter_elo_records(self, fighter, bout, opponent, starting_elo, ending_elo):
         """ Updates the fighter's Elo DB records after a bout """
 
         # Create the new elo history entry as a dictionary
         elo_history_entry = {
-            "bout_id": bout_id,
-            "opponent_id": opponent_id,
+            "date": bout.event.date,
+            "bout_id": bout.bout_id,
+            "opponent_id": opponent.fighter_id,
             "starting_elo": starting_elo,
             "ending_elo": ending_elo,
             "elo_change": ending_elo - starting_elo
@@ -69,6 +70,10 @@ class Command(BaseCommand):
 
         # Save the updated fighter object!
         fighter.save()
+
+        self.stdout.write(f"Updated {fighter.name} Elo vs. {opponent.name} at {bout.event.name}")
+        logger.info(f"Updated {fighter.name} Elo vs. {opponent.name} at {bout.event.name}")
+
 
     def assign_elo_rankings(self, bout):
         """ Gets Elo new ratings for the two fighters participating in a given bout, saves new  database records """
@@ -100,9 +105,9 @@ class Command(BaseCommand):
       
         # Update the fighter's Elo records
         # Fighter 1
-        self.update_fighter_elo_records(fighter_1, bout.bout_id, fighter_2.fighter_id, fighter_1_prefight_elo, fighter_1_postfight_elo)
+        self.update_fighter_elo_records(fighter_1, bout, fighter_2, fighter_1_prefight_elo, fighter_1_postfight_elo)
         # Fighter 2
-        self.update_fighter_elo_records(fighter_2, bout.bout_id, fighter_1.fighter_id, fighter_2_prefight_elo, fighter_2_postfight_elo)
+        self.update_fighter_elo_records(fighter_2, bout, fighter_1, fighter_2_prefight_elo, fighter_2_postfight_elo)
 
 
     def handle(self, *args, **options):
