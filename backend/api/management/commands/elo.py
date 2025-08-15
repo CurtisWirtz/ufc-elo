@@ -71,7 +71,6 @@ class Command(BaseCommand):
         # Save the updated fighter object!
         fighter.save()
 
-        self.stdout.write(f"Updated {fighter.name} Elo vs. {opponent.name} at {bout.event.name}")
         logger.info(f"Updated {fighter.name} Elo vs. {opponent.name} at {bout.event.name}")
 
 
@@ -131,6 +130,7 @@ class Command(BaseCommand):
 
         # Events loop 
         for event in events:
+            logger.info(f"Ranking fighters from bouts at {event.name}.")
             # Get the bouts from the event by bout_id
             bout_ids = event.bout_order
             bouts = Bout.objects.filter(bout_id__in=bout_ids)
