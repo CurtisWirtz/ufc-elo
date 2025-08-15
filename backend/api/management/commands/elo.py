@@ -1,6 +1,22 @@
 from django.core.management.base import BaseCommand
 import math
 from api.models import Event, Bout, Fighter
+import logging
+
+# Set up logging to persist output
+log_file = "assigning_elo_rankings.log"
+# Configure the root logger once
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+)
+# Get the logger after it has been configured
+logger = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     help = "Assigns Elo ratings to all fighters, ordered by earliest date."
