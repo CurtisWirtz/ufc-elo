@@ -56,7 +56,7 @@ export default function Navigation({
         {menuItems.map((item, index) => (
           <NavigationMenuItem key={index}>
             {item.isLink && (
-              <Link to={item.href || ""} className={`${navigationMenuTriggerStyle()} ${location.pathname.startsWith(item.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}`}>
+              <Link to={item.href || ""} className={`${navigationMenuTriggerStyle()} ${location.pathname.startsWith(item.href) && "text-brand"}`}>
                   {item.title}
               </Link>
             )}
@@ -64,7 +64,7 @@ export default function Navigation({
         ))}
         <NavigationMenuItem asChild>
           <Button asChild variant="glow">
-            <Link to={"/matchmaker"} className={location.pathname.startsWith("/matchmaker") ? "text-brand" : "text-muted-foreground hover:text-foreground"}>
+            <Link to={"/matchmaker"} className={location.pathname.startsWith("/matchmaker") && "text-brand"}>
               Match Maker
             </Link>
           </Button>
