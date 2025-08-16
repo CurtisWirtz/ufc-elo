@@ -79,6 +79,8 @@ function FightersIndex() {
   // Ensure endItem does not exceed totalFighters if it's the last page
   const endItem = Math.min(currentPage * pageSize, totalFighters);
 
+  console.log('fighters: ', fighters)
+
   return (
     <Section
       className={cn(
@@ -91,8 +93,9 @@ function FightersIndex() {
         <div className="w-full animate-appear p-6 rounded-md bg-brand/10">
           <div className="hidden md:grid md:grid-cols-7 tablet:grid-cols-8 border-b border-brand pb-3 gap-3">
             <div className="col-span-3 text-center text-brand text-2xl">Fighter Name</div>
-            <div className="col-span-1 md:col-span-2 text-center text-brand text-2xl">Record</div>
-            <div className="col-span-1 tablet:col-span-2 text-center text-brand text-2xl">Weight</div>
+            <div className="col-span-1 tablet:col-span-2 text-center text-brand text-2xl">Rating</div>
+            <div className="col-span-1 text-center text-brand text-2xl">Record</div>
+            <div className="col-span-1 text-center text-brand text-2xl">Weight</div>
             <div className="col-span-1 text-center text-brand text-2xl">Age</div>
           </div>
           <div>
@@ -128,11 +131,19 @@ function FightersIndex() {
                           )}
                         </div>
                       </div>
+                      <div className="md:hidden flex">
+                        <span className="mr-5">Rating: {Math.round(fighter.elo)}</span>
+                        <span><span className="text-brand mr-2">Peak Rating:</span>{Math.round(fighter.peak_elo)}</span>
+                      </div>
                     </div>
-                    <div className="hidden md:flex justify-center items-center col-span-1 md:col-span-2 whitespace-pre p-3 text-center text-2xl">
+                    <div className="hidden md:flex md:flex-col justify-center items-center col-span-1 tablet:col-span-2 whitespace-pre p-3 text-center ">
+                      <span>{Math.round(fighter.elo)}</span>
+                      <span><span className="text-brand mr-2">Peak:</span>{Math.round(fighter.peak_elo)}</span>
+                    </div>
+                    <div className="hidden md:flex justify-center items-center col-span-1 whitespace-pre p-3 text-center lg:text-2xl">
                       <span>{fighter.wins}-{fighter.losses}-{fighter.draws}</span>
                     </div>
-                    <div className="hidden md:flex col-span-1 tablet:col-span-2 whitespace-pre p-3 text-center text-lg  items-center justify-center">
+                    <div className="hidden md:flex col-span-1 whitespace-pre p-3 text-center text-lg  items-center justify-center">
                       {fighter.weight_lb && <span>{fighter.weight_lb} lbs</span>}
                     </div>
                     <div className="hidden md:flex col-span-1 whitespace-pre p-3 text-center  flex-col">

@@ -1,3 +1,12 @@
+interface History {
+    date: string;
+    bout_id: string;
+    opponent_id: string;
+    starting_elo: number;
+    ending_elo: number;
+    elo_change: number;
+}
+
 export interface Fighter {
     fighter_id: string;
     name: string;
@@ -10,6 +19,9 @@ export interface Fighter {
     reach_in?: number;
     stance?: string;
     date_of_birth?: string;
+    elo?: number;
+    peak_elo?: number;
+    elo_history?: History[]
 }
     // name = models.CharField(max_length=255)
     // nickname = models.CharField(max_length=255, null=True, blank=True)

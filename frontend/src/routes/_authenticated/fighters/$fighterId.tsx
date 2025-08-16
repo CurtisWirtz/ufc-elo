@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import {Breadcrumbs} from '@/components/Breadcrumbs'
 import { Button } from '@/components/ui/button.tsx'
+import FighterEloChart from '@/components/FighterEloChart.tsx'
 
 
 export const Route = createFileRoute('/_authenticated/fighters/$fighterId')({
@@ -27,16 +28,12 @@ function FighterPage() {
     queryKey: ['fighters', fighterId],
     queryFn: () => getItemById(fighterId, "fighters")
   });
-
-  // console.log(fighter.data);
   
   function convertInchestoFeetAndInches(heightIn: number): string {
     const feet = Math.floor(heightIn / 12);
     const inches = heightIn % 12;
     return `${feet}'${inches}"`;
   }
-
-  console.log("FIGHTER:", fighter.data);
 
   return (
     <Section
@@ -88,6 +85,21 @@ function FighterPage() {
               <span>{fighter.data.reach_in ? `${fighter.data.reach_in} inches` : 'N/A'}</span>
             </div>
           </div>
+          
+          {/* Ranking Chart */}
+          <div className="grid grid-cols-2 max-w-lg w-full mx-auto mb-5">
+            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
+              <span className="text-brand tablet:mr-2">Rating:</span>
+              <span className="">{Math.round(fighter.data.elo)}</span>
+            </div>
+            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
+              <span className="text-brand tablet:mr-2">Peak Rating:</span>
+              <span className="">{Math.round(fighter.data.peak_elo)}</span>
+            </div>
+          </div>
+          <div className="max-w-3xl mx-auto mb-10">
+              <FighterEloChart fighter={fighter.data}/>
+          </div>
 
           {fighter.data?.participated_bouts && fighter.data?.participated_bouts.length > 0 && (
             isFutureDate(fighter.data?.participated_bouts[0].event.date) && (
@@ -125,7 +137,7 @@ function FighterPage() {
 
           <h1 className="text-3xl mb-5 text-brand text-center">Bout History</h1>
           <div className="hidden tablet:grid grid-cols-12 border-b border-brand">
-            <div className="col-span-4 py-3 pl-2.5 pr-4 text-brand text-lg"><span className="mr-9">W/L</span>Opponent</div>
+            <div className="col-span-4 py-3 pl-2.5 pr-4 text-brand text-lg"><span className="mr-9">W/L</span>Opponent<span className="float-right">Rating</span></div>
             <div className="col-span-4 py-3 px-4 text-center text-brand text-lg">Event</div>
             <div className="col-span-2 py-3 px-4 text-center text-brand text-lg">Method</div>
             <div className="col-span-1 py-3 px-4 text-center text-brand text-lg">Round</div>
@@ -140,15 +152,15 @@ function FighterPage() {
                       <div className="tablet:col-span-4 text-center tablet:text-start tablet:grid tablet:grid-cols-[min-content_1fr]">
                         {bout.winning_fighter ? 
                           (fighter.data.fighter_id === bout.winning_fighter.fighter_id) ? (
-                            <span className="border-2 border-brand text-brand rounded-sm px-2 py-1.5 mr-3.5 tablet:col-span-1 w-min">
+                            <span className="border-2 border-brand text-brand rounded-sm px-2 py-1.5 tablet:mr-3.5 tablet:col-span-1 w-min h-min">
                               Win
                             </span>
                           ) : (
-                            <span className="mr-5 tablet:col-span-1 w-min ml-2.5 mx-auto flex items-center">
+                            <span className="mr-5 tablet:col-span-1 w-full tablet:w-min tablet:ml-2.5 mx-auto flex items-center justify-center tablet:mb-3">
                               Loss
                             </span>
                           ) : (
-                            <span className="block text-brand uppercase tablet:col-span-1 tablet:flex tablet:items-center tablet:mr-4 tablet:ml-2">
+                            <span className="block text-brand uppercase tablet:col-span-1 tablet:flex tablet:items-center justify-center tablet:mb-3 tablet:mr-4 tablet:ml-2">
                               {((bout.method.toUpperCase()) === "OVERTURNED") ? (
                                 bout.method
                               ) : (
@@ -159,21 +171,57 @@ function FighterPage() {
                         }
 
                         {(bout.fighter_1.fighter_id === fighter.data.fighter_id) ? (
-                          <Button asChild variant="secondary" className="group w-min tablet:col-span-1">
-                            <Link to={`/fighters/${bout.fighter_2.fighter_id}`}>
-                              {bout.fighter_2.name}
-                              <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
-                            </Link>
-                          </Button>
+                          <div className="mt-3 tablet:mt-0 tablet:flex">
+                            <Button asChild variant="secondary" className="group w-min tablet:col-span-1">
+                              <Link to={`/fighters/${bout.fighter_2.fighter_id}`}>
+                                {bout.fighter_2.name}
+                                <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
+                              </Link>
+                            </Button>
+                            <div className="hidden tablet:flex flex-grow justify-end mr-5 ">
+                              {fighter.data.elo_history.filter(entry => entry.bout_id === bout.bout_id).map((entry_data) => (
+                                <div key={bout.bout_id} className="flex flex-col text-center">
+                                  <span className="">{Math.round(entry_data.ending_elo)}</span>
+                                  <span className="text-brand">
+                                    {entry_data.elo_change > 0 ? "+" : ""}
+                                    {Math.round(entry_data.elo_change)}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         ) : (
-                          <Button asChild variant="secondary" className="group w-min tablet:col-span-1">
-                            <Link to={`/fighters/${bout.fighter_1.fighter_id}`}>
-                              {bout.fighter_1.name}
-                              <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
-                            </Link>
-                          </Button>
+                          <div className="tablet:flex">
+                            <Button asChild variant="secondary" className="group w-min tablet:col-span-1">
+                              <Link to={`/fighters/${bout.fighter_1.fighter_id}`}>
+                                {bout.fighter_1.name}
+                                <span className="ml-2 group-hover:translate-x-1 duration-300 transition-all text-brand">&#187;</span>
+                              </Link>
+                            </Button>
+                            <div className="hidden tablet:flex flex-grow justify-end mr-5">
+                              {fighter.data.elo_history.filter(entry => entry.bout_id === bout.bout_id).map((entry_data) => (
+                                <div key={entry_data.bout_id} className="flex flex-col text-center">
+                                  <span className="">{Math.round(entry_data.ending_elo)}</span>
+                                  <span className="text-brand">
+                                    {entry_data.elo_change > 0 ? "+" : ""}
+                                    {Math.round(entry_data.elo_change)}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         )}
-                        {bout.details && <div className="text-sm font-normal mt-2 tablet:col-span-2 tablet:ml-2.5">{bout.details}</div>}
+                        <div className="tablet:hidden flex flex-grow justify-center mt-2">
+                          {fighter.data.elo_history.filter(entry => entry.bout_id === bout.bout_id).map((entry_data) => (
+                            <div key={entry_data.bout_id} className="flex text-center">
+                              <div><span className="text-brand">Rating:</span> {Math.round(entry_data.ending_elo)}</div>
+                              <span className="text-brand ml-3">
+                                ( {entry_data.elo_change > 0 ? "+" : ""}{Math.round(entry_data.elo_change)} )
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-sm font-normal mt-2 tablet:col-span-2 tablet:ml-2.5 h-max">{bout.details ? bout.details : <span className="hidden tablet:flex text-transparent" tabIndex={-1}>No details</span>}</div>
                         {bout.referee && <span className="flex tablet:hidden justify-center text-sm mt-1">Referee: {bout.referee}</span>}
                       </div>
                       <div className="flex justify-between tablet:hidden my-2 max-w-80 mx-auto">
