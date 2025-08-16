@@ -51,7 +51,7 @@ export default function Header({
   handleLogout,
 
   logo = <LogoUI />,
-  name = "MMA Elo Explorer",
+  name = "Elo MMA",
   homeUrl = "/",
   mobileLinks = [
     { text: "Fighters", href: "/fighters" },
