@@ -5,7 +5,6 @@ import avatarSvg from '../assets/svg/avatar.svg';
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
 
-// import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 import LogoUI from "@/components/logos/octagon";
@@ -73,7 +72,6 @@ export default function Header({
   className,
 }: NavbarProps) {
   const { location } = useRouterState()
-  const currentPath = location.pathname
 
   return (
     <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
@@ -91,7 +89,7 @@ export default function Header({
             <ModeToggle />
             {isAuthenticated && (
               <>
-                {showNavigation && (customNavigation || <Navigation className=""/>)}
+                {showNavigation && (customNavigation || <Navigation />)}
               </>
             )}
           </NavbarLeft>
@@ -172,11 +170,11 @@ export default function Header({
                     )}
                     {mobileLinks.map((link, index) => (
                       link.isButton ? (
-                        <SheetClose key={index + link.text} className="text-start" asChild>
-                          <Button asChild variant="secondary" className="text-md"> 
+                        <SheetClose key={index + link.text} asChild>
+                          <Button variant="secondary" className="text-md" asChild> 
                             <Link
                               to={link.href}
-                              className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
+                              className={location.pathname.startsWith(link.href) ? "text-brand!" : "text-muted-foreground! hover:text-foreground!"}
                             >
                               {link.text}
                             </Link>
