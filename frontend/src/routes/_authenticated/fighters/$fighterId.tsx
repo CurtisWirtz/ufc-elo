@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import {Breadcrumbs} from '@/components/Breadcrumbs'
 import { Button } from '@/components/ui/button.tsx'
+import FighterEloChart from '@/components/FighterEloChart.tsx'
 
 
 export const Route = createFileRoute('/_authenticated/fighters/$fighterId')({
@@ -27,16 +28,12 @@ function FighterPage() {
     queryKey: ['fighters', fighterId],
     queryFn: () => getItemById(fighterId, "fighters")
   });
-
-  // console.log(fighter.data);
   
   function convertInchestoFeetAndInches(heightIn: number): string {
     const feet = Math.floor(heightIn / 12);
     const inches = heightIn % 12;
     return `${feet}'${inches}"`;
   }
-
-  console.log("FIGHTER:", fighter.data);
 
   return (
     <Section
@@ -53,20 +50,6 @@ function FighterPage() {
           }
         </h1>
         <div className="w-full animate-appear p-6 rounded-md bg-brand/10 shadow-lg">
-          <div className="grid grid-cols-2 max-w-lg w-full mx-auto">
-            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
-              <span className="text-brand tablet:mr-2">Rating:</span>
-              <span className="">{Math.round(fighter.data.elo)}</span>
-            </div>
-            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
-              <span className="text-brand tablet:mr-2">Peak Rating:</span>
-              <span className="">{Math.round(fighter.data.peak_elo)}</span>
-            </div>
-          </div>
-
-          {/* Ranking Chart */}
-          <div className=""></div>
-
           <div className="grid grid-cols-3 mb-5">
             <div className="col-span-1 flex flex-col items-center">
               <span className="text-2xl text-brand">Record:</span>
@@ -101,6 +84,21 @@ function FighterPage() {
               <span className="text-2xl text-brand">Reach:</span>
               <span>{fighter.data.reach_in ? `${fighter.data.reach_in} inches` : 'N/A'}</span>
             </div>
+          </div>
+          
+          {/* Ranking Chart */}
+          <div className="grid grid-cols-2 max-w-lg w-full mx-auto mb-5">
+            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
+              <span className="text-brand tablet:mr-2">Rating:</span>
+              <span className="">{Math.round(fighter.data.elo)}</span>
+            </div>
+            <div className="col-span-1 flex flex-col tablet:flex-row text-2xl text-center justify-center">
+              <span className="text-brand tablet:mr-2">Peak Rating:</span>
+              <span className="">{Math.round(fighter.data.peak_elo)}</span>
+            </div>
+          </div>
+          <div className="max-w-3xl mx-auto mb-10">
+              <FighterEloChart fighter={fighter.data}/>
           </div>
 
           {fighter.data?.participated_bouts && fighter.data?.participated_bouts.length > 0 && (
