@@ -1,6 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router'
 import { HeaderSearchBar } from './HeaderSearchBar'
 import avatarSvg from '../assets/svg/avatar.svg';
+import { truncateString } from '@/lib/stringUtils.ts';
 
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
@@ -128,7 +129,7 @@ export default function Header({
                       <AvatarFallback>Elo</AvatarFallback>
                     </Avatar>
                     <div className="" tabIndex={0}>
-                      <span className="sr-only">Logged in as</span><span>{user.username}</span>
+                      <span className="sr-only">Logged in as</span><span>{truncateString(user.username)}</span>
                     </div>
                   </div>
                 )}
