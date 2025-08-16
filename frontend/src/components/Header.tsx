@@ -23,6 +23,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 interface NavbarLink {
   text: string;
   href: string;
+  isButton: boolean;
 }
 
 interface NavbarActionProps {
@@ -54,8 +55,9 @@ export default function Header({
   name = "Elo MMA",
   homeUrl = "/",
   mobileLinks = [
-    { text: "Fighters", href: "/fighters" },
-    { text: "Events", href: "/events" },
+    { text: "Match Maker", href: "/matchmaker", isButton: true },
+    { text: "Fighters", href: "/fighters", isButton: false },
+    { text: "Events", href: "/events", isButton: false },
   ],
   actions = [
     { text: "Login", href: "/login", isButton: false },
@@ -169,14 +171,27 @@ export default function Header({
                       </div>
                     )}
                     {mobileLinks.map((link, index) => (
-                      <SheetClose key={index} className="text-start" asChild>
-                        <Link
-                          to={link.href}
-                          className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
-                        >
-                          {link.text}
-                        </Link>
-                      </SheetClose>
+                      link.isButton ? (
+                        <SheetClose key={index + link.text} className="text-start" asChild>
+                          <Button asChild variant="secondary" className="text-md"> 
+                            <Link
+                              to={link.href}
+                              className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
+                            >
+                              {link.text}
+                            </Link>
+                          </Button> 
+                        </SheetClose>
+                      ) : (
+                        <SheetClose key={index + link.text} className="text-center" asChild>
+                          <Link
+                            to={link.href}
+                            className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
+                          >
+                            {link.text}
+                          </Link>
+                        </SheetClose>
+                      )
                     ))}
                     <HeaderSearchBar sheetClose={SheetClose} />
                     <Button onClick={handleLogout} className="cursor-pointer" aria-label="Log out of your account">

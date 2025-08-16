@@ -48,7 +48,7 @@ export default function HomeHero({
   badge = (
     <Badge variant="outline" className="animate-appear">
       <span className="text-muted-foreground">
-        The Elo MMA matchup explorer is out!
+        The Elo MMA Match Maker is out!
       </span>
       <Link to={"/register"} className="flex items-center gap-1">
         Get Started

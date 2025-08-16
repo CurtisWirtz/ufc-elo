@@ -40,6 +40,7 @@ export default function FooterSection({
     {
       title: "Explore",
       links: [
+        { text: "Match Maker", href: "/matchmaker" },
         { text: "Events", href: "/events" },
         { text: "Fighters", href: "/fighters" },
       ],

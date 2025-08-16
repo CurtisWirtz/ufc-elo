@@ -14,6 +14,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./navigation-menu";
+import { Button } from "@/components/ui/button";
 
 interface ComponentItem {
   title: string;
@@ -63,65 +64,10 @@ export default function Navigation({
       href: "/fighters",
     },
   ],
-  // components = [
-  //   {
-  //     title: "Alert Dialog",
-  //     href: "/docs/primitives/alert-dialog",
-  //     description:
-  //       "A modal dialog that interrupts the user with important content and expects a response.",
-  //   },
-  //   {
-  //     title: "Hover Card",
-  //     href: "/docs/primitives/hover-card",
-  //     description:
-  //       "For sighted users to preview content available behind a link.",
-  //   },
-  //   {
-  //     title: "Progress",
-  //     href: "/docs/primitives/progress",
-  //     description:
-  //       "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  //   },
-  //   {
-  //     title: "Scroll-area",
-  //     href: "/docs/primitives/scroll-area",
-  //     description: "Visually or semantically separates content.",
-  //   },
-  //   {
-  //     title: "Tabs",
-  //     href: "/docs/primitives/tabs",
-  //     description:
-  //       "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  //   },
-  //   {
-  //     title: "Tooltip",
-  //     href: "/docs/primitives/tooltip",
-  //     description:
-  //       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  //   },
-  // ],
   logo = <LogoUI />,
-  logoTitle = "MMA Elo",
-  logoDescription = "Welcome to MMA Elo.",
+  logoTitle = "Elo MMA",
+  logoDescription = "Welcome to Elo MMA.",
   logoHref = "/",
-  // introItems = [
-  //   {
-  //     title: "Introduction",
-  //     href: "https://www.launchuicomponents.com/",
-  //     description:
-  //       "Re-usable components built using Radix UI and Tailwind CSS.",
-  //   },
-  //   {
-  //     title: "Installation",
-  //     href: "https://www.launchuicomponents.com/",
-  //     description: "How to install dependencies and structure your app.",
-  //   },
-  //   {
-  //     title: "Typography",
-  //     href: "https://www.launchuicomponents.com/",
-  //     description: "Styles for headings, paragraphs, lists...etc",
-  //   },
-  // ],
 }: NavigationProps) {
   return (
     <NavigationMenu className="hidden md:flex">
@@ -182,6 +128,13 @@ export default function Navigation({
             )}
           </NavigationMenuItem>
         ))}
+        <NavigationMenuItem asChild>
+          <Button asChild variant="glow">
+            <Link to={"/matchmaker"} className="">
+              <span className="">Match Maker</span>
+            </Link>
+          </Button>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
