@@ -74,7 +74,7 @@ function SearchResultsPage() {
     queryFn: () => fetchSearchResults(q),
     // Only enable the query if there's a valid search term and NO validation errors
     enabled: !!q && !validationError,
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 24 * 60 * 60 * 1000, // 1 day
   });
 
   return (
