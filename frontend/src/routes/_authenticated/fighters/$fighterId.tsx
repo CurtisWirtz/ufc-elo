@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import {Breadcrumbs} from '@/components/Breadcrumbs'
 import { Button } from '@/components/ui/button.tsx'
 import FighterEloChart from '@/components/FighterEloChart.tsx'
+import { Spinner } from '@/components/ui/spinner.tsx';
 
 
 export const Route = createFileRoute('/_authenticated/fighters/$fighterId')({
@@ -17,8 +18,8 @@ export const Route = createFileRoute('/_authenticated/fighters/$fighterId')({
       queryFn: () => getItemById(fighterId, "fighters")
     });
   },
-  pendingComponent: () => <div>Loading...</div>,
-  errorComponent: () => <div>Error fetching fighters</div>,
+  pendingComponent: () => <div className="flex justify-center w-full my-20 text-4xl"><Spinner size="medium" /></div>,
+  errorComponent: () => <div className="flex justify-center w-full my-20 text-4xl">Error fetching fighters</div>,
 })
 
 function FighterPage() {
