@@ -31,11 +31,11 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
   const chartConfig = {
     fighter1_elo: {
       label: fighter1.name,
-      color: "var(--chart-3)",
+      color: "#fb923c",
     },
     fighter2_elo: {
       label: fighter2.name,
-      color: "var(--chart-1)",
+      color: "#808080",
     },
   };
 
@@ -65,19 +65,53 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
   // Apply the "carry-forward" logic to fill in missing data points
   // we carry the last known rating to align with the date that the other fighter had an Elo update.
   // otherwise, the chart lines are broken up
+  // let lastFighter1Elo = null;
+  // let lastFighter2Elo = null;
+
+  // const combinedData = sortedData.map((dataPoint) => {
+  //   // If a value exists, update the last known value
+  //   if (dataPoint.fighter1_elo !== undefined) {
+  //     lastFighter1Elo = dataPoint.fighter1_elo;
+  //   }
+  //   if (dataPoint.fighter2_elo !== undefined) {
+  //     lastFighter2Elo = dataPoint.fighter2_elo;
+  //   }
+
+  //   // Return a new object with the carried-forward values
+  //   return {
+  //     ...dataPoint,
+  //     fighter1_elo: lastFighter1Elo,
+  //     fighter2_elo: lastFighter2Elo,
+  //   };
+  // });
+
+  const lastDateFighter1 = fighter1.elo_history.length > 0
+    ? fighter1.elo_history[fighter1.elo_history.length - 1].date
+    : null;
+  const lastDateFighter2 = fighter2.elo_history.length > 0
+    ? fighter2.elo_history[fighter2.elo_history.length - 1].date
+    : null;
+
   let lastFighter1Elo = null;
   let lastFighter2Elo = null;
 
   const combinedData = sortedData.map((dataPoint) => {
-    // If a value exists, update the last known value
-    if (dataPoint.fighter1_elo !== undefined) {
+    // If we've passed the last date for fighter 1, set their Elo to null
+    if (new Date(dataPoint.date).getTime() > new Date(lastDateFighter1).getTime()) {
+      lastFighter1Elo = null;
+    } else if (dataPoint.fighter1_elo !== undefined) {
+      // Otherwise, apply the carry-forward logic
       lastFighter1Elo = dataPoint.fighter1_elo;
     }
-    if (dataPoint.fighter2_elo !== undefined) {
+
+    // If we've passed the last date for fighter 2, set their Elo to null
+    if (new Date(dataPoint.date).getTime() > new Date(lastDateFighter2).getTime()) {
+      lastFighter2Elo = null;
+    } else if (dataPoint.fighter2_elo !== undefined) {
+      // Otherwise, apply the carry-forward logic
       lastFighter2Elo = dataPoint.fighter2_elo;
     }
 
-    // Return a new object with the carried-forward values
     return {
       ...dataPoint,
       fighter1_elo: lastFighter1Elo,
@@ -133,7 +167,7 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
                 />
               }
             />
-            <Legend width={100} wrapperStyle={{ top: 40, left: 100, backgroundColor: 'transparent', border: '1px solid #d5d5d5', borderRadius: 10, lineHeight: '40px' }} />
+            <Legend width={200} wrapperStyle={{ top: 40, left: 100, backgroundColor: 'transparent', border: '1px solid #d5d5d5', borderRadius: 10, lineHeight: '40px' }} />
             <Line
               dataKey="fighter1_elo"
               type="linear"
@@ -145,6 +179,7 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
               activeDot={{
                 r: 6,
               }}
+              name={chartConfig.fighter1_elo.label}
             />
             <Line
               dataKey="fighter2_elo"
@@ -157,6 +192,7 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
               activeDot={{
                 r: 6,
               }}
+              name={chartConfig.fighter2_elo.label}
             />
           </LineChart>
         </ChartContainer>
