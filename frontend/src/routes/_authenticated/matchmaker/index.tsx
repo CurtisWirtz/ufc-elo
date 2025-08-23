@@ -8,6 +8,7 @@ import type { Fighter } from '../../../types/fighter.types.ts';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDate } from '@/lib/dateUtils.ts';
+import MatchEloChart from '@/components/MatchEloChart.tsx';
 
 import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button.tsx';
@@ -392,7 +393,7 @@ function MatchMaker() {
 
         {firstFighter && secondFighter && firstFighterEra && secondFighterEra && (
           <div className="mt-20 text-center">
-            <h2 className="">Results</h2>
+            <h2>Results</h2>
             {(winner !== loser) ? (
               <p className="">On {
                   (winner === firstFighter) ? (
@@ -410,6 +411,9 @@ function MatchMaker() {
             ) : (
               <p className="">Both fighters had the same rating during these respective eras, which is considered a draw.</p>
             )}
+
+            <MatchEloChart fighter1={firstFighter} fighter2={secondFighter}/>
+
             {/* <p className="">The night before a UFC event, inside an empty arena, and Octagon.</p>
             <h3 className="">A portal opens...</h3>
             <p className="">{firstFighter.name} tumbles out of the portal, with a confused look on their face. {secondFighter.name} follows closely behind, equally bewildered.</p>
