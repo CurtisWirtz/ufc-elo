@@ -131,8 +131,8 @@ function MatchMaker() {
     }
   }, [firstFighterEra, secondFighterEra]);
 
-  console.log('winner:', winner);
-  console.log('loser:', loser);
+  // console.log('winner:', winner);
+  // console.log('loser:', loser);
 
   return (
     <Section
@@ -412,7 +412,9 @@ function MatchMaker() {
               <p className="">Both fighters had the same rating during these respective eras, which is considered a draw.</p>
             )}
 
-            <MatchEloChart fighter1={firstFighter} fighter2={secondFighter}/>
+            {(winner !== loser) && (
+              <MatchEloChart fighter1={winner} fighter2={loser}/>
+            )}
 
             {/* <p className="">The night before a UFC event, inside an empty arena, and Octagon.</p>
             <h3 className="">A portal opens...</h3>
