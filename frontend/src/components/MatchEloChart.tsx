@@ -160,10 +160,9 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => `Date: ${formatDate(value)}`}
-                  formatter={(value, name) => [
-                    `${Math.round(value)}`,
-                    chartConfig[name]?.label,
-                  ]}
+                  formatter={(value, name) => {
+                    return [`${Math.round(value)} - `, name];
+                  }}
                 />
               }
             />
