@@ -163,6 +163,8 @@ function MatchMaker() {
                 variant="center"
                 className="z-0 animate-appear-zoom opacity-0 delay-300"
               />
+              {((winner === loser) && firstFighterEra && secondFighterEra) && <span className="animate-appear absolute z-30 text-white top-1/2 text-3xl font-semibold tracking-wider">DRAW</span>}
+              {((winner !== loser) && (winner === firstFighter)) && <span className="animate-appear absolute z-30 text-brand-foreground top-1/2 text-3xl font-semibold tracking-wider">WINNER</span>}
             </div>
             {firstFighter ? (
               <div className="">
@@ -258,7 +260,7 @@ function MatchMaker() {
                 )}
 
                 {hasSearched && !isLoading && !error && !firstFighter && searchResults.length === 0 && (
-                    <p className="absolute mt-5 text-muted-foreground text-md">No results found.</p>
+                    <p className="absolute mt-14 text-muted-foreground text-md">No results found.</p>
                 )}
               </div>
             )}
@@ -289,6 +291,8 @@ function MatchMaker() {
                 variant="center"
                 className="z-0 animate-appear-zoom opacity-0 delay-300"
               />
+              {((winner === loser) && firstFighterEra && secondFighterEra) && <span className="animate-appear absolute z-30 text-white top-1/2 text-3xl font-semibold tracking-wider">DRAW</span>}
+              {((winner !== loser) && (winner === secondFighter)) && <span className="animate-appear absolute z-30 text-brand-foreground top-1/2 text-3xl font-semibold tracking-wider">WINNER</span>}
             </div>
             {secondFighter ? (
               <div className="">
@@ -384,7 +388,7 @@ function MatchMaker() {
                 )}
 
                 {hasSearched2 && !isLoading2 && !error2 && !secondFighter && searchResults2.length === 0 && (
-                  <p className="absolute mt-5 text-muted-foreground text-md">No results found.</p>
+                  <p className="absolute mt-14 text-muted-foreground text-md">No results found.</p>
                 )}
               </div>
             )}
@@ -392,10 +396,10 @@ function MatchMaker() {
         </div>
 
         {firstFighter && secondFighter && firstFighterEra && secondFighterEra && (
-          <div className="mt-20 text-center">
+          <div className="animate-appear mt-20 text-center">
             <h2>Results</h2>
             {(winner !== loser) ? (
-              <p className="">On {
+              <p className="mb-5">On {
                   (winner === firstFighter) ? (
                     formatDate(firstFighterEra.date)
                   ) : (
@@ -409,7 +413,7 @@ function MatchMaker() {
                   )
                 }</p>
             ) : (
-              <p className="">Both fighters had the same rating during these respective eras, which is considered a draw.</p>
+              <p className="mb-5">Both fighters had the same rating during these respective eras, which is considered a draw.</p>
             )}
 
             {(winner !== loser) && (
