@@ -37,8 +37,8 @@ export default function HomeHero({
   description = "By applying the Elo ranking system to MMA fighters, we can simulate the results of bouts bewteen any two fighters at any point in their careers. Imagine Ubereem vs Ngannou, or Chuck vs Wanderlei while both thier primes.",
   mockup = (
     <Screenshot
-      srcLight="/bones-alex.webp"
-      srcDark="/bones-alex.webp"
+      srcLight="/matchmaker-light.webp"
+      srcDark="/matchmaker-dark.webp"
       alt="Which fighter would win in your dream matchups?"
       width={1248}
       height={765}
