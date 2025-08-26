@@ -37,7 +37,7 @@ const getTopSearchResults = async (searchTerm: string): Promise<Fighter[]> => {
   }
   try {
     const response = await api.get(`/api/matchmaker/?q=${encodeURIComponent(searchTerm)}`);
-    return response.data;
+    return response.data.results;
   } catch (error) {
     console.error("Failed to fetch search results:", error);
     throw new Error("Could not retrieve search results.");
@@ -86,7 +86,7 @@ function MatchMaker() {
 
     try {
       const response = await getTopSearchResults(data.searchQuery);
-      setSearchResults(response.results);
+      setSearchResults(response);
     } catch (err: any) {
       setError(err.message || "An error occurred while fetching search results.");
     } finally {
@@ -102,7 +102,7 @@ function MatchMaker() {
 
     try {
       const response = await getTopSearchResults(data.searchQuery);
-      setSearchResults2(response.results);
+      setSearchResults2(response);
     } catch (err: any) {
       setError2(err.message || "An error occurred while fetching search results.");
     } finally {
