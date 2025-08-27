@@ -51,6 +51,9 @@ function MatchMaker() {
   const [firstFighterEra, setFirstFighterEra] = useState<FighterEra | null>(null);
   const [secondFighterEra, setSecondFighterEra] = useState<FighterEra | null>(null);
 
+  const [firstFighterPeak, setFirstFighterPeak] = useState<FighterEra | null>(null);
+  const [secondFighterPeak, setSecondFighterPeak] = useState<FighterEra | null>(null);
+
   const [winner, setWinner] = useState<Fighter | null>(null);
   const [loser, setLoser] = useState<Fighter | null>(null);
 
@@ -110,6 +113,27 @@ function MatchMaker() {
     }
   };
 
+  // When a fighter is chosen, set the Peak elo era for that fighter, so it can be easily selected for a matchup
+  useEffect(() => {
+    if (firstFighter && firstFighter.elo_history) {
+      const peakEra = firstFighter.elo_history.reduce((prev, current) => {
+        return (current.ending_elo > prev.ending_elo) ? current : prev;
+      });
+      setFirstFighterPeak(peakEra);
+    } else {
+      setFirstFighterPeak(null);
+    }
+    if (secondFighter && secondFighter.elo_history) {
+      const peakEra = secondFighter.elo_history.reduce((prev, current) => {
+        return (current.ending_elo > prev.ending_elo) ? current : prev;
+      });
+      setSecondFighterPeak(peakEra);
+    } else {
+      setSecondFighterPeak(null);
+    }
+  }, [firstFighter, secondFighter]);
+
+  // figure out who is the winner/loser, once both fighters eras are chosen
   useEffect(() => {
     if (firstFighterEra && secondFighterEra) {
       // if both fighters and eras are chosen, decide which is the winner
@@ -200,7 +224,14 @@ function MatchMaker() {
                   firstFighter.elo_history && firstFighter.elo_history.length > 0 ? (
                     <div className="relative w-full">
                       <ul className="absolute w-full mt-2 space-y-2 max-h-50 overflow-y-auto">
-                        <span className="text-xl block mb-2">Select an era:</span>
+                        <div className="text-xl mb-2 flex justify-between items-center">
+                          <span>Select an era:</span>
+                          {firstFighterPeak && (
+                            <Button onClick={() => setFirstFighterEra(firstFighterPeak)} variant="glow" className="text-brand text-lg cursor-pointer">
+                              Select Peak Rating: <span className="font-semibold ml-1">{Math.round(firstFighterPeak.ending_elo)}</span>
+                            </Button>
+                          )}
+                        </div>
                         {firstFighter.elo_history.map((era) => (
                           <li key={era.date + era.opponent_id}>
                             <Button className="cursor-pointer text-lg text-center w-full flex justify-between" onClick={() => {setFirstFighterEra(era)} }>
@@ -328,7 +359,14 @@ function MatchMaker() {
                   secondFighter.elo_history && secondFighter.elo_history.length > 0 ? (
                     <div className="relative w-full">
                       <ul className="absolute w-full mt-2 space-y-2 max-h-50 overflow-y-auto">
-                        <span className="text-xl block mb-2">Select an era:</span>
+                        <div className="text-xl mb-2 flex justify-between items-center">
+                          <span>Select an era:</span>
+                          {secondFighterPeak && (
+                            <Button onClick={() => setSecondFighterEra(secondFighterPeak)} variant="glow" className="text-brand text-lg cursor-pointer">
+                              Select Peak Rating: <span className="font-semibold ml-1">{Math.round(secondFighterPeak.ending_elo)}</span>
+                            </Button>
+                          )}
+                        </div>
                         {secondFighter.elo_history.map((era) => (
                           <li key={era.date + era.opponent_id} >
                             <Button className="cursor-pointer text-lg text-center w-full flex justify-between" onClick={() => {setSecondFighterEra(era)} }>
