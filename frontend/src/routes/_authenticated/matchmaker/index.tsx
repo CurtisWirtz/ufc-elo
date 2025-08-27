@@ -115,7 +115,7 @@ function MatchMaker() {
 
   // When a fighter is chosen, set the Peak elo era for that fighter, so it can be easily selected for a matchup
   useEffect(() => {
-    if (firstFighter && firstFighter.elo_history) {
+    if (firstFighter && firstFighter.elo_history && firstFighter.elo_history.length > 0) {
       const peakEra = firstFighter.elo_history.reduce((prev, current) => {
         return (current.ending_elo > prev.ending_elo) ? current : prev;
       });
@@ -123,7 +123,7 @@ function MatchMaker() {
     } else {
       setFirstFighterPeak(null);
     }
-    if (secondFighter && secondFighter.elo_history) {
+    if (secondFighter && secondFighter.elo_history && secondFighter.elo_history.length > 0) {
       const peakEra = secondFighter.elo_history.reduce((prev, current) => {
         return (current.ending_elo > prev.ending_elo) ? current : prev;
       });
@@ -248,7 +248,7 @@ function MatchMaker() {
                 )}
               </div>
             ) : (
-              <div className="relative z-20 mt-3">
+              <div className="relative z-20 translate-y-3">
                 <form onSubmit={handleSubmit(onSubmit)} className="absolute w-full flex items-center space-x-2">
                   <Input
                     className="placeholder:text-foreground text-lg! placeholder:text-lg"
