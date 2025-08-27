@@ -383,7 +383,7 @@ function MatchMaker() {
                 )}
               </div>
             ) : (
-              <div className="relative z-20 mt-3">
+              <div className="relative z-20 translate-y-3">
                 <form onSubmit={handleSubmit2(onSubmit2)} className="absolute w-full flex items-center space-x-2">
                   <Input
                     className="placeholder:text-foreground text-lg! placeholder:text-lg"
