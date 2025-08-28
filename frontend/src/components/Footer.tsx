@@ -35,23 +35,16 @@ interface FooterProps {
 
 export default function FooterSection({
   logo = <LogoUI />,
-  name = "MMA Elo Explorer",
+  name = "Elo MMA",
   columns = [
     {
       title: "Explore",
       links: [
+        { text: "Match Maker", href: "/matchmaker" },
         { text: "Events", href: "/events" },
         { text: "Fighters", href: "/fighters" },
       ],
     },
-    // {
-    //   title: "Company",
-    //   links: [
-    //     { text: "About", href: "/" },
-    //     { text: "Careers", href: "/" },
-    //     { text: "Blog", href: "/" },
-    //   ],
-    // },
     {
       title: "Contact",
       links: [
@@ -95,7 +88,7 @@ export default function FooterSection({
             ))}
           </FooterContent>
           <FooterBottom>
-            <div className="text-brand">&copy; {new Date().getFullYear()} MMA Elo Explorer. Curtis Wirtz - All rights reserved.</div>
+            <div className="text-brand">&copy; {new Date().getFullYear()} Elo MMA. Curtis Wirtz - All rights reserved.</div>
             <div className="flex items-center gap-4">
               {policies.map((policy, index) => (
                 <Link key={index} to={policy.href}>

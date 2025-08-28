@@ -16,15 +16,6 @@ import { formatDate } from '../lib/dateUtils.ts'
 
 export const description = "A linear line chart"
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
-
 export const chartConfig = {
   ending_elo: {
     label: "Elo Rating",
@@ -64,10 +55,6 @@ const FighterEloChart = ({fighter}) => {
               domain={['dataMin - 25', 'dataMax + 25']}
               tickFormatter={(value) => Math.round(value)}
             />
-            {/* <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            /> */}
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent 
@@ -80,7 +67,12 @@ const FighterEloChart = ({fighter}) => {
               type="linear"
               stroke="var(--color-ending_elo)"
               strokeWidth={2}
-              dot={false}
+              dot={{
+                fill: "var(--color-ending_elo)",
+              }}
+              activeDot={{
+                r: 6,
+              }}
             />
           </LineChart>
         </ChartContainer>

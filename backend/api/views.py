@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note, Event, Fighter
 from .pagination import TwentyItemsPagination 
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.db.models import F, Value
-from django.db.models.functions import Coalesce
+from django.db.models import Q, F, Value, Case, When
+from django.db.models.functions import Coalesce, Length
 
 User = get_user_model()
 
@@ -140,3 +140,49 @@ class CombinedSearchView(generics.ListAPIView):
             results.sort(key=lambda x: x.get('rank', 0), reverse=True)
 
         return Response(results)
+
+class MatchmakerView(generics.ListAPIView):
+    # https://www.django-rest-framework.org/api-guide/generic-views/#listapiview
+
+    print('hello from matchmaker view')
+
+    # tells ListAPIView which serializer to use
+    serializer_class = FighterSerializer
+
+    # By overriding get_queryset(), we can apply the filtering before any data is loaded... so we don't have to use Fighter.objects.all() ...an expensive query
+    def get_queryset(self):
+        # Example URL format: http://localhost:3000/matchmaker?q=robert%20whittaker
+        # Get the fighter IDs from the query parameters (in URL query string)
+        query_string = self.request.query_params.get('q', '').strip()
+
+        if not query_string:
+            return Fighter.objects.none()
+
+        # Use Q objects to build a dynamic OR query
+        # search for the query string in either the 'name' or 'nickname' fields
+        queryset = Fighter.objects.filter(
+            Q(name__icontains=query_string) | Q(nickname__icontains=query_string)
+        )
+
+        # Annotate the queryset with a relevance score for ordering
+        # and the rank (as 'rank') https://docs.djangoproject.com/en/5.2/ref/models/querysets/#annotate
+        queryset = queryset.annotate(
+            relevance_score=Case(
+                When(Q(name__iexact=query_string) | Q(nickname__iexact=query_string), then=Value(100)),
+                When(Q(name__istartswith=query_string) | Q(nickname__istartswith=query_string), then=Value(50)),
+                default=Value(0),
+            ) - Length(F('name'))
+        )
+
+        # Note: Django querysets are lazy. It builds a query of Python objects then execute it against the database
+            # so I'm not actually pulling all the records from the DB then only returning the sliced 10.
+            # The SQL query probably looks something like this (and is efficient - enough... for now)
+
+            # SELECT ... FROM fighter_table
+            # WHERE name LIKE '%query%' OR nickname LIKE '%query%'
+            # ORDER BY relevance_score DESC
+            # LIMIT 10;
+
+        # Order by the calculated relevance score in descending order.
+        # Then, use list slicing to get only the top 10 results.
+        return queryset.order_by('-relevance_score')[:10]

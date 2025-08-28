@@ -1,11 +1,11 @@
 import { Link, useRouterState } from '@tanstack/react-router'
 import { HeaderSearchBar } from './HeaderSearchBar'
 import avatarSvg from '../assets/svg/avatar.svg';
+import { truncateString } from '@/lib/stringUtils.ts';
 
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
 
-// import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 import LogoUI from "@/components/logos/octagon";
@@ -23,6 +23,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 interface NavbarLink {
   text: string;
   href: string;
+  isButton: boolean;
 }
 
 interface NavbarActionProps {
@@ -51,11 +52,12 @@ export default function Header({
   handleLogout,
 
   logo = <LogoUI />,
-  name = "MMA Elo Explorer",
+  name = "Elo MMA",
   homeUrl = "/",
   mobileLinks = [
-    { text: "Fighters", href: "/fighters" },
-    { text: "Events", href: "/events" },
+    { text: "Match Maker", href: "/matchmaker", isButton: true },
+    { text: "Fighters", href: "/fighters", isButton: false },
+    { text: "Events", href: "/events", isButton: false },
   ],
   actions = [
     { text: "Login", href: "/login", isButton: false },
@@ -71,7 +73,6 @@ export default function Header({
   className,
 }: NavbarProps) {
   const { location } = useRouterState()
-  const currentPath = location.pathname
 
   return (
     <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
@@ -89,7 +90,7 @@ export default function Header({
             <ModeToggle />
             {isAuthenticated && (
               <>
-                {showNavigation && (customNavigation || <Navigation className=""/>)}
+                {showNavigation && (customNavigation || <Navigation />)}
               </>
             )}
           </NavbarLeft>
@@ -128,7 +129,7 @@ export default function Header({
                       <AvatarFallback>Elo</AvatarFallback>
                     </Avatar>
                     <div className="" tabIndex={0}>
-                      <span className="sr-only">Logged in as</span><span>{user.username}</span>
+                      <span className="sr-only">Logged in as</span><span>{truncateString(user.username)}</span>
                     </div>
                   </div>
                 )}
@@ -169,14 +170,27 @@ export default function Header({
                       </div>
                     )}
                     {mobileLinks.map((link, index) => (
-                      <SheetClose key={index} className="text-start" asChild>
-                        <Link
-                          to={link.href}
-                          className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
-                        >
-                          {link.text}
-                        </Link>
-                      </SheetClose>
+                      link.isButton ? (
+                        <SheetClose key={index + link.text} asChild>
+                          <Button variant="secondary" className="text-md" asChild> 
+                            <Link
+                              to={link.href}
+                              className={location.pathname.startsWith(link.href) ? "text-brand!" : "text-muted-foreground! hover:text-foreground!"}
+                            >
+                              {link.text}
+                            </Link>
+                          </Button> 
+                        </SheetClose>
+                      ) : (
+                        <SheetClose key={index + link.text} className="text-center" asChild>
+                          <Link
+                            to={link.href}
+                            className={location.pathname.startsWith(link.href) ? "text-brand" : "text-muted-foreground hover:text-foreground"}
+                          >
+                            {link.text}
+                          </Link>
+                        </SheetClose>
+                      )
                     ))}
                     <HeaderSearchBar sheetClose={SheetClose} />
                     <Button onClick={handleLogout} className="cursor-pointer" aria-label="Log out of your account">

@@ -1,4 +1,4 @@
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/ui/theme-provider";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -20,24 +20,26 @@ export default function Screenshot({
   height,
   className,
 }: ScreenshotProps) {
-  const { resolvedTheme } = useTheme();
+  const resolvedTheme = useTheme();
   const [src, setSrc] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   if (resolvedTheme) {
-  //     setSrc(resolvedTheme === "light" ? srcLight : srcDark || srcLight);
-  //   }
-  // }, [resolvedTheme, srcLight, srcDark]);
+  // console.log('resolvedTheme: ', resolvedTheme);
 
-  // if (!src) {
-  //   return (
-  //     <div
-  //       style={{ width, height }}
-  //       className={cn("bg-muted", className)}
-  //       aria-label={alt}
-  //     />
-  //   );
-  // }
+  useEffect(() => {
+    if (resolvedTheme) {
+      setSrc(resolvedTheme.theme === "light" ? srcLight : srcDark || srcLight);
+    }
+  }, [resolvedTheme, srcLight, srcDark]);
+
+  if (!src) {
+    return (
+      <div
+        style={{ width, height }}
+        className={cn("bg-muted", className)}
+        aria-label={alt}
+      />
+    );
+  }
 
   return (
     // <Image
@@ -47,10 +49,11 @@ export default function Screenshot({
     //   height={height}
     //   className={className}
     // />
-    
+
     <img
-      // src={src}
-      src="/bones-alex.webp"
+      src={src}
+      // src="/bones-alex.webp"
+      // src="/matchmaker-dark.webp"
       alt={alt}
       // width={width}
       width="100%"

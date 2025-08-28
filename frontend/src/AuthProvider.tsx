@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { api } from './api/client.ts';
 import { REFRESH_TOKEN, ACCESS_TOKEN } from '@/constants';
 import { queryClient } from './queryClient.ts';
+import { Spinner } from '@/components/ui/spinner';
 
 // Lots of difficult work done here... for good practice. Next time I'll default to using an established auth tool/framework... lol
 // Built off of example from TanStack Router docs:
@@ -213,8 +214,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   if (!isAuthInitialized) {
     return (
       <AuthContext.Provider value={authContextValue}>
-        <div>
-          Initializing Authentication...
+        <div className="h-screen w-screen flex justify-center items-center">
+          <Spinner size="large" className=""/>
         </div>
       </AuthContext.Provider>
     );

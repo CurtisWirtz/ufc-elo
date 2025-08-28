@@ -8,6 +8,7 @@ import type { RegisterFormInputs } from '../schemas/authSchema';
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Spinner } from "@/components/ui/spinner"
 import {
   Card,
   CardAction,
@@ -194,7 +195,7 @@ export function RegisterForm() {
                   </div>
 
                   <Button type="submit" className="w-full cursor-pointer disabled:not-allowed" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Registering...' : 'Register'}
+                    {form.formState.isSubmitting ? <Spinner size="small" /> : 'Register'}
                   </Button>
                 </form>  
               </Form>

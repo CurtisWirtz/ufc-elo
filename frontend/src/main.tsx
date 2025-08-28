@@ -14,7 +14,7 @@ import { routeTree } from './routeTree.gen'
 const router = createRouter({ 
   routeTree,
   defaultNotFoundComponent: () => {
-    return <div><h1 className="text-4xl">404 error: Page not found.</h1></div>
+    return <div className="text-4xl min-h-100"><h1 className="mt-40 text-center">404 error: Page not found.</h1></div>
   },
   // Pass the query client to the router context (Tanstack Router)
   // also, checkAuthForRouter to check auth validity

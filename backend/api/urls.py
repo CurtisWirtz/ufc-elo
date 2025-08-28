@@ -14,4 +14,6 @@ urlpatterns = [
     path('fighters/<str:fighter_id>/', views.FighterDetailView.as_view(), name='fighter-detail'),
 
     path('search/', views.CombinedSearchView.as_view(), name='combined-search'),
+
+    path('matchmaker/', views.MatchmakerView.as_view(), name="matchmaker"),
 ]

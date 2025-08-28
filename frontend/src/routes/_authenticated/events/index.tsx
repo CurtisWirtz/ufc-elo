@@ -10,6 +10,7 @@ import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button.tsx';
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { Spinner } from '@/components/ui/spinner.tsx';
 
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsIndex,
@@ -48,7 +49,7 @@ export const Route = createFileRoute('/_authenticated/events/')({
       staleTime: 1000 * 60 * 5, // add cache stale time... refresh after 5 mins
     });
   },
-  pendingComponent: () => <div className="flex justify-center w-full my-20 text-4xl">Loading...</div>,
+  pendingComponent: () => <div className="flex justify-center w-full my-20 text-4xl"><Spinner size="medium" /></div>,
   errorComponent: () => <div className="flex justify-center w-full my-20 text-4xl">Error fetching events</div>,
 });
 

@@ -9,21 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SearchRouteImport } from './routes/search'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedSearchIndexRouteImport } from './routes/_authenticated/search/index'
+import { Route as AuthenticatedMatchmakerIndexRouteImport } from './routes/_authenticated/matchmaker/index'
 import { Route as AuthenticatedFightersIndexRouteImport } from './routes/_authenticated/fighters/index'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as AuthenticatedFightersFighterIdRouteImport } from './routes/_authenticated/fighters/$fighterId'
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events/$eventId'
 
-const SearchRoute = SearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -43,6 +39,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSearchIndexRoute =
+  AuthenticatedSearchIndexRouteImport.update({
+    id: '/search/',
+    path: '/search/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedMatchmakerIndexRoute =
+  AuthenticatedMatchmakerIndexRouteImport.update({
+    id: '/matchmaker/',
+    path: '/matchmaker/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedFightersIndexRoute =
   AuthenticatedFightersIndexRouteImport.update({
     id: '/fighters/',
@@ -72,21 +80,23 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/search': typeof SearchRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/fighters/$fighterId': typeof AuthenticatedFightersFighterIdRoute
   '/events': typeof AuthenticatedEventsIndexRoute
   '/fighters': typeof AuthenticatedFightersIndexRoute
+  '/matchmaker': typeof AuthenticatedMatchmakerIndexRoute
+  '/search': typeof AuthenticatedSearchIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/search': typeof SearchRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/fighters/$fighterId': typeof AuthenticatedFightersFighterIdRoute
   '/events': typeof AuthenticatedEventsIndexRoute
   '/fighters': typeof AuthenticatedFightersIndexRoute
+  '/matchmaker': typeof AuthenticatedMatchmakerIndexRoute
+  '/search': typeof AuthenticatedSearchIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,11 +104,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/search': typeof SearchRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRoute
   '/_authenticated/fighters/$fighterId': typeof AuthenticatedFightersFighterIdRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/fighters/': typeof AuthenticatedFightersIndexRoute
+  '/_authenticated/matchmaker/': typeof AuthenticatedMatchmakerIndexRoute
+  '/_authenticated/search/': typeof AuthenticatedSearchIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -106,32 +117,35 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
-    | '/search'
     | '/events/$eventId'
     | '/fighters/$fighterId'
     | '/events'
     | '/fighters'
+    | '/matchmaker'
+    | '/search'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
-    | '/search'
     | '/events/$eventId'
     | '/fighters/$fighterId'
     | '/events'
     | '/fighters'
+    | '/matchmaker'
+    | '/search'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/register'
-    | '/search'
     | '/_authenticated/events/$eventId'
     | '/_authenticated/fighters/$fighterId'
     | '/_authenticated/events/'
     | '/_authenticated/fighters/'
+    | '/_authenticated/matchmaker/'
+    | '/_authenticated/search/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -139,18 +153,10 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
-  SearchRoute: typeof SearchRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -178,6 +184,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/search/': {
+      id: '/_authenticated/search/'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AuthenticatedSearchIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/matchmaker/': {
+      id: '/_authenticated/matchmaker/'
+      path: '/matchmaker'
+      fullPath: '/matchmaker'
+      preLoaderRoute: typeof AuthenticatedMatchmakerIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/fighters/': {
       id: '/_authenticated/fighters/'
@@ -215,6 +235,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFightersFighterIdRoute: typeof AuthenticatedFightersFighterIdRoute
   AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
   AuthenticatedFightersIndexRoute: typeof AuthenticatedFightersIndexRoute
+  AuthenticatedMatchmakerIndexRoute: typeof AuthenticatedMatchmakerIndexRoute
+  AuthenticatedSearchIndexRoute: typeof AuthenticatedSearchIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -222,6 +244,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFightersFighterIdRoute: AuthenticatedFightersFighterIdRoute,
   AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
   AuthenticatedFightersIndexRoute: AuthenticatedFightersIndexRoute,
+  AuthenticatedMatchmakerIndexRoute: AuthenticatedMatchmakerIndexRoute,
+  AuthenticatedSearchIndexRoute: AuthenticatedSearchIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -233,7 +257,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
-  SearchRoute: SearchRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

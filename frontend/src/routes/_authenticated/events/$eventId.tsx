@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import {Breadcrumbs} from '@/components/Breadcrumbs'
 import { Button } from '@/components/ui/button.tsx'
+import { Spinner } from '@/components/ui/spinner.tsx'
 
 
 export const Route = createFileRoute('/_authenticated/events/$eventId')({
@@ -17,8 +18,8 @@ export const Route = createFileRoute('/_authenticated/events/$eventId')({
       queryFn: () => getItemById(eventId, "events")
     });
   },
-  pendingComponent: () => <div>Loading...</div>,
-  errorComponent: () => <div>Error fetching events</div>,
+  pendingComponent: () => <div className="flex justify-center w-full my-20 text-4xl"><Spinner size="medium" /></div>,
+  errorComponent: () => <div className="flex justify-center w-full my-20 text-4xl">Error fetching events</div>,
 })
 
 function EventPage() {
