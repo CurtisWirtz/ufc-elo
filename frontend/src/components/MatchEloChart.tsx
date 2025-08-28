@@ -166,7 +166,7 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
                 />
               }
             />
-            <Legend width={200} wrapperStyle={{ top: 40, left: 100, backgroundColor: 'transparent', border: '1px solid #d5d5d5', borderRadius: 10, lineHeight: '40px' }} />
+            <Legend width={200} wrapperStyle={{ top: 0, left: 100, backgroundColor: 'transparent', border: '1px solid #d5d5d5', borderRadius: 10, lineHeight: '40px' }} />
             <Line
               dataKey="fighter1_elo"
               type="linear"
