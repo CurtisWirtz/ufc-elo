@@ -223,9 +223,9 @@ function MatchMaker() {
                 ) : (
                   firstFighter.elo_history && firstFighter.elo_history.length > 0 ? (
                     <div className="relative w-full">
-                      <ul className="absolute z-30 bg-background/80 w-full mt-2 space-y-2 max-h-50 overflow-y-auto">
+                      <ul className="absolute z-30 bg-background/80 w-full mt-2 space-y-2 max-h-50 overflow-y-auto p-2">
                         <div className="text-xl mb-2 flex justify-between items-center">
-                          <span className="ml-2 tablet:ml-0">Select an era:</span>
+                          <span>Select an era:</span>
                           {firstFighterPeak && (
                             <Button onClick={() => setFirstFighterEra(firstFighterPeak)} variant="glow" className="text-brand text-lg cursor-pointer">
                               Select Peak Rating: <span className="font-semibold ml-1">{Math.round(firstFighterPeak.ending_elo)}</span>
@@ -274,7 +274,7 @@ function MatchMaker() {
 
                 {searchResults.length > 0 && (
                   <div className="relative w-full">
-                    <ul className="absolute w-full mt-10 space-y-2 max-h-50 overflow-y-auto">
+                    <ul className="absolute w-full mt-10 space-y-2 max-h-50 overflow-y-auto bg-background/50 p-2">
                       <span className="text-xl block mb-2 mt-3">Select a fighter:</span>
                       {searchResults.map((fighter) => (
                         <li key={fighter.fighter_id}>
@@ -358,9 +358,9 @@ function MatchMaker() {
                 ) : (
                   secondFighter.elo_history && secondFighter.elo_history.length > 0 ? (
                     <div className="relative w-full">
-                      <ul className="absolute z-30 bg-background/80 w-full mt-2 space-y-2 max-h-50 overflow-y-auto">
+                      <ul className="absolute z-30 bg-background/80 w-full mt-2 space-y-2 max-h-50 overflow-y-auto p-2">
                         <div className="text-xl mb-2 flex justify-between items-center">
-                          <span className="ml-2 tablet:ml-0">Select an era:</span>
+                          <span>Select an era:</span>
                           {secondFighterPeak && (
                             <Button onClick={() => setSecondFighterEra(secondFighterPeak)} variant="glow" className="text-brand text-lg cursor-pointer">
                               Select Peak Rating: <span className="font-semibold ml-1">{Math.round(secondFighterPeak.ending_elo)}</span>
@@ -409,7 +409,7 @@ function MatchMaker() {
 
                 {searchResults2.length > 0 && (
                   <div className="relative w-full">
-                    <ul className="absolute w-full mt-10 space-y-2 max-h-50 overflow-y-auto">
+                    <ul className="absolute w-full mt-10 space-y-2 max-h-50 overflow-y-auto bg-background/50 p-2">
                       <span className="text-xl block mb-2 mt-3">Select a fighter:</span>
                       {searchResults2.map((fighter) => (
                         <li key={fighter.fighter_id}>
