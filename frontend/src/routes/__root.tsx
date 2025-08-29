@@ -1,5 +1,5 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+// import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useAuth } from '../AuthProvider'
 import { useNavigate } from '@tanstack/react-router'
 import Header from '../components/Header'
@@ -24,7 +24,7 @@ function RootLayoutComponent() {
   return (
     <ThemeProvider >
       <div className="w-full min-h-screen">
-        <Header isAuthenticated={isAuthenticated} user={user} handleLogout={handleLogout} />
+        <Header isAuthenticated={isAuthenticated} user={user ?? undefined} handleLogout={handleLogout} />
 
         <main className="flex-grow">
           <Outlet />

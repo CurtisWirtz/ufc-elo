@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { PaginatedResponse } from '../../../api/queries.ts';

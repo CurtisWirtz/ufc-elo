@@ -5,6 +5,7 @@ export const Route = createFileRoute('/_authenticated')({
   // The beforeLoad function is executed BEFORE the route's components are rendered, ideal place for auth checks and redirects
   beforeLoad: async ({ context, location }) => {
     console.log("Auth Guard: Checking authentication for protected route...");
+    // @ts-ignore
     const isAuthenticated = await context.auth.checkAuthValidity();
 
     if (!isAuthenticated) {

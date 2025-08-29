@@ -1,16 +1,14 @@
-import type { ReactNode } from "react";
-
 import { cn } from "@/lib/utils";
 
 import { Section } from "@/components/ui/section";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 
-export default function DatasetStats(className: string = "") {
+export default function DatasetStats() {
   return (
     <Section
       className={cn(
         "fade-bottom overflow-hidden pb-0 sm:pb-0 md:pb-0 mx-5",
-        className,
+        "",
       )}
     >
       <div className="mb-40 max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-10">

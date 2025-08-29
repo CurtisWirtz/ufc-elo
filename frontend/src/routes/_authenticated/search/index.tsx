@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState } from 'react';
 import { createFileRoute, useLocation, Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';

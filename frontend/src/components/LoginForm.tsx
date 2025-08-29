@@ -54,7 +54,7 @@ const LoginForm: React.FC = () => {
             
                 if (access && refresh) {
                     login(access, refresh);
-                    navigate({ to: '/events', replace: true });
+                    navigate({ to: '/events', replace: true, search: { page: 1 } });
                 } else {
                     // If for some reason tokens are missing, set a manual error
                     form.setError("root.serverError", {

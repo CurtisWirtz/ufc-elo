@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/chart"
 import type { ChartConfig } from "@/components/ui/chart"
 import { formatDate } from '../lib/dateUtils.ts'
+import type { Fighter } from '@/types/fighter.types.ts'
 
 export const description = "A linear line chart"
 
@@ -23,14 +24,14 @@ export const chartConfig = {
   },
 } satisfies ChartConfig
 
-const FighterEloChart = ({fighter}) => {
+const FighterEloChart = ( fighter: Fighter ) => {
 
   return (
     <Card>
       <CardHeader>
         <div className="flex">
             <CardTitle>Fighter Rating History</CardTitle>
-            <CardDescription className="ml-5">{formatDate(fighter.elo_history[0].date)} - {formatDate(fighter.elo_history[fighter.elo_history.length - 1].date)}</CardDescription>
+            {fighter?.elo_history && <CardDescription className="ml-5">{formatDate(fighter?.elo_history[0].date)} - {formatDate(fighter?.elo_history[fighter.elo_history.length - 1].date)}</CardDescription>}
         </div>
       </CardHeader>
       <CardContent>
@@ -53,13 +54,13 @@ const FighterEloChart = ({fighter}) => {
             />
             <YAxis
               domain={['dataMin - 25', 'dataMax + 25']}
-              tickFormatter={(value) => Math.round(value)}
+              tickFormatter={(value) => Math.round(value).toString()}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent 
                 labelFormatter={(value) => `Date: ${formatDate(value)}`}
-                formatter={(value, name) => [`${Math.round(value)} `, chartConfig[name].label]}
+                formatter={(value, name) => [Math.round(Number(value)), chartConfig[name as keyof typeof chartConfig].label]}
               />}
             />
             <Line
