@@ -10,7 +10,7 @@ export const Route = createFileRoute('/login')({
     if (isLoggedIn) {
       // console.log("User is already logged in, redirecting from /login to /events.");
       // If they are logged in, redirect them to /events
-      throw redirect({ to: '/events', replace: true })
+      throw redirect({ to: '/events', search: { page: 1 }, replace: true })
     }
   },
   component: () => <LoginForm />,

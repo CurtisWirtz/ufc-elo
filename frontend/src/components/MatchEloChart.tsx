@@ -11,8 +11,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import type { ChartConfig } from "@/components/ui/chart";
 import { formatDate } from "../lib/dateUtils.ts";
+import type { Fighter } from "@/types/fighter.types.ts";
 
 export const description = "A linear line chart, plotting the ratings across time for two fighters";
 
@@ -27,7 +27,7 @@ export const description = "A linear line chart, plotting the ratings across tim
 //   },
 // } satisfies ChartConfig;
 
-const MatchEloChart = ({ fighter1, fighter2 }) => {
+const MatchEloChart = ({ fighter1, fighter2 }: { fighter1: Fighter; fighter2: Fighter }) => {
   const chartConfig = {
     fighter1_elo: {
       label: fighter1.name,
@@ -41,21 +41,25 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
 
   const combinedDataMap = new Map();
 
-  fighter1.elo_history.forEach((dataPoint) => {
-    combinedDataMap.set(dataPoint.date, {
-      date: dataPoint.date,
-      fighter1_elo: dataPoint.ending_elo,
+  if (fighter1.elo_history && fighter1.elo_history.length > 0) {
+    fighter1.elo_history.forEach((dataPoint) => {
+      combinedDataMap.set(dataPoint.date, {
+        date: dataPoint.date,
+        fighter1_elo: dataPoint.ending_elo,
+      });
     });
-  });
+  }
 
-  fighter2.elo_history.forEach((dataPoint) => {
-    const existingData = combinedDataMap.get(dataPoint.date);
-    combinedDataMap.set(dataPoint.date, {
-      ...existingData,
-      date: dataPoint.date,
-      fighter2_elo: dataPoint.ending_elo,
+  if (fighter2.elo_history && fighter2.elo_history.length > 0) {
+    fighter2.elo_history.forEach((dataPoint) => {
+      const existingData = combinedDataMap.get(dataPoint.date);
+      combinedDataMap.set(dataPoint.date, {
+        ...existingData,
+        date: dataPoint.date,
+        fighter2_elo: dataPoint.ending_elo,
+      });
     });
-  });
+  }
 
   // Sort the combined data by date
   const sortedData = Array.from(combinedDataMap.values()).sort(
@@ -85,19 +89,22 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
   //   };
   // });
 
-  const lastDateFighter1 = fighter1.elo_history.length > 0
+  const lastDateFighter1 = fighter1.elo_history && fighter1.elo_history.length > 0
     ? fighter1.elo_history[fighter1.elo_history.length - 1].date
     : null;
-  const lastDateFighter2 = fighter2.elo_history.length > 0
+  const lastDateFighter2 = fighter2.elo_history && fighter2.elo_history.length > 0
     ? fighter2.elo_history[fighter2.elo_history.length - 1].date
     : null;
 
-  let lastFighter1Elo = null;
-  let lastFighter2Elo = null;
+  let lastFighter1Elo: number | null = null;
+  let lastFighter2Elo: number | null = null;
 
   const combinedData = sortedData.map((dataPoint) => {
     // If we've passed the last date for fighter 1, set their Elo to null
-    if (new Date(dataPoint.date).getTime() > new Date(lastDateFighter1).getTime()) {
+    if (
+      lastDateFighter1 &&
+      new Date(dataPoint.date).getTime() > new Date(lastDateFighter1).getTime()
+    ) {
       lastFighter1Elo = null;
     } else if (dataPoint.fighter1_elo !== undefined) {
       // Otherwise, apply the carry-forward logic
@@ -105,7 +112,10 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
     }
 
     // If we've passed the last date for fighter 2, set their Elo to null
-    if (new Date(dataPoint.date).getTime() > new Date(lastDateFighter2).getTime()) {
+    if (
+      lastDateFighter2 &&
+      new Date(dataPoint.date).getTime() > new Date(lastDateFighter2).getTime()
+    ) {
       lastFighter2Elo = null;
     } else if (dataPoint.fighter2_elo !== undefined) {
       // Otherwise, apply the carry-forward logic
@@ -153,7 +163,7 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
             />
             <YAxis
               domain={["dataMin - 25", "dataMax + 25"]}
-              tickFormatter={(value) => Math.round(value)}
+              tickFormatter={(value) => Math.round(value).toString()}
             />
             <ChartTooltip
               cursor={false}
@@ -161,7 +171,7 @@ const MatchEloChart = ({ fighter1, fighter2 }) => {
                 <ChartTooltipContent
                   labelFormatter={(value) => `Date: ${formatDate(value)}`}
                   formatter={(value, name) => {
-                    return [`${Math.round(value)} - `, name];
+                    return [`${Math.round(Number(value))} - `, name];
                   }}
                 />
               }

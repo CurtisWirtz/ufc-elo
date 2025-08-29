@@ -36,6 +36,9 @@ interface NavbarActionProps {
 }
 
 interface NavbarProps {
+  isAuthenticated: boolean;
+  user?: { username: string };
+  handleLogout: () => void;
   logo?: ReactNode;
   name?: string;
   homeUrl?: string;
@@ -121,7 +124,7 @@ export default function Header({
               )
             ) : (
               <div className="hidden md:flex items-center gap-2">
-                <HeaderSearchBar className="w-28" />
+                <div className="w-28"><HeaderSearchBar /></div>
                 {user && (
                   <div className="flex items-center gap-2">
                     <Avatar>

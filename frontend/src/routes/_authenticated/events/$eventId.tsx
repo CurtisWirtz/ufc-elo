@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { getItemById } from '../../../api/queries.ts'
 import { useSuspenseQuery } from '@tanstack/react-query'

@@ -35,7 +35,7 @@ export interface AuthContextType {
       id: number; // from django/postgres user model id, which is a number
       username: string;
   } | null; // null if no user is logged in
-  login: (accessToken: string, refreshToken: string, userData?: UserData) => Promise<void>;
+  login: (accessToken: string, refreshToken: string, userData?: UserData) => void;
   logout: () => void;
 
   //This checkAuthValidity is for React Components that use useAuth(),
@@ -158,7 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshToken, logout]);
 
   // login (called by login form component AFTER successfully receiving access and refresh tokens
-  const login = React.useCallback((accessToken: string, newRefreshToken: string, userData?: UserData) => {
+  const login = React.useCallback((accessToken: string, newRefreshToken: string, userData?: UserData): void => {
     console.log('Auth: Performing login (storing tokens from backend response)...');
     // Store the newly received tokens.
     localStorage.setItem(ACCESS_TOKEN, accessToken);

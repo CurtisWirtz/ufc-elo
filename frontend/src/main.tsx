@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './queryClient'; 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { AuthProvider, checkAuthForRouter } from './AuthProvider'; 
 import './assets/styles/styles.css'
 
@@ -53,7 +53,7 @@ if (!rootElement.innerHTML) {
         
         
         {/* Don't use in production PRODUCTION_XXX */}
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
       </QueryClientProvider>
     </StrictMode>
