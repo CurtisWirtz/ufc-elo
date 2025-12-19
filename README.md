@@ -1,9 +1,11 @@
 # ufc-elo
 ## TL;DR (What is this?)
 ##### I wanted to apply Elo math to every MMA fighter in history, assign each fighter a rating, then rank them.
+
 <p align="center">
-  <img src="screenshots/landing_page.jpeg" alt="Screenshot of landing page" width="100%">
+  <img src="https://github.com/CurtisWirtz/ufc-elo/screenshots/langing_page.jpeg" alt="Screenshot of landing page" width="100%">
 </p>
+
 #### How'd I do this?
 * I wrote python scripts to gather data on MMA fighters, bouts, and events:
     * A crawler, which locates URLs containing the desired MMA data
