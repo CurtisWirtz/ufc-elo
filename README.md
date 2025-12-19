@@ -1,5 +1,30 @@
 # ufc-elo
-## Collecting, aggregating, and displaying fight, bout, and event data from the Ultimate Fighting Championship (UFC).
+## TL;DR (What is this?)
+##### I wanted to apply Elo math to every MMA fighter in history, assign each fighter a rating, then rank them.
+<p align="center">
+  <img src="screenshots/landing_page.jpeg" alt="Screenshot of landing page" width="100%">
+</p>
+#### How'd I do this?
+* I wrote python scripts to gather data on MMA fighters, bouts, and events:
+    * A crawler, which locates URLs containing the desired MMA data
+    * A scraper, which visits each URL discovered by the crawler, then copyies data from HTML elements containing specific CSS class names
+* I built a full-stack system to store, organize and view a representation of the data:
+    * Backend: Django with JWT auth, a Django REST Framework API, and PostgreSQL for the database
+    * Frontend: Vite and Typescript/React ecosystem: 
+        * Axios + React Query for data fetching
+        * Tanstack Router (file-structure based)
+        * Tailwind and ShadCN (+LaunchUI) for UI styling
+        * react-hook-form + Zod for form validation and error messaging 
+* I applied an Elo math algorithm to assign ratings to MMA fighters, similar to those given to chess players.
+
+* I created a fantasy-matchup feature to compare how fighters would matchup at any time during their careers.
+
+##### OK. So, it's far from perfect... but, it was pretty fun to build and I learned a ton.
+
+
+
+## (Longer notes, taken during development):
+### Collecting, aggregating, and displaying fight, bout, and event data from the Ultimate Fighting Championship (UFC).
 
 This started with the goal of assigning Elo ratings to every UFC fighter on the roster throughout the history of the company, exclusively based on their performances in the UFC. Elo is the rating system that was devised for chess ranking and match making.
 
@@ -57,7 +82,3 @@ Having spent years of my professional career building out custom UIs from scratc
 ShadCN was my choice because it's built on top of the work done by RadixUI, an open-source UI library that weighs accessibility concerns heavily. There are many competing UI frameworks that tout similar WCAG complaince claims, but fall short of this when I inspect their components with a screen reader. Plus it's built on Tailwind.
 
 Note: [Mantine](https://ui.mantine.dev/) is another industry leader for **production-ready UI**. It also comes stock with great utility components like a calendar picker, but attempting a tailwind integration was PAINFUL, as Mantine is built with modular CSS... ShadCN it is!
-
-### 6. Containerization + Deploy Pipeline
-###### (Docker, Github Actions, ---) 
-Under construction:  ...finding a viable FREE RDS host for a DB with ~20k records, yikes...
