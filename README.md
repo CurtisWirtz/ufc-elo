@@ -1,6 +1,6 @@
 # ufc-elo
 ## TL;DR (What is this?)
-##### I wanted to apply Elo math to every MMA fighter in history, assign each fighter a rating, then rank them.
+### I wanted to apply Elo math to every MMA fighter in history, assign each fighter a rating, then rank them.
 
 <p align="center">
   <img src="screenshots/landing_page.jpeg" alt="Screenshot of landing page" width="100%">
@@ -8,8 +8,8 @@
 
 #### How'd I do this?
 * I wrote python scripts to gather data on MMA fighters, bouts, and events:
-    * A crawler, which locates URLs containing the desired MMA data
-    * A scraper, which visits each URL discovered by the crawler, then copyies data from HTML elements containing specific CSS class names
+    * [A crawler](https://github.com/CurtisWirtz/ufc-elo/tree/main/data_mining/crawler), which locates URLs containing the desired MMA data
+    * [A scraper](https://github.com/CurtisWirtz/ufc-elo/tree/main/data_mining/scraper), which visits each URL discovered by the crawler, then copyies data from HTML elements containing specific CSS class names
 * I built a full-stack system to store, organize and view a representation of the data:
     * Backend: Django with JWT auth, a Django REST Framework API, and PostgreSQL for the database
     * Frontend: Vite and Typescript/React ecosystem: 
@@ -21,7 +21,7 @@
 
 * I created a fantasy-matchup feature to compare how fighters would matchup at any time during their careers.
 
-##### OK. So, it's far from perfect... but, it was pretty fun to build and I learned a ton.
+#### OK. So, it's far from perfect... but, it was pretty fun to build and I learned a ton.
 
 
 
