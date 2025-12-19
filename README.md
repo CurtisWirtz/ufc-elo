@@ -46,7 +46,7 @@ I would have picked Fedor over Randy as well, but we'll never know!
 * I created a fantasy-matchup feature to compare how fighters would matchup at any time during their careers.
     * The React library [Recharts](https://recharts.github.io/) was very useful for representing the competing fighters' career trajectories.
 
-#### OK. So, it's far from perfect... but, it was pretty fun to build and I learned a ton.
+#### OK. So, the Elo math may never be perfect... but, it was fun to build and see cursory results.
 
 
 🔴 This project is no longer live on the web (I enjoyed the Reddit views, but not paying for VM hosting).
